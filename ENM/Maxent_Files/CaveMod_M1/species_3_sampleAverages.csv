@@ -1,0 +1,11 @@
+Predictor variable,Categorical,Sample average
+Cropped_Cloud,false,147.9378890991211
+alt,false,321.35714285714283
+current_2.5arcmin_PETDriestQuarter,false,75.7942863191877
+current_2.5arcmin_PETWettestQuarter,false,124.85428510393415
+current_2.5arcmin_climaticMoistureIndex,false,-0.01571428562913622
+wc2.0_bio_2.5m_1,false,13.361404623304095
+wc2.0_bio_2.5m_16,false,357.85714285714283
+wc2.0_bio_2.5m_17,false,231.78571428571428
+wc2.0_bio_2.5m_5,false,31.08514268057687
+wc2.0_bio_2.5m_6,false,-5.719428522246225
