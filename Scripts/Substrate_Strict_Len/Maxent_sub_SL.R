@@ -243,7 +243,8 @@ VegPredictionL <- predict(VegModL, predictors, progress="text",
                           filename='./Analysis_Scripts/Chapter3/ENM/Prediction/VegMod_lenient_prediction.grd',
                           overwrite=T)
 VegPredictionLAverage <- mean(VegPredictionL) 
-writeRaster(VegPredictionLAverage, paste0('./Analysis_Scripts/Chapter3/ENM/Prediction/VegMod_prediction_lenient'))
+writeRaster(VegPredictionLAverage, paste0('./Analysis_Scripts/Chapter3/ENM/Prediction/VegMod_prediction_lenient'),
+            overwrite=T)
 
 
 # rock lenient prediction
@@ -277,95 +278,95 @@ bg <- randomPoints(predictors, 1000)
 
 # evaluate every model from the replication in dirt
 DS1 <- evaluate(DirtModS@models[[1]], p=occtestDS, a=bg, x=predictors)
-DS1 # 
-DS2 <- evaluate(DirtbModS@models[[2]], p=occtestDS, a=bg, x=predictors)
-DS2 # 
+DS1 # .86
+DS2 <- evaluate(DirtModS@models[[2]], p=occtestDS, a=bg, x=predictors)
+DS2 # .85
 DS3 <- evaluate(DirtModS@models[[3]], p=occtestDS, a=bg, x=predictors)
-DS3 # 
+DS3 # .86
 DS4 <- evaluate(DirtModS@models[[4]], p=occtestDS, a=bg, x=predictors)
-DS4 # 
+DS4 # .84
 DS5 <- evaluate(DirtModS@models[[5]], p=occtestDS, a=bg, x=predictors)
-DS5 # 
+DS5 # .86
 # evaluate every model from the replication in veg
 VS1 <- evaluate(VegModS@models[[1]], p=occtestVS, a=bg, x=predictors)
-VS1 # 
+VS1 # .93
 VS2 <- evaluate(VegModS@models[[2]], p=occtestVS, a=bg, x=predictors)
-VS2 # 
+VS2 # .91
 VS3 <- evaluate(VegModS@models[[3]], p=occtestVS, a=bg, x=predictors)
-VS3 # 
+VS3 # .92
 VS4 <- evaluate(VegModS@models[[4]], p=occtestVS, a=bg, x=predictors)
-VS4 # 
+VS4 # .90
 VS5 <- evaluate(VegModS@models[[5]], p=occtestVS, a=bg, x=predictors)
-VS5 # 
+VS5 # .92
 # evaluate every model from the replication in rock
 RS1 <- evaluate(RockModS@models[[1]], p=occtestRS, a=bg, x=predictors)
-RS1 # 
+RS1 # .97
 RS2 <- evaluate(RockModS@models[[2]], p=occtestRS, a=bg, x=predictors)
-RS2 # 
+RS2 # .97
 RS3 <- evaluate(RockModS@models[[3]], p=occtestRS, a=bg, x=predictors)
-RS3 #
+RS3 # .97
 RS4 <- evaluate(RockModS@models[[4]], p=occtestRS, a=bg, x=predictors)
-RS4 # 
+RS4 # .97
 RS5 <- evaluate(RockModS@models[[5]], p=occtestRS, a=bg, x=predictors)
-RS5 # 
+RS5 # .94
 # evaluate every model from the replication in WATER
 WS1 <- evaluate(WaterModS@models[[1]], p=occtestWS, a=bg, x=predictors)
-WS1 # 
+WS1 # .92
 WS2 <- evaluate(WaterModS@models[[2]], p=occtestWS, a=bg, x=predictors)
-WS2 # 
+WS2 # .92
 WS3 <- evaluate(WaterModS@models[[3]], p=occtestWS, a=bg, x=predictors)
-WS3 # 
+WS3 # .92
 WS4 <- evaluate(WaterModS@models[[4]], p=occtestWS, a=bg, x=predictors)
-WS4 # 
+WS4 # .92
 WS5 <- evaluate(WaterModS@models[[5]], p=occtestWS, a=bg, x=predictors)
-WS5 # 
+WS5 # .93
 
 #################################################################################################################################
 
 # evaluate every model from the replication in dirt
 DL1 <- evaluate(DirtModL@models[[1]], p=occtestDL, a=bg, x=predictors)
-DL1 # 
-DL2 <- evaluate(DirtbModL@models[[2]], p=occtestDL, a=bg, x=predictors)
-DL2 # 
+DL1 # .83
+DL2 <- evaluate(DirtModL@models[[2]], p=occtestDL, a=bg, x=predictors)
+DL2 # .83
 DL3 <- evaluate(DirtModL@models[[3]], p=occtestDL, a=bg, x=predictors)
-DL3 # 
+DL3 # .84
 DL4 <- evaluate(DirtModL@models[[4]], p=occtestDL, a=bg, x=predictors)
-DL4 # 
+DL4 # .84
 DL5 <- evaluate(DirtModL@models[[5]], p=occtestDL, a=bg, x=predictors)
-DL5 # 
+DL5 # .83
 # evaluate every model from the replication in veg
 VL1 <- evaluate(VegModL@models[[1]], p=occtestVL, a=bg, x=predictors)
-VL1 # 
+VL1 # .90
 VL2 <- evaluate(VegModL@models[[2]], p=occtestVL, a=bg, x=predictors)
-VL2 # 
+VL2 # .89
 VL3 <- evaluate(VegModL@models[[3]], p=occtestVL, a=bg, x=predictors)
-VL3 # 
+VL3 # .90
 VL4 <- evaluate(VegModL@models[[4]], p=occtestVL, a=bg, x=predictors)
-VL4 # 
+VL4 # .89
 VL5 <- evaluate(VegModL@models[[5]], p=occtestVL, a=bg, x=predictors)
-VL5 # 
+VL5 # .90
 # evaluate every model from the replication in rock
 RL1 <- evaluate(RockModL@models[[1]], p=occtestRL, a=bg, x=predictors)
-RL1 # 
+RL1 # .94
 RL2 <- evaluate(RockModL@models[[2]], p=occtestRL, a=bg, x=predictors)
-RL2 # 
+RL2 # .92
 RL3 <- evaluate(RockModL@models[[3]], p=occtestRL, a=bg, x=predictors)
-RL3 #
+RL3 # .92
 RL4 <- evaluate(RockModL@models[[4]], p=occtestRL, a=bg, x=predictors)
-RL4 # 
+RL4 # .93
 RL5 <- evaluate(RockModL@models[[5]], p=occtestRL, a=bg, x=predictors)
-RL5 # 
+RL5 # .93
 # evaluate every model from the replication in WATER
 WL1 <- evaluate(WaterModL@models[[1]], p=occtestWL, a=bg, x=predictors)
-WL1 # 
+WL1 # .92
 WL2 <- evaluate(WaterModL@models[[2]], p=occtestWL, a=bg, x=predictors)
-WL2 # 
+WL2 # .92
 WL3 <- evaluate(WaterModL@models[[3]], p=occtestWL, a=bg, x=predictors)
-WL3 # 
+WL3 # .93
 WL4 <- evaluate(WaterModL@models[[4]], p=occtestWL, a=bg, x=predictors)
-WL4 # 
+WL4 # .93
 WL5 <- evaluate(WaterModL@models[[5]], p=occtestWL, a=bg, x=predictors)
-WL5 # 
+WL5 # .93
 
 
 # THESE ARE OTHER WAYS TO EVALUATE, BUT GIVE THE SAME RESULT

@@ -11,11 +11,8 @@
 ###############################
 
 # packages
-library(phyloclim)
-library(geosphere)
-library(raster)
-library(rgdal)
-library(rgeos)
+library(phyloclim); library(geosphere); library(raster)
+library(rgdal); library(rgeos)
 
 # load the maxent predictions
 ArbModS <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/ArbMod_prediction_strict.grd")
@@ -86,90 +83,150 @@ dismo::nicheOverlap(ArbModSSS, TerrModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.2400875
 dismo::nicheOverlap(ArbModSSS, TerrModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.1204878
+dismo::nicheOverlap(ArbModS, TerrModS, stat='I', mask=T, checkNegatives = T)
+# 0.711
+dismo::nicheOverlap(ArbModS, TerrModS, stat='D', mask=T, checkNegatives = T)
+# 0.4359133
 
 # arb and water
 dismo::nicheOverlap(ArbModSSS, AquaModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.0436299
 dismo::nicheOverlap(ArbModSSS, AquaModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.0280168
+dismo::nicheOverlap(ArbModS, AquaModS, stat='I', mask=T, checkNegatives = T)
+# 0.32526
+dismo::nicheOverlap(ArbModS, AquaModS, stat='D', mask=T, checkNegatives = T)
+# 0.1342
 
 # arb and cave
 dismo::nicheOverlap(ArbModSSS, CaveModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.03980642
 dismo::nicheOverlap(ArbModSSS, CaveModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.03779222
+dismo::nicheOverlap(ArbModS, CaveModS, stat='I', mask=T, checkNegatives = T)
+# 0.298
+dismo::nicheOverlap(ArbModS, CaveModS, stat='D', mask=T, checkNegatives = T)
+# 0.1206
 
 # arb and foss
 dismo::nicheOverlap(ArbModSSS, FossModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.3746644
 dismo::nicheOverlap(ArbModSSS, FossModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.1747053
+dismo::nicheOverlap(ArbModS, FossModS, stat='I', mask=T, checkNegatives = T)
+# 0.908
+dismo::nicheOverlap(ArbModS, FossModS, stat='D', mask=T, checkNegatives = T)
+# 0.69
 
 # arb and sax
 dismo::nicheOverlap(ArbModSSS, SaxModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.1903572
 dismo::nicheOverlap(ArbModSSS, SaxModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.149132
+dismo::nicheOverlap(ArbModS, SaxModS, stat='I', mask=T, checkNegatives = T)
+# 0.646
+dismo::nicheOverlap(ArbModS, SaxModS, stat='D', mask=T, checkNegatives = T)
+# 0.355
 
 # terr and water
 dismo::nicheOverlap(TerrModSSS, AquaModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.6406319
 dismo::nicheOverlap(TerrModSSS, AquaModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.5006657
+dismo::nicheOverlap(TerrModS, AquaModS, stat='I', mask=T, checkNegatives = T)
+# 0.77
+dismo::nicheOverlap(TerrModS, AquaModS, stat='D', mask=T, checkNegatives = T)
+# 0.53
 
 # terr and cave
 dismo::nicheOverlap(TerrModSSS, CaveModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.475957
 dismo::nicheOverlap(TerrModSSS, CaveModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.2267726
+dismo::nicheOverlap(TerrModS, CaveModS, stat='I', mask=T, checkNegatives = T)
+# 0.62
+dismo::nicheOverlap(TerrModS, CaveModS, stat='D', mask=T, checkNegatives = T)
+# 0.34
 
 # terr and foos
 dismo::nicheOverlap(TerrModSSS, FossModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.2395885
 dismo::nicheOverlap(TerrModSSS, FossModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.2226158
+dismo::nicheOverlap(TerrModS, FossModS, stat='I', mask=T, checkNegatives = T)
+# 0.75
+dismo::nicheOverlap(TerrModS, FossModS, stat='D', mask=T, checkNegatives = T)
+# 0.46
 
 # terr and sax
 dismo::nicheOverlap(TerrModSSS, SaxModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.617572
 dismo::nicheOverlap(TerrModSSS, SaxModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.3956032
+dismo::nicheOverlap(TerrModS, SaxModS, stat='I', mask=T, checkNegatives = T)
+# 0.89
+dismo::nicheOverlap(TerrModS, SaxModS, stat='D', mask=T, checkNegatives = T)
+# 0.64
 
 # water and cave
 dismo::nicheOverlap(AquaModSSS, CaveModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.4557815
 dismo::nicheOverlap(AquaModSSS, CaveModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.2778691
+dismo::nicheOverlap(AquaModS, CaveModS, stat='I', mask=T, checkNegatives = T)
+# 0.66
+dismo::nicheOverlap(AquaModS, CaveModS, stat='D', mask=T, checkNegatives = T)
+# 0.42
 
 # water and foss
 dismo::nicheOverlap(AquaModSSS, FossModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.1148412
 dismo::nicheOverlap(AquaModSSS, FossModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.08339249
+dismo::nicheOverlap(AquaModS, FossModS, stat='I', mask=T, checkNegatives = T)
+# 0.46
+dismo::nicheOverlap(AquaModS, FossModS, stat='D', mask=T, checkNegatives = T)
+# 0.20
 
 # water and sax
 dismo::nicheOverlap(AquaModSSS, SaxModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.5280969
 dismo::nicheOverlap(AquaModSSS, SaxModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.4328591
+dismo::nicheOverlap(AquaModS, SaxModS, stat='I', mask=T, checkNegatives = T)
+# 0.71
+dismo::nicheOverlap(AquaModS, SaxModS, stat='D', mask=T, checkNegatives = T)
+# 0.52
 
 # cave and foss
 dismo::nicheOverlap(CaveModSSS, FossModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.07523933
 dismo::nicheOverlap(CaveModSSS, FossModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.0333087
+dismo::nicheOverlap(CaveModS, FossModS, stat='I', mask=T, checkNegatives = T)
+# 0.31
+dismo::nicheOverlap(CaveModS, FossModS, stat='D', mask=T, checkNegatives = T)
+# 0.12
 
 # cave and sax
 dismo::nicheOverlap(CaveModSSS, SaxModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.6844893
 dismo::nicheOverlap(CaveModSSS, SaxModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.5091167
+dismo::nicheOverlap(CaveModS, SaxModS, stat='I', mask=T, checkNegatives = T)
+# 0.81
+dismo::nicheOverlap(CaveModS, SaxModS, stat='D', mask=T, checkNegatives = T)
+# 0.57
 
 # foss and sax
 dismo::nicheOverlap(FossModSSS, SaxModSSS, stat='I', mask=T, checkNegatives = T)
 # 0.171238
 dismo::nicheOverlap(FossModSSS, SaxModSSS, stat='D', mask=T, checkNegatives = T)
 # 0.1019207
+dismo::nicheOverlap(FossModS, SaxModS, stat='I', mask=T, checkNegatives = T)
+# 0.63
+dismo::nicheOverlap(FossModS, SaxModS, stat='D', mask=T, checkNegatives = T)
+# 0.33
 
 ###
 # arb poly intersect with arb niche
