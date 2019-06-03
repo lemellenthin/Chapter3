@@ -1,28 +1,36 @@
 ###############################
 ### MAXENT SCRIPT DRAFT #######
 ###############################
+version
 
 # MAXENT MODELS AND EVALUATIONS
 
 library(dismo); library(rJava); library(maptools)
 library(raster)
 
+library(mvtnorm)
 # for maxent if you do not have it 
-# library(devtools)
-# install_github("johnbaums/rmaxent")
+# 
+library(devtools)
+install.packages("mvtnorm")
+
+# 
+install_github("johnbaums/rmaxent")
+install_github("danlwarren/ENMTools")
 # library(rmaxent)
 # get_maxent(version = "latest", quiet = FALSE)
 
 ###### maxent pipeline #########
 # load variables
-elevation <- stack('./Analysis_Scripts/Chapter3/Climate Data/alt_2-5m_bil/alt.bil')
-bioclim_vars <- stack(c(list.files('./Analysis_Scripts/Chapter3/Climate Data/wc2', full.names = T, pattern = '.tif')))
+elevation <- stack('./Analysis_Scripts/Chapter3/Climate Data/alt_2-5m_bil_elevation_raw/alt.bil')
+bioclim_vars <- stack(c(list.files('./Analysis_Scripts/Chapter3/Climate Data/wc2_raw_bioclim', full.names = T, pattern = '.tif')))
 bioclim_keep <- stack(bioclim_vars$wc2.0_bio_2.5m_1, bioclim_vars$wc2.0_bio_2.5m_5, bioclim_vars$wc2.0_bio_2.5m_6,
-                      bioclim_vars$wc2.0_bio_2.5m_16, bioclim_vars$wc2.0_bio_2.5m_17)
-extra <- stack(c(list.files('./Analysis_Scripts/Chapter3/Climate Data/NewWorld_current_2', full.names = T, pattern = '.tif')))
+                      bioclim_vars$wc2.0_bio_2.5m_16, bioclim_vars$wc2.0_bio_2.5m_17, bioclim_vars$wc2.0_bio_2.5m_12)
+extra <- stack(c(list.files('./Analysis_Scripts/Chapter3/Climate Data/NewWorld_current_2_PET', full.names = T, pattern = '.tif')))
 extra_keep <- stack(extra$current_2.5arcmin_climaticMoistureIndex, extra$current_2.5arcmin_PETDriestQuarter,
                     extra$current_2.5arcmin_PETWettestQuarter)
-cloud <- stack("./Analysis_Scripts/Chapter3/Climate Data/Cropped_Cloud.tif")
+cloud <- stack("./Analysis_Scripts/Chapter3/Climate Data/Cloud_cover/IPCCconcert.tif")
+cloud
 
 # # make each at the same extent
 elevation1 <- crop(elevation, extra_keep)
@@ -36,8 +44,6 @@ r1 <- elevation1
 r2 <- bioclim_keep1
 r3 <- extra_keep
 r4 <- cloud
-r1 <- resample(r1,r3)
-r2 <- resample(r2,r3,method='ngb')
 r4 <- resample(r4,r3,method='ngb')
 rs <- stack(r1,r2,r3,r4)
 
@@ -45,7 +51,7 @@ rs <- stack(r1,r2,r3,r4)
 alldata_togetherC <- stack(elevation1, bioclim_keep1, extra_keep, cloud1)
 writeRaster(alldata_togetherC, paste0('./Analysis_Scripts/Chapter3/Climate Data/ENM/AllDataTogC',
             format = 'GTiff'))
-writeRaster(rs, paste0('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogC',
+writeRaster(rs, paste0('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogether',
                                       format = 'GTiff'))
 
 # READ IN DATA #
