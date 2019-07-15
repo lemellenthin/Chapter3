@@ -15,7 +15,6 @@ library(ggplot2)
 cloud.raw <- stack(list.files('./Analysis_Scripts/Chapter3/Climate Data/Cloud_cover/cru_cld_clim_1991-2000', full.names = T, 
                               pattern = '.tif'))
 cloud.raw
-range(values(cloud.raw))
 
 rescale <- function(x, x.min = NULL, x.max = NULL, new.min = 0, new.max = 1) {
   if(is.null(x.min)) x.min = min(x)

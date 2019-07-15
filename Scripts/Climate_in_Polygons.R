@@ -20,7 +20,7 @@ library(rasterVis); library(elevatr)
 
 # Get species names
 # you need to make sure all caudata files are downloaded from the cloud before running this line
-Caudata <- readOGR("CAUDATA/CAUDATA.shp")
+Caudata <- readOGR("Analysis_Scripts/Chapter3/CAUDATA/CAUDATA.shp")
 
 # Exploring shape file
 class(Caudata)
@@ -82,6 +82,7 @@ proj4string(UniquePolys) <- CRS('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS8
 #writeOGR(UniquePolys, "UniquePolys", layer="chull", driver="ESRI Shapefile")
 UniquePolys <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/UniquePolys/chull.shp")
 length(UniquePolys)
+length(unique(UniquePolys$binomial))
 
 ##########################################################################
 #####################  UNIQUEPOLY FILE WITHOUT LM POLYS CODE #############

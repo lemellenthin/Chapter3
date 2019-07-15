@@ -2,7 +2,8 @@
 ## MAKING OCC POINTS FOR SUBSTRATE/MICROHABITAT ###
 ###################################################
 
-# MAKING POINTS FROM POLYGONS TO USE IN MAXENT ANALYSIS
+# THIS IS TO MAKE POINTS AND IS NOT STRICTLY ASSOCIATED WITH A SCHEME YET
+
 
 # Packages
 library(raster); library(rgdal); library(dismo); library(rJava)
@@ -11,6 +12,9 @@ library(rgeos); library(mapdata); library(SDMTools)
 
 # Polygons
 Polygons <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforanalysis/chull.shp") 
+
+testerica <-readOGR("Analysis_Scripts/Chapter3/Points/All_Poly_Points.csv/chull.shp")
+plot(testerica)
 
 #check class
 class(Polygons)
@@ -34,7 +38,6 @@ anyNA(Class1$Species) # want FALSE
 
 # prune the polygons by substrate and micro habitat
 #
-Class1$
 ###### substrate ##########
 #
 ### prune dirt
@@ -77,6 +80,7 @@ ArbPoly <- Polygons[match(Arb$Species,Polygons$binomial), ]
 ArbPolyAll <- aggregate(ArbPoly, dissolve=T)
 ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
 writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPolyAll", layer= "chull", driver = "ESRI Shapefile")
+
 ### prune terrestrial polys - T ###
 Terr <- Class1[Class1$Strict == "T", ]
 Terr$Species #207

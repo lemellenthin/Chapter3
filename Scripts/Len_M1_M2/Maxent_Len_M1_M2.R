@@ -17,26 +17,25 @@ min.lat = -140
 max.lon = 70
 min.lon = -20
 geographic.extent <- extent(x = c(min.lat, max.lat, min.lon, max.lon))
-predictors.crop <- crop(x = ClimateData, y = geographic.extent)
-predictors <- predictors.crop
+predictors <- crop(x = ClimateData, y = geographic.extent)
 
 # load file with presence points
-ArbPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_lenient/chull.shp")
-TerrPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Terr_Points_lenient/chull.shp")
+ArbPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Arb_Points_lenient/chull.shp")
+TerrPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Terr_Points_lenient/chull.shp")
 AquaPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Aqua_Points_lenient/chull.shp")
 CavePointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Cave_Points_lenient/chull.shp")
 FossPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Foss_Points_lenient/chull.shp")
 SaxPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Sax_Points_lenient/chull.shp")
 #################################################################################################################################
-ArbPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_M1/chull.shp")
-TerrPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Terr_Points_M1/chull.shp")
+ArbPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Arb_Points_M1/chull.shp")
+TerrPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Terr_Points_M1/chull.shp")
 AquaPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Aqua_Points_M1/chull.shp")
 CavePointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Cave_Points_M1/chull.shp")
 FossPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Foss_Points_M1/chull.shp")
 SaxPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Sax_Points_M1/chull.shp")
 #################################################################################################################################
-ArbPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_M2/chull.shp")
-TerrPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Terr_Points_M2/chull.shp")
+ArbPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Arb_Points_M2/chull.shp")
+TerrPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Terr_Points_M2/chull.shp")
 AquaPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Aqua_Points_M2/chull.shp")
 CavePointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Cave_Points_M2/chull.shp")
 FossPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Foss_Points_M2/chull.shp")
@@ -81,6 +80,20 @@ FossDFM2 <- data.frame(FossPointsM2)
 FossDFM2 <- FossDFM2[,1:2]
 SaxDFM2 <- data.frame(SaxPointsM2)
 SaxDFM2 <- SaxDFM2[,1:2]
+
+
+#### LENIENT RESOLUTION TESTING
+# RESOLUTION TESTING WITH 10 FOLD CV
+#
+ArbModTestCVL <- maxent(predictors, ArbDFL, args=c("-J","-P","replicates=10"), 
+                       path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testCVL_4")
+TerrModTestCVL <- maxent(predictors, TerrDFL, args=c("-J","-P","replicates=10"), 
+                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_strict_resolution_testCVL_4")
+
+ArbModTestCVM <- maxent(predictors, ArbDFM2, args=c("-J","-P","replicates=10"), 
+                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testCVM2_2")
+TerrModTestCVM <- maxent(predictors, TerrDFM2, args=c("-J","-P","replicates=10"), 
+                         path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_strict_resolution_testCVM2_2")
 
 ## take out points outside of the extent area
 # like korea, italy, and water points

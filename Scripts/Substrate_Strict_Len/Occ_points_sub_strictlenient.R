@@ -78,31 +78,33 @@ writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_strict
 # FOR SUBSTRATE - DIRT 
 #creating the grid to put the polygons in
 gridSD <- raster(extent(DirtPolyAll))
-res(gridSD) <- 2.5
+res(gridSD) <- 0.375
 proj4string(gridSD) <- proj4string(DirtPolyAll)
-gridpolygonSD <- rasterToPolygons(gridSD)
-dry.gridSD <- raster::intersect(DirtPolyAll, gridpolygonSD)
-SD <- gCentroid(dry.gridSD, byid=T)
-SDDF <- as.data.frame(SD)
-coords <- SD@coords
-DirtPoints <- SpatialPointsDataFrame(coords = coords, data = SDDF, coords.nrs = numeric(0),
+dry.gridSD <- raster::intersect(gridSD, DirtPolyAll)
+proj4string(dry.gridSD) <- proj4string(DirtPolyAll)
+eek <- rasterToPoints(dry.gridSD, spatial=T, progress="text")
+ekek <- raster::intersect(eek, DirtPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+DirtPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                     proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(DirtPoints, "./Analysis_Scripts/Chapter3/Points/Dirt_Points_strict", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(DirtPoints, "./Analysis_Scripts/Chapter3/Points/Dirt_Points_strict", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 
 # FOR SUBSTRATE - VEG -
 #creating the grid to put the polygons in
 gridSV <- raster(extent(VegPolyAll))
-res(gridSV) <- 2.5
+res(gridSV) <- 0.375
 proj4string(gridSV) <- proj4string(VegPolyAll)
-gridpolygonSV <- rasterToPolygons(gridSV)
-dry.gridSV <- raster::intersect(VegPolyAll, gridpolygonSV)
-SV <- gCentroid(dry.gridSV, byid=T)
-SVDF <- as.data.frame(SV)
-coords <- SV@coords
-VegPoints <- SpatialPointsDataFrame(coords = coords, data = SVDF, coords.nrs = numeric(0),
+dry.gridSV <- raster::intersect(gridSV, VegPolyAll)
+proj4string(dry.gridSV) <- proj4string(VegPolyAll)
+eek <- rasterToPoints(dry.gridSV, spatial=T, progress="text")
+ekek <- raster::intersect(eek, VegPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+VegPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(VegPoints, "./Analysis_Scripts/Chapter3/Points/Veg_Points_strict", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(VegPoints, "./Analysis_Scripts/Chapter3/Points/Veg_Points_strict", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 # FOR SUBSTRATE - ROCK - 
 #creating the grid to put the polygons in

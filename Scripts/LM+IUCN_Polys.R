@@ -11,8 +11,18 @@ library(data.table)
 
 # file of polygons without LM makings for comparison
   #UniqueNLMPolys
+UniqueNLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/chull.shp")
+# 293
 # file of polygons with LM makings
   #UniqueLMPolys
+UniqueLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
+# 18
+
+# used polys
+All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.shp")
+# 311
+
+
 
 ###############################################
 # species I was not able to make polygons for #

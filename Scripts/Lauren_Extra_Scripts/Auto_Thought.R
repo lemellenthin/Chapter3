@@ -2,11 +2,6 @@
 ### AUTO VS THOUGHTFUL SELECTION ###########
 ##############################################
 
-# DID NOT USE THIS IN ANALYSIS, FOR EXPLORATION MAINLY
-# SET UP TO RUN ALL CLIMATIC VARIABLES COMPARED TO ONLY SOME
-# BUT WE TESTED THIS INSTEAD WITH STANDARD NORMAL DEVIATES
-# SO THIS STEP WAS NOT NECESSARY
-
 library(dismo); library(raster); library(maxnet)
 library(ggplot2); library(data.table); library(rgeos)
 library(rgbif); library(geosphere); library(rgdal)

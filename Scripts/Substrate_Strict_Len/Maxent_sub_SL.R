@@ -21,9 +21,9 @@ predictors.crop <- crop(x = ClimateData, y = geographic.extent)
 predictors <- predictors.crop
 
 # load file with presence points
-DirtPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Substrate_Strict_Len/Points/Dirt_Points_strict/chull.shp")
-RockPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Substrate_Strict_Len/Points/Rock_Points_strict/chull.shp")
-VegPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Substrate_Strict_Len/Points/Veg_Points_strict/chull.shp")
+DirtPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Dirt_Points_strict/chull.shp")
+RockPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Rock_Points_strict/chull.shp")
+VegPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Veg_Points_strict/chull.shp")
 WaterPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Substrate_Strict_Len/Points/Water_Points_strict/chull.shp")
 #################################################################################################################################
 DirtPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Substrate_Strict_Len/Points/Dirt_Points_lenient/chull.shp")
@@ -51,6 +51,13 @@ VegDFL <- data.frame(VegPointsL)
 VegDFL <- VegDFL[,1:2]
 WaterDFL <- data.frame(WaterPointsL)
 WaterDFL <- WaterDFL[,1:2]
+
+#resolution
+DirtModS <- maxent(predictors, DirtDFS, args=c("-J","-P",'replicates=10'), 
+                   path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/DirtMod_strict_CV_1")
+
+VegModS <- maxent(predictors, VegDFS, args=c("-J","-P",'replicates=10'), 
+                  path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/VegMod_strict_CV_1")
 
 
 ## take out points outside of the extent area

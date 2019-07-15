@@ -1,9 +1,8 @@
 ###############################
 ### MAXENT SCRIPT DRAFT #######
 ###############################
-version
 
-# MAXENT MODELS AND EVALUATIONS
+# MAXENT MODELS AND EVALUATIONS original script and not associated to any one classification scheme
 
 library(dismo); library(rJava); library(maptools)
 library(raster)
@@ -16,9 +15,19 @@ install.packages("mvtnorm")
 
 # 
 install_github("johnbaums/rmaxent")
-install_github("danlwarren/ENMTools")
-# library(rmaxent)
+library(rmaxent)
+?rmaxent
 # get_maxent(version = "latest", quiet = FALSE)
+
+dismo::maxent
+
+version
+
+path.package("dismo")
+path.package("rJava")
+path.package("rmaxent")
+file("maxent.jar")
+
 
 ###### maxent pipeline #########
 # load variables
@@ -30,7 +39,6 @@ extra <- stack(c(list.files('./Analysis_Scripts/Chapter3/Climate Data/NewWorld_c
 extra_keep <- stack(extra$current_2.5arcmin_climaticMoistureIndex, extra$current_2.5arcmin_PETDriestQuarter,
                     extra$current_2.5arcmin_PETWettestQuarter)
 cloud <- stack("./Analysis_Scripts/Chapter3/Climate Data/Cloud_cover/IPCCconcert.tif")
-cloud
 
 # # make each at the same extent
 elevation1 <- crop(elevation, extra_keep)
@@ -51,7 +59,7 @@ rs <- stack(r1,r2,r3,r4)
 alldata_togetherC <- stack(elevation1, bioclim_keep1, extra_keep, cloud1)
 writeRaster(alldata_togetherC, paste0('./Analysis_Scripts/Chapter3/Climate Data/ENM/AllDataTogC',
             format = 'GTiff'))
-writeRaster(rs, paste0('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogether',
+writeRaster(rs, paste0('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogetherFinal',
                                       format = 'GTiff'))
 
 # READ IN DATA #
@@ -59,6 +67,8 @@ alldata_withC <- stack('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogC
 
 # get polygons for checking
 Polygons <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforanalysis/chull.shp") 
+Polygons$binomial
+Polygons
 
 # crop data to reasonable extent
 max.lat = 140
@@ -287,9 +297,6 @@ dV54 <- evaluate(DirtMEC5@models[[4]], p=occtestD, a=bg, x=predictors)
 dV54 # 0.88
 dV55 <- evaluate(DirtMEC5@models[[5]], p=occtestD, a=bg, x=predictors)
 dV55 # 0.87
-
-
-
 
 # THESE ARE OTHER WAYS TO EVALUATE, BUT GIVE THE SAME RESULT
 
