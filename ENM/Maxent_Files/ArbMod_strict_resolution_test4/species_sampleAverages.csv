@@ -1,0 +1,12 @@
+Predictor variable,Categorical,Sample average
+IPCCconcert,false,0.5775283182444203
+alt,false,497.0101201067616
+current_2.5arcmin_PETDriestQuarter,false,142.7129749556029
+current_2.5arcmin_PETWettestQuarter,false,89.80785923443231
+current_2.5arcmin_climaticMoistureIndex,false,0.1399810940650328
+wc2.0_bio_2.5m_1,false,18.590615500580004
+wc2.0_bio_2.5m_12,false,1966.3964635231316
+wc2.0_bio_2.5m_16,false,841.132006227758
+wc2.0_bio_2.5m_17,false,176.22097419928826
+wc2.0_bio_2.5m_5,false,27.782772574136267
+wc2.0_bio_2.5m_6,false,9.039285388888665
