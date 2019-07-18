@@ -1,0 +1,468 @@
+Tue May 21 11:55:48 CDT 2019
+MaxEnt version 3.4.1
+Reading file absence
+readGrid: max memory 8388608000, total allocated 2726297600, free 353639672, used 2372657928, increment 426772480
+Reading samples from presence
+Read samples: max memory 8388608000, total allocated 2726297600, free 1415295936, used 1311001664, increment -1061656264
+Adding samples to background in feature space
+Command line used:  autorun -e ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/absence -o ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11 -s ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/presence -z -J -P
+Command line to repeat: java density.MaxEnt nowarnings noprefixes responsecurves jackknife outputdirectory=./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11 samplesfile=./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/presence environmentallayers=./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/absence autorun novisible
+Species: species
+Layers: IPCCconcert alt current_2.5arcmin_PETDriestQuarter current_2.5arcmin_PETWettestQuarter current_2.5arcmin_climaticMoistureIndex wc2.0_bio_2.5m_1 wc2.0_bio_2.5m_12 wc2.0_bio_2.5m_16 wc2.0_bio_2.5m_17 wc2.0_bio_2.5m_5 wc2.0_bio_2.5m_6
+Layertypes: Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous Continuous
+responsecurves: true
+jackknife: true
+outputdirectory: ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11
+samplesfile: ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/presence
+environmentallayers: ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/absence
+autorun: true
+visible: false
+
+getSamples: max memory 8388608000, total allocated 2726297600, free 1415295936, used 1311001664, increment 0
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1409486656, used 1316810944, increment 5809280
+species: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1409409320, used 1316888280, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1409331984, used 1316965616, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1409331984, used 1316965616, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1409331984, used 1316965616, increment 0
+Initial loss: 9.17626639164243
+160: time = 0.061000 loss = 7.840403
+Resulting gain: 1.3358638161315035
+Projecting...
+Writing file ./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_test11/species.csv
+species response curves
+Response curve: only IPCCconcert
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1349233600, used 1377064000, increment 60098384
+species IPCCconcert: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1349156264, used 1377141336, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1349078928, used 1377218672, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1349078928, used 1377218672, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1349078928, used 1377218672, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.028000 loss = 9.036265
+Resulting gain: 0.14000099785411102
+species response curves
+Response curve: only alt
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1345039296, used 1381258304, increment 4039632
+species alt: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1345039296, used 1381258304, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1344961960, used 1381335640, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1344961960, used 1381335640, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1344961960, used 1381335640, increment 0
+Initial loss: 9.17626639164243
+20: time = 0.008000 loss = 9.176266
+Resulting gain: 0.0
+species response curves
+Response curve: only current_2.5arcmin_PETDriestQuarter
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1340844992, used 1385452608, increment 4116968
+species current_2.5arcmin_PETDriestQuarter: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1340844992, used 1385452608, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1340844992, used 1385452608, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1340844992, used 1385452608, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1340844992, used 1385452608, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.026000 loss = 8.768656
+Resulting gain: 0.4076105441390556
+species response curves
+Response curve: only current_2.5arcmin_PETWettestQuarter
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1336650688, used 1389646912, increment 4194304
+species current_2.5arcmin_PETWettestQuarter: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1336650688, used 1389646912, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1336650688, used 1389646912, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1336650688, used 1389646912, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1336650688, used 1389646912, increment 0
+Initial loss: 9.17626639164243
+80: time = 0.024000 loss = 9.127091
+Resulting gain: 0.04917517685995598
+species response curves
+Response curve: only current_2.5arcmin_climaticMoistureIndex
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1332456016, used 1393841584, increment 4194672
+species current_2.5arcmin_climaticMoistureIndex: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1332456016, used 1393841584, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1332456016, used 1393841584, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1332456016, used 1393841584, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1332456016, used 1393841584, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.024000 loss = 9.175664
+Resulting gain: 6.019346023702354E-4
+species response curves
+Response curve: only wc2.0_bio_2.5m_1
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1328261712, used 1398035888, increment 4194304
+species wc2.0_bio_2.5m_1: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1328261712, used 1398035888, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1328261712, used 1398035888, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1328261712, used 1398035888, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1328261712, used 1398035888, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.029000 loss = 9.152719
+Resulting gain: 0.023547666996863725
+species response curves
+Response curve: only wc2.0_bio_2.5m_12
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1323952208, used 1402345392, increment 4309504
+species wc2.0_bio_2.5m_12: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1323952208, used 1402345392, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1323952208, used 1402345392, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1323952208, used 1402345392, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1323952208, used 1402345392, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.023000 loss = 9.140396
+Resulting gain: 0.03587077606689526
+species response curves
+Response curve: only wc2.0_bio_2.5m_16
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1319757904, used 1406539696, increment 4194304
+species wc2.0_bio_2.5m_16: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1319757904, used 1406539696, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1319757904, used 1406539696, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1319757904, used 1406539696, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1319757904, used 1406539696, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.024000 loss = 8.968693
+Resulting gain: 0.20757289871532159
+species response curves
+Response curve: only wc2.0_bio_2.5m_17
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1315563600, used 1410734000, increment 4194304
+species wc2.0_bio_2.5m_17: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1315563600, used 1410734000, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1315563600, used 1410734000, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1315563600, used 1410734000, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1315563600, used 1410734000, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.024000 loss = 9.171722
+Resulting gain: 0.004544213600413016
+species response curves
+Response curve: only wc2.0_bio_2.5m_5
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1311369296, used 1414928304, increment 4194304
+species wc2.0_bio_2.5m_5: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1311369296, used 1414928304, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1311369296, used 1414928304, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1311369296, used 1414928304, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1311369296, used 1414928304, increment 0
+Initial loss: 9.17626639164243
+20: time = 0.006000 loss = 9.176266
+Resulting gain: 0.0
+species response curves
+Response curve: only wc2.0_bio_2.5m_6
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1307290560, used 1419007040, increment 4078736
+species wc2.0_bio_2.5m_6: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1307290560, used 1419007040, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1307290560, used 1419007040, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1307290560, used 1419007040, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1307290560, used 1419007040, increment 0
+Initial loss: 9.17626639164243
+80: time = 0.025000 loss = 8.655543
+Resulting gain: 0.5207237723678535
+species response curves
+Jackknife: leave IPCCconcert out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1249432128, used 1476865472, increment 57858432
+species IPCCconcert: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1249354792, used 1476942808, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1249277456, used 1477020144, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1249277456, used 1477020144, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1249277456, used 1477020144, increment 0
+Initial loss: 9.17626639164243
+120: time = 0.056000 loss = 7.937931
+Jackknife: leave alt out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1244077784, used 1482219816, increment 5199672
+species alt: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1243372680, used 1482924920, increment 705104
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1243372680, used 1482924920, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1243372680, used 1482924920, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1243372680, used 1482924920, increment 0
+Initial loss: 9.17626639164243
+120: time = 0.056000 loss = 7.847468
+Jackknife: leave current_2.5arcmin_PETDriestQuarter out
+Making features
+Time since start: 1.034
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1238671152, used 1487626448, increment 4701528
+species current_2.5arcmin_PETDriestQuarter: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1238593816, used 1487703784, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1238516480, used 1487781120, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1238516480, used 1487781120, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1238516480, used 1487781120, increment 0
+Initial loss: 9.17626639164243
+120: time = 0.046000 loss = 7.915887
+Jackknife: leave current_2.5arcmin_PETWettestQuarter out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1233325888, used 1492971712, increment 5190592
+species current_2.5arcmin_PETWettestQuarter: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1232852792, used 1493444808, increment 473096
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1232852792, used 1493444808, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1232852792, used 1493444808, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1232852792, used 1493444808, increment 0
+Initial loss: 9.17626639164243
+120: time = 0.049000 loss = 7.848781
+Jackknife: leave current_2.5arcmin_climaticMoistureIndex out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1227919256, used 1498378344, increment 4933536
+species current_2.5arcmin_climaticMoistureIndex: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1227841920, used 1498455680, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1227764584, used 1498533016, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1227764584, used 1498533016, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1227764584, used 1498533016, increment 0
+Initial loss: 9.17626639164243
+140: time = 0.055000 loss = 7.840403
+Jackknife: leave wc2.0_bio_2.5m_1 out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1222521704, used 1503775896, increment 5242880
+species wc2.0_bio_2.5m_1: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1222444368, used 1503853232, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1222367032, used 1503930568, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1222367032, used 1503930568, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1222367032, used 1503930568, increment 0
+Initial loss: 9.17626639164243
+140: time = 0.058000 loss = 7.840403
+Jackknife: leave wc2.0_bio_2.5m_12 out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1217122104, used 1509175496, increment 5244928
+species wc2.0_bio_2.5m_12: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1217044768, used 1509252832, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1216967432, used 1509330168, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1216967432, used 1509330168, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1216967432, used 1509330168, increment 0
+Initial loss: 9.17626639164243
+140: time = 0.055000 loss = 7.840403
+Jackknife: leave wc2.0_bio_2.5m_16 out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1211760728, used 1514536872, increment 5206704
+species wc2.0_bio_2.5m_16: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1210712152, used 1515585448, increment 1048576
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1210712152, used 1515585448, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1210712152, used 1515585448, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1210712152, used 1515585448, increment 0
+Initial loss: 9.17626639164243
+180: time = 0.070000 loss = 8.061537
+Jackknife: leave wc2.0_bio_2.5m_17 out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1206329048, used 1519968552, increment 4383104
+species wc2.0_bio_2.5m_17: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1205623944, used 1520673656, increment 705104
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1205623944, used 1520673656, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1205623944, used 1520673656, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1205623944, used 1520673656, increment 0
+Initial loss: 9.17626639164243
+120: time = 0.048000 loss = 7.885427
+Jackknife: leave wc2.0_bio_2.5m_5 out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1200888288, used 1525409312, increment 4735656
+species wc2.0_bio_2.5m_5: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1200810952, used 1525486648, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1200733616, used 1525563984, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1200733616, used 1525563984, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1200733616, used 1525563984, increment 0
+Initial loss: 9.17626639164243
+100: time = 0.042000 loss = 7.859130
+Jackknife: leave wc2.0_bio_2.5m_6 out
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1195533944, used 1530763656, increment 5199672
+species wc2.0_bio_2.5m_6: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1195456608, used 1530840992, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1195379272, used 1530918328, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1195379272, used 1530918328, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1195379272, used 1530918328, increment 0
+Initial loss: 9.17626639164243
+160: time = 0.062000 loss = 8.097934
+Jackknife: only IPCCconcert
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1195094976, used 1531202624, increment 284296
+species IPCCconcert: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1195017640, used 1531279960, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 1048576
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.025000 loss = 9.036265
+Res.gain: 0.14000099785411102
+Jackknife: only alt
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+species alt: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+Initial loss: 9.17626639164243
+20: time = 0.008000 loss = 9.176266
+Res.gain: 0.0
+Jackknife: only current_2.5arcmin_PETDriestQuarter
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+species current_2.5arcmin_PETDriestQuarter: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.027000 loss = 8.768656
+Res.gain: 0.4076105441390556
+Jackknife: only current_2.5arcmin_PETWettestQuarter
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+species current_2.5arcmin_PETWettestQuarter: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1193969064, used 1532328536, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 971240
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+Initial loss: 9.17626639164243
+80: time = 0.025000 loss = 9.127091
+Res.gain: 0.04917517685995598
+Jackknife: only current_2.5arcmin_climaticMoistureIndex
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+species current_2.5arcmin_climaticMoistureIndex: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.024000 loss = 9.175664
+Res.gain: 6.019346023702354E-4
+Jackknife: only wc2.0_bio_2.5m_1
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+species wc2.0_bio_2.5m_1: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1192997824, used 1533299776, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.030000 loss = 9.152719
+Res.gain: 0.023547666996863725
+Jackknife: only wc2.0_bio_2.5m_12
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1192920488, used 1533377112, increment 77336
+species wc2.0_bio_2.5m_12: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1192843152, used 1533454448, increment 77336
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1192765816, used 1533531784, increment 77336
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1192765816, used 1533531784, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1192765816, used 1533531784, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.023000 loss = 9.140396
+Res.gain: 0.03587077606689526
+Jackknife: only wc2.0_bio_2.5m_16
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 1048576
+species wc2.0_bio_2.5m_16: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.023000 loss = 8.968693
+Res.gain: 0.20757289871532159
+Jackknife: only wc2.0_bio_2.5m_17
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+species wc2.0_bio_2.5m_17: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+Initial loss: 9.17626639164243
+60: time = 0.024000 loss = 9.171722
+Res.gain: 0.004544213600413016
+Jackknife: only wc2.0_bio_2.5m_5
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+species wc2.0_bio_2.5m_5: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1191717240, used 1534580360, increment 0
+Initial loss: 9.17626639164243
+20: time = 0.007000 loss = 9.176266
+Res.gain: 0.0
+Jackknife: only wc2.0_bio_2.5m_6
+Making features
+makeFeatures: max memory 8388608000, total allocated 2726297600, free 1190900672, used 1535396928, increment 816568
+species wc2.0_bio_2.5m_6: 
+Regularization values: linear/quadratic/product: 0.800, categorical: 0.500, threshold: 1.900, hinge: 0.500
+10 samples
+Density: max memory 8388608000, total allocated 2726297600, free 1190900672, used 1535396928, increment 0
+linearPredictor: max memory 8388608000, total allocated 2726297600, free 1190900672, used 1535396928, increment 0
+FeaturedSpace: max memory 8388608000, total allocated 2726297600, free 1190900672, used 1535396928, increment 0
+Sequential: max memory 8388608000, total allocated 2726297600, free 1190900672, used 1535396928, increment 0
+Initial loss: 9.17626639164243
+Time since start: 2.039
+80: time = 0.022000 loss = 8.655543
+Res.gain: 0.5207237723678535
+Ending
