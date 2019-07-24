@@ -1,3 +1,5 @@
+## ericas original code she gave lauren before lauren changed everything and destroyed it (: ##
+
 # install_github(repo = "liamrevell/phytools")
 library(phytools)
 library(mapdata)

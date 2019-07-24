@@ -95,7 +95,7 @@ writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_lenient"
 # FOR MICROHABITAT - ARB -
 #creating the grid to put the polygons in
 gridMA <- raster(extent(ArbPolyAll))
-res(gridMA) <- 0.275
+res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(ArbPolyAll)
 dry.gridMAA <- raster::intersect(gridMA, ArbPolyAll)
 proj4string(dry.gridMAA) <- proj4string(ArbPolyAll)
@@ -110,7 +110,7 @@ writeOGR(ArbPoints, "./Analysis_Scripts/Chapter3/Points/Arb_Points_lenient", lay
 # FOR MICROHABITAT - TERR 
 #creating the grid to put the polygons in
 gridMT <- raster(extent(TerrPolyAll))
-res(gridMT) <- 0.275
+res(gridMT) <- 0.360
 proj4string(gridMT) <- proj4string(TerrPolyAll)
 dry.gridMTT <- raster::intersect(gridMT, TerrPolyAll)
 proj4string(dry.gridMTT) <- proj4string(TerrPolyAll)
@@ -125,58 +125,62 @@ writeOGR(TerrPoints, "./Analysis_Scripts/Chapter3/Points/Terr_Points_lenient", l
 # FOR MICROHABITAT - AQUA 
 #creating the grid to put the polygons in
 gridMAQ <- raster(extent(AquaPolyAll))
-res(gridMAQ) <- 2.5
+res(gridMAQ) <- 0.360
 proj4string(gridMAQ) <- proj4string(AquaPolyAll)
-gridpolygonMAQ <- rasterToPolygons(gridMAQ)
-dry.gridMAQ <- raster::intersect(AquaPolyAll, gridpolygonMAQ)
-MAQ <- gCentroid(dry.gridMAQ, byid=T)
-MAQDF <- as.data.frame(MAQ)
-coords <- MAQ@coords
-AquaPoints <- SpatialPointsDataFrame(coords = coords, data = MAQDF, coords.nrs = numeric(0),
+dry.gridMAQ <- raster::intersect(gridMAQ, AquaPolyAll)
+proj4string(dry.gridMAQ) <- proj4string(AquaPolyAll)
+eek <- rasterToPoints(dry.gridMAQ, spatial=T, progress="text")
+ekek <- raster::intersect(eek, AquaPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+AquaPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(AquaPoints, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_lenient", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(AquaPoints, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - CAVE 
 #creating the grid to put the polygons in
 gridMC <- raster(extent(CavePolyAll))
-res(gridMC) <- 2.5
+res(gridMC) <- 0.360
 proj4string(gridMC) <- proj4string(CavePolyAll)
-gridpolygonMC <- rasterToPolygons(gridMC)
-dry.gridMC <- raster::intersect(CavePolyAll, gridpolygonMC)
-MC <- gCentroid(dry.gridMC, byid=T)
-MCDF <- as.data.frame(MC)
-coords <- MC@coords
-CavePoints <- SpatialPointsDataFrame(coords = coords, data = MCDF, coords.nrs = numeric(0),
+dry.gridMC <- raster::intersect(gridMC, CavePolyAll)
+proj4string(dry.gridMC) <- proj4string(CavePolyAll)
+eek <- rasterToPoints(dry.gridMC, spatial=T, progress="text")
+ekek <- raster::intersect(eek, CavePolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+CavePoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(CavePoints, "./Analysis_Scripts/Chapter3/Points/Cave_Points_lenient", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(CavePoints, "./Analysis_Scripts/Chapter3/Points/Cave_Points_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 # FOR MICROHABITAT - SAX -
 #creating the grid to put the polygons in
 gridMS <- raster(extent(SaxPolyAll))
-res(gridMS) <- 2.5
+res(gridMS) <- 0.360
 proj4string(gridMS) <- proj4string(SaxPolyAll)
-gridpolygonMS <- rasterToPolygons(gridMS)
-dry.gridMS <- raster::intersect(SaxPolyAll, gridpolygonMS)
-MS <- gCentroid(dry.gridMS, byid=T)
-MSDF <- as.data.frame(MS)
-coords <- MS@coords
-SaxPoints <- SpatialPointsDataFrame(coords = coords, data = MSDF, coords.nrs = numeric(0),
+dry.gridMS <- raster::intersect(gridMS, SaxPolyAll)
+proj4string(dry.gridMS) <- proj4string(SaxPolyAll)
+eek <- rasterToPoints(dry.gridMS, spatial=T, progress="text")
+ekek <- raster::intersect(eek, SaxPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+SaxPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                     proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(SaxPoints, "./Analysis_Scripts/Chapter3/Points/Sax_Points_lenient", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(SaxPoints, "./Analysis_Scripts/Chapter3/Points/Sax_Points_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 # FOR MICROHABITAT - FOSS - 11 points
 #creating the grid to put the polygons in
 gridMF <- raster(extent(FossPolyAll))
-res(gridMF) <- 2.5
+res(gridMF) <- 0.360
 proj4string(gridMF) <- proj4string(FossPolyAll)
-gridpolygonMF <- rasterToPolygons(gridMF)
-dry.gridMF <- raster::intersect(FossPolyAll, gridpolygonMF)
-MF <- gCentroid(dry.gridMF, byid=T)
-MFDF <- as.data.frame(MF)
-coords <- MF@coords
-FossPoints <- SpatialPointsDataFrame(coords = coords, data = MFDF, coords.nrs = numeric(0),
+dry.gridMF <- raster::intersect(gridMF, FossPolyAll)
+proj4string(dry.gridMF) <- proj4string(FossPolyAll)
+eek <- rasterToPoints(dry.gridMF, spatial=T, progress="text")
+ekek <- raster::intersect(eek, FossPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+FossPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(FossPoints, "./Analysis_Scripts/Chapter3/Points/Foss_Points_lenient", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(FossPoints, "./Analysis_Scripts/Chapter3/Points/Foss_Points_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 
 
@@ -242,7 +246,7 @@ writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_M1", lay
 # FOR MICROHABITAT - ARB - 
 #creating the grid to put the polygons in
 gridMA <- raster(extent(ArbPolyAll))
-res(gridMA) <- 0.350
+res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(ArbPolyAll)
 dry.gridMAA <- raster::intersect(gridMA, ArbPolyAll)
 proj4string(dry.gridMAA) <- proj4string(ArbPolyAll)
@@ -257,7 +261,7 @@ writeOGR(ArbPoints, "./Analysis_Scripts/Chapter3/Points/Arb_Points_M1", layer= "
 # FOR MICROHABITAT - TERR - 
 #creating the grid to put the polygons in
 gridMT <- raster(extent(TerrPolyAll))
-res(gridMT) <- 0.350
+res(gridMT) <- 0.360
 proj4string(gridMT) <- proj4string(TerrPolyAll)
 dry.gridMT <- raster::intersect(gridMT, TerrPolyAll)
 proj4string(dry.gridMT) <- proj4string(TerrPolyAll)
@@ -272,58 +276,62 @@ writeOGR(TerrPoints, "./Analysis_Scripts/Chapter3/Points/Terr_Points_M1", layer=
 # FOR MICROHABITAT - AQUA -
 #creating the grid to put the polygons in
 gridMAQ <- raster(extent(AquaPolyAll))
-res(gridMAQ) <- 2.5
+res(gridMAQ) <- 0.360
 proj4string(gridMAQ) <- proj4string(AquaPolyAll)
-gridpolygonMAQ <- rasterToPolygons(gridMAQ)
-dry.gridMAQ <- raster::intersect(AquaPolyAll, gridpolygonMAQ)
-MAQ <- gCentroid(dry.gridMAQ, byid=T)
-MAQDF <- as.data.frame(MAQ)
-coords <- MAQ@coords
-AquaPoints <- SpatialPointsDataFrame(coords = coords, data = MAQDF, coords.nrs = numeric(0),
+dry.gridMAQ <- raster::intersect(gridMAQ, AquaPolyAll)
+proj4string(dry.gridMAQ) <- proj4string(AquaPolyAll)
+eek <- rasterToPoints(dry.gridMAQ, spatial=T, progress="text")
+ekek <- raster::intersect(eek, AquaPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+AquaPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(AquaPoints, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_M1", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(AquaPoints, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_M1", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - CAVE
 #creating the grid to put the polygons in
 gridMC <- raster(extent(CavePolyAll))
-res(gridMC) <- 2.5
+res(gridMC) <- 0.360
 proj4string(gridMC) <- proj4string(CavePolyAll)
-gridpolygonMC <- rasterToPolygons(gridMC)
-dry.gridMC <- raster::intersect(CavePolyAll, gridpolygonMC)
-MC <- gCentroid(dry.gridMC, byid=T)
-MCDF <- as.data.frame(MC)
-coords <- MC@coords
-CavePoints <- SpatialPointsDataFrame(coords = coords, data = MCDF, coords.nrs = numeric(0),
+dry.gridMC <- raster::intersect(gridMC, CavePolyAll)
+proj4string(dry.gridMC) <- proj4string(CavePolyAll)
+eek <- rasterToPoints(dry.gridMC, spatial=T, progress="text")
+ekek <- raster::intersect(eek, CavePolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+CavePoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(CavePoints, "./Analysis_Scripts/Chapter3/Points/Cave_Points_M1", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(CavePoints, "./Analysis_Scripts/Chapter3/Points/Cave_Points_M1", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - SAX -
 #creating the grid to put the polygons in
 gridMS <- raster(extent(SaxPolyAll))
-res(gridMS) <- 2.5
+res(gridMS) <- 0.360
 proj4string(gridMS) <- proj4string(SaxPolyAll)
-gridpolygonMS <- rasterToPolygons(gridMS)
-dry.gridMS <- raster::intersect(SaxPolyAll, gridpolygonMS)
-MS <- gCentroid(dry.gridMS, byid=T)
-MSDF <- as.data.frame(MS)
-coords <- MS@coords
-SaxPoints <- SpatialPointsDataFrame(coords = coords, data = MSDF, coords.nrs = numeric(0),
+dry.gridMS <- raster::intersect(gridMS, SaxPolyAll)
+proj4string(dry.gridMS) <- proj4string(SaxPolyAll)
+eek <- rasterToPoints(dry.gridMS, spatial=T, progress="text")
+ekek <- raster::intersect(eek, SaxPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+SaxPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                     proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(SaxPoints, "./Analysis_Scripts/Chapter3/Points/Sax_Points_M1", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(SaxPoints, "./Analysis_Scripts/Chapter3/Points/Sax_Points_M1", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - FOSS -
 #creating the grid to put the polygons in
 gridMF <- raster(extent(FossPolyAll))
-res(gridMF) <- 2.5
+res(gridMF) <- 0.360
 proj4string(gridMF) <- proj4string(FossPolyAll)
-gridpolygonMF <- rasterToPolygons(gridMF)
-dry.gridMF <- raster::intersect(FossPolyAll, gridpolygonMF)
-MF <- gCentroid(dry.gridMF, byid=T)
-MFDF <- as.data.frame(MF)
-coords <- MF@coords
-FossPoints <- SpatialPointsDataFrame(coords = coords, data = MFDF, coords.nrs = numeric(0),
+dry.gridMF <- raster::intersect(gridMF, FossPolyAll)
+proj4string(dry.gridMF) <- proj4string(FossPolyAll)
+eek <- rasterToPoints(dry.gridMF, spatial=T, progress="text")
+ekek <- raster::intersect(eek, FossPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+FossPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(FossPoints, "./Analysis_Scripts/Chapter3/Points/Foss_Points_M1", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(FossPoints, "./Analysis_Scripts/Chapter3/Points/Foss_Points_M1", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 
 ##########################################################################################
@@ -391,7 +399,7 @@ writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_M2", lay
 # FOR MICROHABITAT - ARB -
 #creating the grid to put the polygons in
 gridMA <- raster(extent(ArbPolyAll))
-res(gridMA) <- 0.375
+res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(ArbPolyAll)
 dry.gridMAA <- raster::intersect(gridMA, ArbPolyAll)
 proj4string(dry.gridMAA) <- proj4string(ArbPolyAll)
@@ -406,7 +414,7 @@ writeOGR(ArbPoints, "./Analysis_Scripts/Chapter3/Points/Arb_Points_M2", layer= "
 # FOR MICROHABITAT - TERR -
 #creating the grid to put the polygons in
 gridMT <- raster(extent(TerrPolyAll))
-res(gridMT) <- 0.375
+res(gridMT) <- 0.360
 proj4string(gridMT) <- proj4string(TerrPolyAll)
 dry.gridMT <- raster::intersect(gridMT, TerrPolyAll)
 proj4string(dry.gridMT) <- proj4string(TerrPolyAll)
@@ -421,58 +429,62 @@ writeOGR(TerrPoints, "./Analysis_Scripts/Chapter3/Points/Terr_Points_M2", layer=
 # FOR MICROHABITAT - AQUA -
 #creating the grid to put the polygons in
 gridMAQ <- raster(extent(AquaPolyAll))
-res(gridMAQ) <- 2.5
+res(gridMAQ) <- 0.360
 proj4string(gridMAQ) <- proj4string(AquaPolyAll)
-gridpolygonMAQ <- rasterToPolygons(gridMAQ)
-dry.gridMAQ <- raster::intersect(AquaPolyAll, gridpolygonMAQ)
-MAQ <- gCentroid(dry.gridMAQ, byid=T)
-MAQDF <- as.data.frame(MAQ)
-coords <- MAQ@coords
-AquaPoints <- SpatialPointsDataFrame(coords = coords, data = MAQDF, coords.nrs = numeric(0),
+dry.gridMAQ <- raster::intersect(gridMAQ, AquaPolyAll)
+proj4string(dry.gridMAQ) <- proj4string(AquaPolyAll)
+eek <- rasterToPoints(dry.gridMAQ, spatial=T, progress="text")
+ekek <- raster::intersect(eek, AquaPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+AquaPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(AquaPoints, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_M2", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(AquaPoints, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_M2", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - CAVE -
 #creating the grid to put the polygons in
 gridMC <- raster(extent(CavePolyAll))
-res(gridMC) <- 2.5
+res(gridMC) <- 0.360
 proj4string(gridMC) <- proj4string(CavePolyAll)
-gridpolygonMC <- rasterToPolygons(gridMC)
-dry.gridMC <- raster::intersect(CavePolyAll, gridpolygonMC)
-MC <- gCentroid(dry.gridMC, byid=T)
-MCDF <- as.data.frame(MC)
-coords <- MC@coords
-CavePoints <- SpatialPointsDataFrame(coords = coords, data = MCDF, coords.nrs = numeric(0),
+dry.gridMC <- raster::intersect(gridMC, CavePolyAll)
+proj4string(dry.gridMC) <- proj4string(CavePolyAll)
+eek <- rasterToPoints(dry.gridMC, spatial=T, progress="text")
+ekek <- raster::intersect(eek, CavePolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+CavePoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(CavePoints, "./Analysis_Scripts/Chapter3/Points/Cave_Points_M2", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(CavePoints, "./Analysis_Scripts/Chapter3/Points/Cave_Points_M2", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - SAX -
 #creating the grid to put the polygons in
 gridMS <- raster(extent(SaxPolyAll))
-res(gridMS) <- 2.5
+res(gridMS) <- 0.360
 proj4string(gridMS) <- proj4string(SaxPolyAll)
-gridpolygonMS <- rasterToPolygons(gridMS)
-dry.gridMS <- raster::intersect(SaxPolyAll, gridpolygonMS)
-MS <- gCentroid(dry.gridMS, byid=T)
-MSDF <- as.data.frame(MS)
-coords <- MS@coords
-SaxPoints <- SpatialPointsDataFrame(coords = coords, data = MSDF, coords.nrs = numeric(0),
+dry.gridMS <- raster::intersect(gridMS, SaxPolyAll)
+proj4string(dry.gridMS) <- proj4string(SaxPolyAll)
+eek <- rasterToPoints(dry.gridMS, spatial=T, progress="text")
+ekek <- raster::intersect(eek, SaxPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+SaxPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                     proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(SaxPoints, "./Analysis_Scripts/Chapter3/Points/Sax_Points_M2", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(SaxPoints, "./Analysis_Scripts/Chapter3/Points/Sax_Points_M2", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR MICROHABITAT - FOSS 
 #creating the grid to put the polygons in
 gridMF <- raster(extent(FossPolyAll))
-res(gridMF) <- 2.5
+res(gridMF) <- 0.360
 proj4string(gridMF) <- proj4string(FossPolyAll)
-gridpolygonMF <- rasterToPolygons(gridMF)
-dry.gridMF <- raster::intersect(FossPolyAll, gridpolygonMF)
-MF <- gCentroid(dry.gridMF, byid=T)
-MFDF <- as.data.frame(MF)
-coords <- MF@coords
-FossPoints <- SpatialPointsDataFrame(coords = coords, data = MFDF, coords.nrs = numeric(0),
+dry.gridMF <- raster::intersect(gridMF, FossPolyAll)
+proj4string(dry.gridMF) <- proj4string(FossPolyAll)
+eek <- rasterToPoints(dry.gridMF, spatial=T, progress="text")
+ekek <- raster::intersect(eek, FossPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+FossPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(FossPoints, "./Analysis_Scripts/Chapter3/Points/Foss_Points_M2", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(FossPoints, "./Analysis_Scripts/Chapter3/Points/Foss_Points_M2", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 
 
