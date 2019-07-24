@@ -461,7 +461,7 @@ wc19 <- raster::stack('Analysis_Scripts/Chapter3/Climate Data/Salamander Range/W
 # precipitation of coldest quarter
 ###########################
 
-# MAKE JPEG FILES FOR VISUALS #
+# MAKE JPEG FILES FOR VISUALS # we dont really need these
 ###########################
 jpeg(file = "./Salamander Climate Plots/WC201.jpg")
 plot(wc01, col = topo.colors(255))
