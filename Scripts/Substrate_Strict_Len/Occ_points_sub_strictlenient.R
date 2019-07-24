@@ -78,7 +78,7 @@ writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_strict
 # FOR SUBSTRATE - DIRT 
 #creating the grid to put the polygons in
 gridSD <- raster(extent(DirtPolyAll))
-res(gridSD) <- 0.375
+res(gridSD) <- 0.360
 proj4string(gridSD) <- proj4string(DirtPolyAll)
 dry.gridSD <- raster::intersect(gridSD, DirtPolyAll)
 proj4string(dry.gridSD) <- proj4string(DirtPolyAll)
@@ -94,7 +94,7 @@ writeOGR(DirtPoints, "./Analysis_Scripts/Chapter3/Points/Dirt_Points_strict", la
 # FOR SUBSTRATE - VEG -
 #creating the grid to put the polygons in
 gridSV <- raster(extent(VegPolyAll))
-res(gridSV) <- 0.375
+res(gridSV) <- 0.360
 proj4string(gridSV) <- proj4string(VegPolyAll)
 dry.gridSV <- raster::intersect(gridSV, VegPolyAll)
 proj4string(dry.gridSV) <- proj4string(VegPolyAll)
@@ -109,28 +109,30 @@ writeOGR(VegPoints, "./Analysis_Scripts/Chapter3/Points/Veg_Points_strict", laye
 # FOR SUBSTRATE - ROCK - 
 #creating the grid to put the polygons in
 gridSR <- raster(extent(RockPolyAll))
-res(gridSR) <- 2.5
+res(gridSR) <- 0.360
 proj4string(gridSR) <- proj4string(RockPolyAll)
-gridpolygonSR <- rasterToPolygons(gridSR)
-dry.gridSR <- raster::intersect(RockPolyAll, gridpolygonSR)
-SR <- gCentroid(dry.gridSR, byid=T)
-SRDF <- as.data.frame(SR)
-coords <- SR@coords
-RockPoints <- SpatialPointsDataFrame(coords = coords, data = SRDF, coords.nrs = numeric(0),
+dry.gridSR <- raster::intersect(gridSR, RockPolyAll)
+proj4string(dry.gridSR) <- proj4string(RockPolyAll)
+eek <- rasterToPoints(dry.gridSR, spatial=T, progress="text")
+ekek <- raster::intersect(eek, RockPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+RockPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(RockPoints, "./Analysis_Scripts/Chapter3/Points/Rock_Points_strict", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR SUBSTRATE - WATER -
 #creating the grid to put the polygons in
 gridSW <- raster(extent(WaterPolyAll))
-res(gridSW) <- 2.5
+res(gridSW) <- 0.360
 proj4string(gridSW) <- proj4string(WaterPolyAll)
-gridpolygonSW <- rasterToPolygons(gridSW)
-dry.gridSW <- raster::intersect(WaterPolyAll, gridpolygonSW)
-SW <- gCentroid(dry.gridSW, byid=T)
-SWDF <- as.data.frame(SW)
-coords <- SW@coords
-WaterPoints <- SpatialPointsDataFrame(coords = coords, data = SWDF, coords.nrs = numeric(0),
+dry.gridSW <- raster::intersect(gridSW, WaterPolyAll)
+proj4string(dry.gridSW) <- proj4string(WaterPolyAll)
+eek <- rasterToPoints(dry.gridSW, spatial=T, progress="text")
+ekek <- raster::intersect(eek, WaterPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+WaterPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(WaterPoints, "./Analysis_Scripts/Chapter3/Points/Water_Points_strict", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
@@ -184,57 +186,61 @@ writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_lenien
 # FOR SUBSTRATE - DIRT -
 #creating the grid to put the polygons in
 gridSD <- raster(extent(DirtPolyAll))
-res(gridSD) <- 2.5
+res(gridSD) <- 0.360
 proj4string(gridSD) <- proj4string(DirtPolyAll)
-gridpolygonSD <- rasterToPolygons(gridSD)
-dry.gridSD <- raster::intersect(DirtPolyAll, gridpolygonSD)
-SD <- gCentroid(dry.gridSD, byid=T)
-SDDF <- as.data.frame(SD)
-coords <- SD@coords
-DirtPoints <- SpatialPointsDataFrame(coords = coords, data = SDDF, coords.nrs = numeric(0),
+dry.gridSD <- raster::intersect(gridSD, DirtPolyAll)
+proj4string(dry.gridSD) <- proj4string(DirtPolyAll)
+eek <- rasterToPoints(dry.gridSD, spatial=T, progress="text")
+ekek <- raster::intersect(eek, DirtPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+DirtPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(DirtPoints, "./Analysis_Scripts/Chapter3/Points/Dirt_Points_lenient", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(DirtPoints, "./Analysis_Scripts/Chapter3/Points/Dirt_Points_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 
 # FOR SUBSTRATE - VEG - 
 #creating the grid to put the polygons in
 gridSV <- raster(extent(VegPolyAll))
-res(gridSV) <- 2.5
+res(gridSV) <- 0.360
 proj4string(gridSV) <- proj4string(VegPolyAll)
-gridpolygonSV <- rasterToPolygons(gridSV)
-dry.gridSV <- raster::intersect(VegPolyAll, gridpolygonSV)
-SV <- gCentroid(dry.gridSV, byid=T)
-SVDF <- as.data.frame(SV)
-coords <- SV@coords
-VegPoints <- SpatialPointsDataFrame(coords = coords, data = SVDF, coords.nrs = numeric(0),
+dry.gridSV <- raster::intersect(gridSV, VegPolyAll)
+proj4string(dry.gridSV) <- proj4string(VegPolyAll)
+eek <- rasterToPoints(dry.gridSV, spatial=T, progress="text")
+ekek <- raster::intersect(eek, VegPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+VegPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                     proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
-writeOGR(VegPoints, "./Analysis_Scripts/Chapter3/Points/Veg_Points_lenient", layer= "chull", driver = "ESRI Shapefile")
+writeOGR(VegPoints, "./Analysis_Scripts/Chapter3/Points/Veg_Points_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR SUBSTRATE - ROCK 
 #creating the grid to put the polygons in
 gridSR <- raster(extent(RockPolyAll))
-res(gridSR) <- 2.5
+res(gridSR) <- 0.360
 proj4string(gridSR) <- proj4string(RockPolyAll)
-gridpolygonSR <- rasterToPolygons(gridSR)
-dry.gridSR <- raster::intersect(RockPolyAll, gridpolygonSR)
-SR <- gCentroid(dry.gridSR, byid=T)
-SRDF <- as.data.frame(SR)
-coords <- SR@coords
-RockPoints <- SpatialPointsDataFrame(coords = coords, data = SRDF, coords.nrs = numeric(0),
+dry.gridSR <- raster::intersect(gridSR, RockPolyAll)
+proj4string(dry.gridSR) <- proj4string(RockPolyAll)
+eek <- rasterToPoints(dry.gridSR, spatial=T, progress="text")
+ekek <- raster::intersect(eek, RockPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+RockPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(RockPoints, "./Analysis_Scripts/Chapter3/Points/Rock_Points_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 # FOR SUBSTRATE - WATER -
 #creating the grid to put the polygons in
 gridSW <- raster(extent(WaterPolyAll))
-res(gridSW) <- 2.5
+res(gridSW) <- 0.360
 proj4string(gridSW) <- proj4string(WaterPolyAll)
-gridpolygonSW <- rasterToPolygons(gridSW)
-dry.gridSW <- raster::intersect(WaterPolyAll, gridpolygonSW)
-SW <- gCentroid(dry.gridSW, byid=T)
-SWDF <- as.data.frame(SW)
-coords <- SW@coords
-WaterPoints <- SpatialPointsDataFrame(coords = coords, data = SWDF, coords.nrs = numeric(0),
+dry.gridSW <- raster::intersect(gridSW, WaterPolyAll)
+proj4string(dry.gridSW) <- proj4string(WaterPolyAll)
+eek <- rasterToPoints(dry.gridSW, spatial=T, progress="text")
+ekek <- raster::intersect(eek, WaterPolyAll)
+coords <- ekek@coords
+maybe <- data.frame(ekek)
+WaterPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                       proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(WaterPoints, "./Analysis_Scripts/Chapter3/Points/Water_Points_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
