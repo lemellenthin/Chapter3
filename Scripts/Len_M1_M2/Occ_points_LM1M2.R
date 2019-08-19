@@ -41,8 +41,8 @@ Arb <- Class1[Class1$Lenient == "A", ]
 Arb$Species #72
 ArbPoly <- Polygons[match(Arb$Species,Polygons$binomial), ]  
 ArbPolyAll <- aggregate(ArbPoly, dissolve=T)
-ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite=T)
+#ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite=T)
 
 ### prune terrestrial polys - T ###
 Terr <- Class1[Class1$Lenient == "T", ]
@@ -50,8 +50,8 @@ Terr$Species #134
 TerrPolygon <- Polygons[match(Terr$Species, Polygons$binomial), ] 
 TerrPolybuffer <- rgeos::gBuffer(TerrPolygon, width = 0, byid=F)
 TerrPolyAll <- aggregate(TerrPolybuffer, dissolve=T)
-TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite=T)
+#TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite=T)
 
 ### prune aquatic polys - W##
 Aqua <- Class1[Class1$Lenient == "W", ]
@@ -59,16 +59,16 @@ Aqua$Species # 37
 AquaPoly <- Polygons[match(Aqua$Species, Polygons$binomial), ]
 AquaPolybuffer <- rgeos::gBuffer(AquaPoly, width = 0.0, byid=T)
 AquaPolyAll <- aggregate(AquaPolybuffer, dissolve=T)
-AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
+#AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
 ### prune cave polys - C##
 Cave <- Class1[Class1$Lenient == "C", ]
 Cave$Species # 13
 CavePoly <- Polygons[match(Cave$Species, Polygons$binomial), ]
 CavePolyAll <- aggregate(CavePoly, dissolve=T)
-CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite=T)
+#CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_lenient", layer= "chull", driver = "ESRI Shapefile", overwrite=T)
 
 ### prune saxicolous polys - S##
 Sax <- Class1[Class1$Lenient == "S", ]
@@ -76,16 +76,16 @@ Sax$Species # 24
 SaxPoly <- Polygons[match(Sax$Species, Polygons$binomial), ]
 SaxPolybuffer <- rgeos::gBuffer(SaxPoly, width = 0, byid=F)
 SaxPolyAll <- aggregate(SaxPolybuffer, dissolve=T)
-SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
+#SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 ### prune fossorial polys - F##
 Foss <- Class1[Class1$Lenient == "F", ]
 Foss$Species  # 30
 FossPoly <- Polygons[match(Foss$Species, Polygons$binomial), ]
 FossPolyAll <- aggregate(FossPoly, dissolve=T)
-FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite=T)
+#FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite=T)
 
 #
 ##############
@@ -194,8 +194,8 @@ Arb <- Class1[Class1$McE1 == "A", ]
 Arb$Species #62
 ArbPoly <- Polygons[match(Arb$Species,Polygons$binomial), ]  
 ArbPolyAll <- aggregate(ArbPoly, dissolve=T)
-ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_M1", layer= "chull", driver = "ESRI Shapefile")
+#ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_M1", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune terrestrial polys - T ###
 Terr <- Class1[Class1$McE1 == "T", ]
@@ -203,47 +203,47 @@ Terr$Species #195
 TerrPolygon <- Polygons[match(Terr$Species, Polygons$binomial), ] 
 TerrPolybuffer <- rgeos::gBuffer(TerrPolygon, width = 0, byid=F)
 TerrPolyAll <- aggregate(TerrPolybuffer, dissolve=T)
-TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_M1", layer= "chull", driver = "ESRI Shapefile")
+#TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_M1", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune aquatic polys - W##
 Aqua <- Class1[Class1$McE1 == "W", ]
 Aqua$Species # 32
 AquaPoly <- Polygons[match(Aqua$Species, Polygons$binomial), ]
 AquaPolyAll <- aggregate(AquaPoly, dissolve=T)
-AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_M1", layer= "chull", driver = "ESRI Shapefile")
+#AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_M1", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune cave polys - C##
 Cave <- Class1[Class1$McE1 == "C", ]
 Cave$Species # 11
 CavePoly <- Polygons[match(Cave$Species, Polygons$binomial), ]
 CavePolyAll <- aggregate(CavePoly, dissolve=T)
-CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_M1", layer= "chull", driver = "ESRI Shapefile")
+#CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_M1", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune saxicolous polys - S##
 Sax <- Class1[Class1$McE1 == "S", ]
 Sax$Species # 7
 SaxPoly <- Polygons[match(Sax$Species, Polygons$binomial), ]
 SaxPolyAll <- aggregate(SaxPoly, dissolve=T)
-SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_M1", layer= "chull", driver = "ESRI Shapefile")
+#SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_M1", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune fossorial polys - F##
 Foss <- Class1[Class1$McE1 == "F", ]
 Foss$Species  # 3
 FossPoly <- Polygons[match(Foss$Species, Polygons$binomial), ]
 FossPolyAll <- aggregate(FossPoly, dissolve=T)
-FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_M1", layer= "chull", driver = "ESRI Shapefile")
+#FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_M1", layer= "chull", driver = "ESRI Shapefile")
 
 #
 ##############
 
 # make points and point files with all of the PolyAll files
 
-# FOR MICROHABITAT - ARB - 
+# FOR MICROHABITAT - ARB 
 #creating the grid to put the polygons in
 gridMA <- raster(extent(ArbPolyAll))
 res(gridMA) <- 0.360
@@ -258,7 +258,7 @@ ArbPoints <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = 
                                     proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(ArbPoints, "./Analysis_Scripts/Chapter3/Points/Arb_Points_M1", layer= "chull", driver = "ESRI Shapefile", overwrite_layer = T)
 
-# FOR MICROHABITAT - TERR - 
+# FOR MICROHABITAT - TERR 
 #creating the grid to put the polygons in
 gridMT <- raster(extent(TerrPolyAll))
 res(gridMT) <- 0.360
@@ -346,8 +346,8 @@ Arb <- Class1[Class1$McE2 == "A", ]
 Arb$Species #147
 ArbPoly <- Polygons[match(Arb$Species,Polygons$binomial), ]  
 ArbPolyAll <- aggregate(ArbPoly, dissolve=T)
-ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_M2", layer= "chull", driver = "ESRI Shapefile")
+#ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_M2", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune terrestrial polys - T ###
 Terr <- Class1[Class1$McE2 == "T", ]
@@ -355,24 +355,24 @@ Terr$Species #88
 TerrPolygon <- Polygons[match(Terr$Species, Polygons$binomial), ] 
 TerrPolybufferr <- rgeos::gBuffer(TerrPolygon, width = 0, byid=F)
 TerrPolyAll <- aggregate(TerrPolybufferr, dissolve=T)
-TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_M2", layer= "chull", driver = "ESRI Shapefile")
+#TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_M2", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune aquatic polys - W##
 Aqua <- Class1[Class1$McE2 == "W", ]
 Aqua$Species # 29
 AquaPoly <- Polygons[match(Aqua$Species, Polygons$binomial), ]
 AquaPolyAll <- aggregate(AquaPoly, dissolve=T)
-AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_M2", layer= "chull", driver = "ESRI Shapefile")
+#AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_M2", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune cave polys - C##
 Cave <- Class1[Class1$McE2 == "C", ]
 Cave$Species # 11
 CavePoly <- Polygons[match(Cave$Species, Polygons$binomial), ]
 CavePolyAll <- aggregate(CavePoly, dissolve=T)
-CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_M2", layer= "chull", driver = "ESRI Shapefile")
+#CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_M2", layer= "chull", driver = "ESRI Shapefile")
 
 ### prune saxicolous polys - S##
 Sax <- Class1[Class1$McE2 == "S", ]
@@ -380,16 +380,16 @@ Sax$Species # 15
 SaxPoly <- Polygons[match(Sax$Species, Polygons$binomial), ]
 SaxPolybuffer <- rgeos::gBuffer(SaxPoly, width = 0, byid=F)
 SaxPolyAll <- aggregate(SaxPolybuffer, dissolve=T)
-SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_M2", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
+#SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_M2", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 ### prune fossorial polys - F##
 Foss <- Class1[Class1$McE2 == "F", ]
 Foss$Species  # 20
 FossPoly <- Polygons[match(Foss$Species, Polygons$binomial), ]
 FossPolyAll <- aggregate(FossPoly, dissolve=T)
-FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_M2", layer= "chull", driver = "ESRI Shapefile")
+#FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_M2", layer= "chull", driver = "ESRI Shapefile")
 
 #
 ##############

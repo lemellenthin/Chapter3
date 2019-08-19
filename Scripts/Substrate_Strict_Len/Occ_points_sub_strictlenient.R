@@ -43,32 +43,32 @@ Dirt$Species #189
 DirtPoly <- Polygons[match(Dirt$Species,Polygons$binomial), ]
 DirtPolyy <- rgeos::gBuffer(DirtPoly, width = 0, byid=F)
 DirtPolyAll <- aggregate(DirtPolyy, dissolve=T)
-DirtPolyAll.SP <- SpatialPolygonsDataFrame(DirtPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(DirtPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/DirtPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#DirtPolyAll.SP <- SpatialPolygonsDataFrame(DirtPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(DirtPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/DirtPoly_strict", layer= "chull", driver = "ESRI Shapefile")
 
 # prune veg
 Veg <- Class1[Class1$ArbVegStrict == "V", ]
 Veg$Species #71
 VegPoly <- Polygons[match(Veg$Species,Polygons$binomial), ]
 VegPolyAll <- aggregate(VegPoly, dissolve=T)
-VegPolyAll.SP <- SpatialPolygonsDataFrame(VegPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(VegPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/VegPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#VegPolyAll.SP <- SpatialPolygonsDataFrame(VegPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(VegPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/VegPoly_strict", layer= "chull", driver = "ESRI Shapefile")
 
 # prune rock
 Rock <- Class1[Class1$ArbVegStrict == "R", ]
 Rock$Species #18
 RockPoly <- Polygons[match(Rock$Species,Polygons$binomial), ]
 RockPolyAll <- aggregate(RockPoly, dissolve=T)
-RockPolyAll.SP <- SpatialPolygonsDataFrame(RockPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(RockPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/RockPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#RockPolyAll.SP <- SpatialPolygonsDataFrame(RockPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(RockPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/RockPoly_strict", layer= "chull", driver = "ESRI Shapefile")
 
 # prune water
 Water <- Class1[Class1$ArbVegStrict == "W", ]
 Water$Species #32
 WaterPoly <- Polygons[match(Water$Species,Polygons$binomial), ]
 WaterPolyAll <- aggregate(WaterPoly, dissolve=T)
-WaterPolyAll.SP <- SpatialPolygonsDataFrame(WaterPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#WaterPolyAll.SP <- SpatialPolygonsDataFrame(WaterPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_strict", layer= "chull", driver = "ESRI Shapefile")
 
 #
 ##################
@@ -150,16 +150,16 @@ Dirt$Species #143
 DirtPoly <- Polygons[match(Dirt$Species,Polygons$binomial), ]
 DirtPolyy <- rgeos::gBuffer(DirtPoly, width = 0, byid=F)
 DirtPolyAll <- aggregate(DirtPolyy, dissolve=T)
-DirtPolyAll.SP <- SpatialPolygonsDataFrame(DirtPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(DirtPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/DirtPoly_lenient", layer= "chull", driver = "ESRI Shapefile")
+#DirtPolyAll.SP <- SpatialPolygonsDataFrame(DirtPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(DirtPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/DirtPoly_lenient", layer= "chull", driver = "ESRI Shapefile")
 
 # prune veg
 Veg <- Class1[Class1$ArbVegLenient == "V", ]
 Veg$Species #95
 VegPoly <- Polygons[match(Veg$Species,Polygons$binomial), ]
 VegPolyAll <- aggregate(VegPoly, dissolve=T)
-VegPolyAll.SP <- SpatialPolygonsDataFrame(VegPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(VegPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/VegPoly_lenient", layer= "chull", driver = "ESRI Shapefile")
+#VegPolyAll.SP <- SpatialPolygonsDataFrame(VegPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(VegPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/VegPoly_lenient", layer= "chull", driver = "ESRI Shapefile")
 
 # prune rock
 Rock <- Class1[Class1$ArbVegLenient == "R", ]
@@ -167,16 +167,16 @@ Rock$Species #35
 RockPoly <- Polygons[match(Rock$Species,Polygons$binomial), ]
 RockPolybuffer <- rgeos::gBuffer(RockPoly, width = 0, byid=F)
 RockPolyAll <- aggregate(RockPolybuffer, dissolve=T)
-RockPolyAll.SP <- SpatialPolygonsDataFrame(RockPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(RockPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/RockPoly_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
+#RockPolyAll.SP <- SpatialPolygonsDataFrame(RockPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(RockPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/RockPoly_lenient", layer= "chull", driver = "ESRI Shapefile",overwrite_layer = T)
 
 # prune water
 Water <- Class1[Class1$ArbVegStrict == "W", ]
 Water$Species #32
 WaterPoly <- Polygons[match(Water$Species,Polygons$binomial), ]
 WaterPolyAll <- aggregate(WaterPoly, dissolve=T)
-WaterPolyAll.SP <- SpatialPolygonsDataFrame(WaterPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_lenient", layer= "chull", driver = "ESRI Shapefile")
+#WaterPolyAll.SP <- SpatialPolygonsDataFrame(WaterPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(WaterPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/WaterPoly_lenient", layer= "chull", driver = "ESRI Shapefile")
 
 #
 ##################
