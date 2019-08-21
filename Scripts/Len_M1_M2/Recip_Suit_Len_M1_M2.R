@@ -11,27 +11,27 @@
 
 # packages
 library(phyloclim); library(geosphere); library(raster)
-library(rgdal); library(rgeos)
+library(rgdal); library(rgeos); library(dismo)
 
 # load the maxent predictions
-ArbModL <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/ArbMod_prediction_lenient.grd")
-TerrModL <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/TerrMod_prediction_lenient.grd")
-AquaModL <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/AquaMod_prediction_lenient.grd")
-CaveModL <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/CaveMod_prediction_lenient.grd")
-FossModL <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/FossMod_prediction_lenient.grd")
-SaxModL <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/SaxMod_prediction_lenient.grd")
-ArbModM1 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/ArbMod_prediction_M1.grd")
-TerrModM1 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/TerrMod_prediction_M1.grd")
-AquaModM1 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/AquaMod_prediction_M1.grd")
-CaveModM1 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/CaveMod_prediction_M1.grd")
-FossModM1 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/FossMod_prediction_M1.grd")
-SaxModM1 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/SaxMod_prediction_M1.grd")
-ArbModM2 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/ArbMod_prediction_M2.grd")
-TerrModM2 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/TerrMod_prediction_M2.grd")
-AquaModM2 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/AquaMod_prediction_M2.grd")
-CaveModM2 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/CaveMod_prediction_M2.grd")
-FossModM2 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/FossMod_prediction_M2.grd")
-SaxModM2 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/SaxMod_prediction_M2.grd")
+ArbModL <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/ArbMod_prediction_lenient.grd")
+TerrModL <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/TerrMod_prediction_lenient.grd")
+AquaModL <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/AquaMod_prediction_lenient.grd")
+CaveModL <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/CaveMod_prediction_lenient.grd")
+FossModL <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/FossMod_prediction_lenient.grd")
+SaxModL <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/SaxMod_prediction_lenient.grd")
+ArbModM1 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/ArbMod_prediction_M1.grd")
+TerrModM1 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/TerrMod_prediction_M1.grd")
+AquaModM1 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/AquaMod_prediction_M1.grd")
+CaveModM1 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/CaveMod_prediction_M1.grd")
+FossModM1 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/FossMod_prediction_M1.grd")
+SaxModM1 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/SaxMod_prediction_M1.grd")
+ArbModM2 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/ArbMod_prediction_M2.grd")
+TerrModM2 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/TerrMod_prediction_M2.grd")
+AquaModM2 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/AquaMod_prediction_M2.grd")
+CaveModM2 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/CaveMod_prediction_M2.grd")
+FossModM2 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/FossMod_prediction_M2.grd")
+SaxModM2 <- raster("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Predictions/SaxMod_prediction_M2.grd")
 
 # load the polygons
 ArbPolyL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Polygons/ArbPoly_lenient/chull.shp")
@@ -72,10 +72,6 @@ AquaPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Po
 CavePointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Cave_Points_M2/chull.shp")
 FossPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Foss_Points_M2/chull.shp")
 SaxPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Sax_Points_M2/chull.shp")
-
-
-# check what they look like
-plot(ArbR)
 
 # give them a threshold suitability score
 ArbModLSS <- ArbModL > 0.5
@@ -121,783 +117,784 @@ SaxModpolM2 <- rasterToPolygons(SaxModM2SS,function(x) x == 1,dissolve=T)
 #maybe <- extract(ArbSS, ArbPoly)
 #summary(maybe[[1]])
 
-# get the area of the niche polygon
+# get the area of the niche polygon at a 0.5 cutoff scale
 areaPolygon(ArbModpolL) / 1e6
-# 2190731 
+# 1285231
 areaPolygon(TerrModpolL) / 1e6
-# 5408492 
+# 4485079
 areaPolygon(AquaModpolL) / 1e6
-# 3652572 
+# 3177861
 areaPolygon(CaveModpolL) / 1e6
-# 1979474 
+# 1450650
 areaPolygon(FossModpolL) / 1e6
-# 4037977 
+# 3432082
 areaPolygon(SaxModpolL) / 1e6
-# 2926900 
+# 2259151
 
 areaPolygon(ArbModpolM1) / 1e6
-# 2004242 
+# 1238624
 areaPolygon(TerrModpolM1) / 1e6
-# 6508263 
+# 5034443
 areaPolygon(AquaModpolM1) / 1e6
-# 3844713 
+# 3185717
 areaPolygon(CaveModpolM1) / 1e6
-# 1317313 
+# 568391.4
 areaPolygon(FossModpolM1) / 1e6
-# 8001117 
+# 220695.9
 areaPolygon(SaxModpolM1) / 1e6
-# 3031525 
+# 358996.1 
 
 areaPolygon(ArbModpolM2) / 1e6
-# 7069824 
+# 5422425
 areaPolygon(TerrModpolM2) / 1e6
-# 2891744 
+# 1210240
 areaPolygon(AquaModpolM2) / 1e6
-# 2214916 
+# 2438405 
 areaPolygon(CaveModpolM2) / 1e6
-# 1405879 
+# 619542
 areaPolygon(FossModpolM2) / 1e6
-# 3757558 
+# 3000761
 areaPolygon(SaxModpolM2) / 1e6
-# 1615342 
+# 744082.7
 
 
 # niche overlap 
 # arb and terr
 dismo::nicheOverlap(ArbModLSS, TerrModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.335074
+# 0.1955743
 dismo::nicheOverlap(ArbModLSS, TerrModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.2032413
+# 0.0983781
 dismo::nicheOverlap(ArbModL, TerrModL, stat='I', mask=T, checkNegatives = T)
-# 0.80
+# 0.608951
 dismo::nicheOverlap(ArbModL, TerrModL, stat='D', mask=T, checkNegatives = T)
-# 0.53
+# 0.3390061
 
 # arb and water
 dismo::nicheOverlap(ArbModLSS, AquaModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.07486559
+# 0.0008268609
 dismo::nicheOverlap(ArbModLSS, AquaModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.05429894
+# 0.0004979821
 dismo::nicheOverlap(ArbModL, AquaModL, stat='I', mask=T, checkNegatives = T)
-# 0.49
+# 0.3645555
 dismo::nicheOverlap(ArbModL, AquaModL, stat='D', mask=T, checkNegatives = T)
-# 0.25
+# 0.151287
 
 # arb and cave
 dismo::nicheOverlap(ArbModLSS, CaveModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.07258061
+# 0.0002856979
 dismo::nicheOverlap(ArbModLSS, CaveModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.07097517
+# 0.0002594248
 dismo::nicheOverlap(ArbModL, CaveModL, stat='I', mask=T, checkNegatives = T)
-# 0.59
+# 0.3462906
 dismo::nicheOverlap(ArbModL, CaveModL, stat='D', mask=T, checkNegatives = T)
-# 0.28
+# 0.1188417
 
 # arb and foss
 dismo::nicheOverlap(ArbModLSS, FossModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.2824101
+# 0.06293269
 dismo::nicheOverlap(ArbModLSS, FossModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.1984237
+# 0.03666998
 dismo::nicheOverlap(ArbModL, FossModL, stat='I', mask=T, checkNegatives = T)
-# 0.84
+# 0.6032334
 dismo::nicheOverlap(ArbModL, FossModL, stat='D', mask=T, checkNegatives = T)
-# 0.55
+# 0.309408
 
 # arb and sax
 dismo::nicheOverlap(ArbModLSS, SaxModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.1914775
+# 0.009301952
 dismo::nicheOverlap(ArbModLSS, SaxModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.1612611
+# 0.006813264
 dismo::nicheOverlap(ArbModL, SaxModL, stat='I', mask=T, checkNegatives = T)
-# 0.70
+# 0.4633461
 dismo::nicheOverlap(ArbModL, SaxModL, stat='D', mask=T, checkNegatives = T)
-# 0.41
+# 0.1974114
 
 # terr and water
 dismo::nicheOverlap(TerrModLSS, AquaModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.6413645
+# 0.711416
 dismo::nicheOverlap(TerrModLSS, AquaModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.5363731
+# 0.5941949
 dismo::nicheOverlap(TerrModL, AquaModL, stat='I', mask=T, checkNegatives = T)
-# 0.78
+# 0.8202297
 dismo::nicheOverlap(TerrModL, AquaModL, stat='D', mask=T, checkNegatives = T)
-# 0.54
+# 0.5942015
 
 # terr and cave
 dismo::nicheOverlap(TerrModLSS, CaveModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.5470874
+# 0.5441924
 dismo::nicheOverlap(TerrModLSS, CaveModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.3244992
+# 0.3014634
 dismo::nicheOverlap(TerrModL, CaveModL, stat='I', mask=T, checkNegatives = T)
-# 0.75
+# 0.6751833
 dismo::nicheOverlap(TerrModL, CaveModL, stat='D', mask=T, checkNegatives = T)
-# 0.44
+# 0.3597413
 
 # terr and foos
 dismo::nicheOverlap(TerrModLSS, FossModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.7834162
+# 0.7730273
 dismo::nicheOverlap(TerrModLSS, FossModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.6763171
+# 0.6673397
 dismo::nicheOverlap(TerrModL, FossModL, stat='I', mask=T, checkNegatives = T)
-# 0.94
+#  0.8859938
 dismo::nicheOverlap(TerrModL, FossModL, stat='D', mask=T, checkNegatives = T)
-# 0.75
+# 0.6629953
 
 # terr and sax
 dismo::nicheOverlap(TerrModLSS, SaxModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.5853243
+# 0.5979951
 dismo::nicheOverlap(TerrModLSS, SaxModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.4215566
+# 0.4106795
 dismo::nicheOverlap(TerrModL, SaxModL, stat='I', mask=T, checkNegatives = T)
-# 0.81
+# 0.7784816
 dismo::nicheOverlap(TerrModL, SaxModL, stat='D', mask=T, checkNegatives = T)
-# 0.54
+# 0.46822
 
 # water and cave
 dismo::nicheOverlap(AquaModLSS, CaveModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.6320775
+# 0.6514005
 dismo::nicheOverlap(AquaModLSS, CaveModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.4482964
+# 0.432041
 dismo::nicheOverlap(AquaModL, CaveModL, stat='I', mask=T, checkNegatives = T)
-# 0.78
+# 0.8161407
 dismo::nicheOverlap(AquaModL, CaveModL, stat='D', mask=T, checkNegatives = T)
-# 0.55
+# 0.5568423
 
 # water and foss
 dismo::nicheOverlap(AquaModLSS, FossModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.6890141
+# 0.721857
 dismo::nicheOverlap(AquaModLSS, FossModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.667471
+# 0.6984001
 dismo::nicheOverlap(AquaModL, FossModL, stat='I', mask=T, checkNegatives = T)
-# 0.81
+# 0.8341135
 dismo::nicheOverlap(AquaModL, FossModL, stat='D', mask=T, checkNegatives = T)
-# 0.59
+# 0.6630022
 
 # water and sax
 dismo::nicheOverlap(AquaModLSS, SaxModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.6113709
+# 0.774839
 dismo::nicheOverlap(AquaModLSS, SaxModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.5265045
+# 0.6371059
 dismo::nicheOverlap(AquaModL, SaxModL, stat='I', mask=T, checkNegatives = T)
-# 0.70
+#  0.8214744
 dismo::nicheOverlap(AquaModL, SaxModL, stat='D', mask=T, checkNegatives = T)
-# 0.54
+# 0.6282889
 
 # cave and foss
 dismo::nicheOverlap(CaveModLSS, FossModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.6816974
+# 0.637346
 dismo::nicheOverlap(CaveModLSS, FossModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.4683719
+# 0.408983
 dismo::nicheOverlap(CaveModL, FossModL, stat='I', mask=T, checkNegatives = T)
-# 0.81
+# 0.7844299
 dismo::nicheOverlap(CaveModL, FossModL, stat='D', mask=T, checkNegatives = T)
-# 0.53
+# 0.5057985
 
 # cave and sax
 dismo::nicheOverlap(CaveModLSS, SaxModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.8041828
+# 0.8008988
 dismo::nicheOverlap(CaveModLSS, SaxModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.6622965
+# 0.6460325
 dismo::nicheOverlap(CaveModL, SaxModL, stat='I', mask=T, checkNegatives = T)
-# 0.94
+# 0.9267335
 dismo::nicheOverlap(CaveModL, SaxModL, stat='D', mask=T, checkNegatives = T)
-# 0.75
+# 0.7595158
 
 # foss and sax
 dismo::nicheOverlap(FossModLSS, SaxModLSS, stat='I', mask=T, checkNegatives = T)
-# 0.687629
+# 0.7170482
 dismo::nicheOverlap(FossModLSS, SaxModLSS, stat='D', mask=T, checkNegatives = T)
-# 0.5736615
+# 0.570429
 dismo::nicheOverlap(FossModL, SaxModL, stat='I', mask=T, checkNegatives = T)
-# 0.82
+# 0.8204486
 dismo::nicheOverlap(FossModL, SaxModL, stat='D', mask=T, checkNegatives = T)
-# 0.58
+# 0.5793485
 
 ######################################################################################
 
 # arb and terr
 dismo::nicheOverlap(ArbModM1SS, TerrModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.2718426 
+# 0.178439
 dismo::nicheOverlap(ArbModM1SS, TerrModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.1433844 
+# 0.08370851
 dismo::nicheOverlap(ArbModM1, TerrModM1, stat='I', mask=T, checkNegatives = T)
-# 0.68
+# 0.5557399
 dismo::nicheOverlap(ArbModM1, TerrModM1, stat='D', mask=T, checkNegatives = T)
-# 0.40
+# 0.2916225
 
 # arb and water
 dismo::nicheOverlap(ArbModM1SS, AquaModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.05903348 
+# 0.0009891281
 dismo::nicheOverlap(ArbModM1SS, AquaModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.03952373 
+# 0.0005853103
 dismo::nicheOverlap(ArbModM1, AquaModM1, stat='I', mask=T, checkNegatives = T)
-# 0.34
+# 0.2382702
 dismo::nicheOverlap(ArbModM1, AquaModM1, stat='D', mask=T, checkNegatives = T)
-# 0.14
+# 0.090378
 
 # arb and cave
 dismo::nicheOverlap(ArbModM1SS, CaveModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.07125346 
+# -4.440892e-16 - ie 0
 dismo::nicheOverlap(ArbModM1SS, CaveModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.05990269
+# -4.440892e-16 - ie 0
 dismo::nicheOverlap(ArbModM1, CaveModM1, stat='I', mask=T, checkNegatives = T)
-# 0.29
+# 0.1799592
 dismo::nicheOverlap(ArbModM1, CaveModM1, stat='D', mask=T, checkNegatives = T)
-# 0.12
+# 0.05310483
 
 # arb and foss
 dismo::nicheOverlap(ArbModM1SS, FossModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.4013211 
+# 0.2638333
 dismo::nicheOverlap(ArbModM1SS, FossModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.2056796 
+# 0.1075708
 dismo::nicheOverlap(ArbModM1, FossModM1, stat='I', mask=T, checkNegatives = T)
-# 0.90
+# 0.7133249
 dismo::nicheOverlap(ArbModM1, FossModM1, stat='D', mask=T, checkNegatives = T)
-# 0.69
+# 0.4100377
 
 # arb and sax
 dismo::nicheOverlap(ArbModM1SS, SaxModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.2839859 
+# 0.0005073488
 dismo::nicheOverlap(ArbModM1SS, SaxModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.2217712 
+# 0.0002810568
 dismo::nicheOverlap(ArbModM1, SaxModM1, stat='I', mask=T, checkNegatives = T)
-# 0.69
+# 0.2482679
 dismo::nicheOverlap(ArbModM1, SaxModM1, stat='D', mask=T, checkNegatives = T)
-# 0.41
+# 0.09386756
 
 # terr and water
 dismo::nicheOverlap(TerrModM1SS, AquaModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.6550893 
+# 0.7272885
 dismo::nicheOverlap(TerrModM1SS, AquaModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.51609 
+# 0.5765711
 dismo::nicheOverlap(TerrModM1, AquaModM1, stat='I', mask=T, checkNegatives = T)
-# 0.78
+# 0.8088024
 dismo::nicheOverlap(TerrModM1, AquaModM1, stat='D', mask=T, checkNegatives = T)
-# 0.53
+# 0.5676178
 
 # terr and cave
 dismo::nicheOverlap(TerrModM1SS, CaveModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.4434297
+# 0.3283165
 dismo::nicheOverlap(TerrModM1SS, CaveModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.1966299
+# 0.1077917
 dismo::nicheOverlap(TerrModM1, CaveModM1, stat='I', mask=T, checkNegatives = T)
-# 0.60
+# 0.5550476
 dismo::nicheOverlap(TerrModM1, CaveModM1, stat='D', mask=T, checkNegatives = T)
-# 0.33
+# 0.2500686
 
 # terr and foos
 dismo::nicheOverlap(TerrModM1SS, FossModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.246201
+# 0.02658499
 dismo::nicheOverlap(TerrModM1SS, FossModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.239224
+# 0.005084884
 dismo::nicheOverlap(TerrModM1, FossModM1, stat='I', mask=T, checkNegatives = T)
-# 0.75
+# 0.3997504
 dismo::nicheOverlap(TerrModM1, FossModM1, stat='D', mask=T, checkNegatives = T)
-# 0.46
+# 0.1585387
 
 # terr and sax
 dismo::nicheOverlap(TerrModM1SS, SaxModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.6431054
+# 0.2594507
 dismo::nicheOverlap(TerrModM1SS, SaxModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.4343685
+# 0.06742517
 dismo::nicheOverlap(TerrModM1, SaxModM1, stat='I', mask=T, checkNegatives = T)
-# 0.91
+# 0.5872771
 dismo::nicheOverlap(TerrModM1, SaxModM1, stat='D', mask=T, checkNegatives = T)
-# 0.69
+# 0.2899973
 
 # water and cave
 dismo::nicheOverlap(AquaModM1SS, CaveModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.5038308
+# 0.3987055
 dismo::nicheOverlap(AquaModM1SS, CaveModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.2835859
+# 0.1651197
 dismo::nicheOverlap(AquaModM1, CaveModM1, stat='I', mask=T, checkNegatives = T)
-# 0.68
+# 0.6534194
 dismo::nicheOverlap(AquaModM1, CaveModM1, stat='D', mask=T, checkNegatives = T)
-# 0.44
+# 0.3565309
 
 # water and foss
 dismo::nicheOverlap(AquaModM1SS, FossModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.1194583
+# -2.220446e-16 - ie 0
 dismo::nicheOverlap(AquaModM1SS, FossModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.09144416
+# -2.220446e-16 - ie 0
 dismo::nicheOverlap(AquaModM1, FossModM1, stat='I', mask=T, checkNegatives = T)
-# 0.49
+# 0.160487
 dismo::nicheOverlap(AquaModM1, FossModM1, stat='D', mask=T, checkNegatives = T)
-# 0.22
+# 0.04351328
 
 # water and sax
 dismo::nicheOverlap(AquaModM1SS, SaxModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.5580733
+# 0.3218205
 dismo::nicheOverlap(AquaModM1SS, SaxModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.4784565
+# 0.1054957
 dismo::nicheOverlap(AquaModM1, SaxModM1, stat='I', mask=T, checkNegatives = T)
-# 0.69
+# 0.6435325
 dismo::nicheOverlap(AquaModM1, SaxModM1, stat='D', mask=T, checkNegatives = T)
-# 0.52
+# 0.3638205
 
 # cave and foss
 dismo::nicheOverlap(CaveModM1SS, FossModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.08602071
+# 2.220446e-16 - ie 0
 dismo::nicheOverlap(CaveModM1SS, FossModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.03706317
+# 2.220446e-16 - ie 0
 dismo::nicheOverlap(CaveModM1, FossModM1, stat='I', mask=T, checkNegatives = T)
-# 0.34
+# 0.09904485
 dismo::nicheOverlap(CaveModM1, FossModM1, stat='D', mask=T, checkNegatives = T)
-# 0.13
+#  0.02188748
 
 # cave and sax
 dismo::nicheOverlap(CaveModM1SS, SaxModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.6532449
+# 0.5959274
 dismo::nicheOverlap(CaveModM1SS, SaxModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.428869
+# 0.4717021
 dismo::nicheOverlap(CaveModM1, SaxModM1, stat='I', mask=T, checkNegatives = T)
-# 0.74
+# 0.8865106
 dismo::nicheOverlap(CaveModM1, SaxModM1, stat='D', mask=T, checkNegatives = T)
-# 0.49
+# 0.6565927
 
 # foss and sax
 dismo::nicheOverlap(FossModM1SS, SaxModM1SS, stat='I', mask=T, checkNegatives = T)
-# 0.1873304
+# 0
 dismo::nicheOverlap(FossModM1SS, SaxModM1SS, stat='D', mask=T, checkNegatives = T)
-# 0.1229417
+# 0
 dismo::nicheOverlap(FossModM1, SaxModM1, stat='I', mask=T, checkNegatives = T)
-# 0.70
+# 0.1432894
 dismo::nicheOverlap(FossModM1, SaxModM1, stat='D', mask=T, checkNegatives = T)
-# 0.39
+# 0.03728147
 
 ######################################################################################
 
 # arb and terr
 dismo::nicheOverlap(ArbModM2SS, TerrModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.5027109
+# 0.374176
 dismo::nicheOverlap(ArbModM2SS, TerrModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.3100052
+# 0.1736879
 dismo::nicheOverlap(ArbModM2, TerrModM2, stat='I', mask=T, checkNegatives = T)
-# 0.79
+# 0.689022
 dismo::nicheOverlap(ArbModM2, TerrModM2, stat='D', mask=T, checkNegatives = T)
-# 0.51
+# 0.4132892
 
 # arb and water
 dismo::nicheOverlap(ArbModM2SS, AquaModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.5370759
+# 0.6420395
 dismo::nicheOverlap(ArbModM2SS, AquaModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.2939174
+# 0.4198469
 dismo::nicheOverlap(ArbModM2, AquaModM2, stat='I', mask=T, checkNegatives = T)
-# 0.75
+# 0.7414803
 dismo::nicheOverlap(ArbModM2, AquaModM2, stat='D', mask=T, checkNegatives = T)
-# 0.44
+# 0.4351758
 
 # arb and cave
 dismo::nicheOverlap(ArbModM2SS, CaveModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.4349831
+# 0.3289353
 dismo::nicheOverlap(ArbModM2SS, CaveModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.1902263
+# 0.1081984
 dismo::nicheOverlap(ArbModM2, CaveModM2, stat='I', mask=T, checkNegatives = T)
-# 0.56
+# 0.5267262
 dismo::nicheOverlap(ArbModM2, CaveModM2, stat='D', mask=T, checkNegatives = T)
-# 0.29
+# 0.2326008
 
 # arb and foss
 dismo::nicheOverlap(ArbModM2SS, FossModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.7049879
+# 0.7193701
 dismo::nicheOverlap(ArbModM2SS, FossModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.5129082
+#  0.5274245
 dismo::nicheOverlap(ArbModM2, FossModM2, stat='I', mask=T, checkNegatives = T)
-# 0.89
+#  0.8423721
 dismo::nicheOverlap(ArbModM2, FossModM2, stat='D', mask=T, checkNegatives = T)
-# 0.63
+#  0.5641709
 
 # arb and sax
 dismo::nicheOverlap(ArbModM2SS, SaxModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.4486552
+# 0.3549937
 dismo::nicheOverlap(ArbModM2SS, SaxModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.2072751
+# 0.1265254
 dismo::nicheOverlap(ArbModM2, SaxModM2, stat='I', mask=T, checkNegatives = T)
-# 0.67
+# 0.603678
 dismo::nicheOverlap(ArbModM2, SaxModM2, stat='D', mask=T, checkNegatives = T)
-# 0.37
+# 0.3055357
 
 # terr and water
 dismo::nicheOverlap(TerrModM2SS, AquaModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.3251004
+# 0.3384483
 dismo::nicheOverlap(TerrModM2SS, AquaModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.2885071
+# 0.2402463
 dismo::nicheOverlap(TerrModM2, AquaModM2, stat='I', mask=T, checkNegatives = T)
-# 0.59
+# 0.5834851
 dismo::nicheOverlap(TerrModM2, AquaModM2, stat='D', mask=T, checkNegatives = T)
-# 0.33
+# 0.3980999
 
 # terr and cave
 dismo::nicheOverlap(TerrModM2SS, CaveModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.3122789
+# 0.1442275
 dismo::nicheOverlap(TerrModM2SS, CaveModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.2214574
+# 0.1022033
 dismo::nicheOverlap(TerrModM2, CaveModM2, stat='I', mask=T, checkNegatives = T)
-# 0.54
+# 0.5027169
 dismo::nicheOverlap(TerrModM2, CaveModM2, stat='D', mask=T, checkNegatives = T)
-# 0.29
+# 0.2210212
 
 # terr and foos
 dismo::nicheOverlap(TerrModM2SS, FossModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.2985239
+# 0.2863212
 dismo::nicheOverlap(TerrModM2SS, FossModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.2530299
+# 0.1812755
 dismo::nicheOverlap(TerrModM2, FossModM2, stat='I', mask=T, checkNegatives = T)
-# 0.69
+# 0.585446
 dismo::nicheOverlap(TerrModM2, FossModM2, stat='D', mask=T, checkNegatives = T)
-# 0.44
+# 0.3742807
 
 # terr and sax
 dismo::nicheOverlap(TerrModM2SS, SaxModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.5005205
+# 0.3900042
 dismo::nicheOverlap(TerrModM2SS, SaxModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.3749778
+# 0.2994558
 dismo::nicheOverlap(TerrModM2, SaxModM2, stat='I', mask=T, checkNegatives = T)
-# 0.83
+# 0.7371388
 dismo::nicheOverlap(TerrModM2, SaxModM2, stat='D', mask=T, checkNegatives = T)
-# 0.53
+# 0.4503192
 
 # water and cave
 dismo::nicheOverlap(AquaModM2SS, CaveModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.689502
+# 0.4625405
 dismo::nicheOverlap(AquaModM2SS, CaveModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.5509906
+# 0.232665
 dismo::nicheOverlap(AquaModM2, CaveModM2, stat='I', mask=T, checkNegatives = T)
-# 0.83
+# 0.7392924
 dismo::nicheOverlap(AquaModM2, CaveModM2, stat='D', mask=T, checkNegatives = T)
-# 0.63
+# 0.4413781
 
 # water and foss
 dismo::nicheOverlap(AquaModM2SS, FossModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.7211122
+# 0.7945295
 dismo::nicheOverlap(AquaModM2SS, FossModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.5424186
+# 0.7086492
 dismo::nicheOverlap(AquaModM2, FossModM2, stat='I', mask=T, checkNegatives = T)
-# 0.88
+# 0.9101405
 dismo::nicheOverlap(AquaModM2, FossModM2, stat='D', mask=T, checkNegatives = T)
-# 0.65
+# 0.7310683
 
 # water and sax
 dismo::nicheOverlap(AquaModM2SS, SaxModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.6707631
+# 0.4999002
 dismo::nicheOverlap(AquaModM2SS, SaxModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.5662575
+# 0.2724652
 dismo::nicheOverlap(AquaModM2, SaxModM2, stat='I', mask=T, checkNegatives = T)
-# 0.75
+# 0.7775118
 dismo::nicheOverlap(AquaModM2, SaxModM2, stat='D', mask=T, checkNegatives = T)
-# 0.58
+# 0.5372352
 
 # cave and foss
 dismo::nicheOverlap(CaveModM2SS, FossModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.5704339
+#  0.4394674
 dismo::nicheOverlap(CaveModM2SS, FossModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.3428828
+# 0.1971647
 dismo::nicheOverlap(CaveModM2, FossModM2, stat='I', mask=T, checkNegatives = T)
-# 0.74
+# 0.69817
 dismo::nicheOverlap(CaveModM2, FossModM2, stat='D', mask=T, checkNegatives = T)
-# 0.48
+# 0.3889897
 
 # cave and sax
 dismo::nicheOverlap(CaveModM2SS, SaxModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.5786303
+# 0.2280512
 dismo::nicheOverlap(CaveModM2SS, SaxModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.5477281
+# 0.2104679
 dismo::nicheOverlap(CaveModM2, SaxModM2, stat='I', mask=T, checkNegatives = T)
-# 0.79
+# 0.7349768
 dismo::nicheOverlap(CaveModM2, SaxModM2, stat='D', mask=T, checkNegatives = T)
-# 0.58
+# 0.4552424
 
 # foss and sax
 dismo::nicheOverlap(FossModM2SS, SaxModM2SS, stat='I', mask=T, checkNegatives = T)
-# 0.5020885
+# 0.4453843
 dismo::nicheOverlap(FossModM2SS, SaxModM2SS, stat='D', mask=T, checkNegatives = T)
-# 0.3188282
+# 0.216513
 dismo::nicheOverlap(FossModM2, SaxModM2, stat='I', mask=T, checkNegatives = T)
-# 0.72
+# 0.7069527
 dismo::nicheOverlap(FossModM2, SaxModM2, stat='D', mask=T, checkNegatives = T)
-# 0.44
+# 0.4359512
 
 ###
 # arb poly intersect with arb niche
 # ArbPolyL area
 areaPolygon(ArbPolyL) / 1e6 # 675927
 # ArbModpolL area
-areaPolygon(ArbModpolL) / 1e6 # 2190731
+areaPolygon(ArbModpolL) / 1e6 # 1285231
 # intersection between them
 AAL <- raster::intersect(ArbPolyL,ArbModpolL)
-areaPolygon(AAL) / 1e6 # 393267.4
+areaPolygon(AAL) / 1e6 # 500333.2
 # percent of the polygon explained by the niche
-(393267.4/675927)*100 # 58.18
+(500333.2/675927)*100 # 74.02178
 
 ###
 # terr poly intersect with terr niche
 # TerrPolyL area
 areaPolygon(TerrPolyL) / 1e6 # 3138294
 # TerrModpolL area
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 # intersection between them
 TTL <- raster::intersect(TerrPolyL,TerrModpolL)
-areaPolygon(TTL)/ 1e6 # 2631651
+areaPolygon(TTL)/ 1e6 # 2654509
 # percent of the polygon explained by the niche
-(2631651/3138294)*100 # 83.8561
+(2654509/3138294)*100 # 84.58446
 
 ###
 # water poly intersect with water niche
 # AquaPolyL area
-areaPolygon(AquaPolyL) / 1e6 # 2829823
+areaPolygon(AquaPolyL) / 1e6 # 2835207
+AquaPolyL <- gBuffer(AquaPolyL, byid = T, width = 0)
 # AquaModpolL area
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 # intersection between them
 WWL <- raster::intersect(AquaPolyL,AquaModpolL)
-areaPolygon(WWL) / 1e6 # 2524340
+areaPolygon(WWL) / 1e6 # 2632277
 # percent of the polygon explained by the niche
-(2524340/2829823)*100 # 89.20
+(2632277/2835207)*100 # 92.8425
 
 ###
 # cave poly intersect with cave niche
 # CavePolyL area
 areaPolygon(CavePolyL) / 1e6 # 1253455
 # CaveModpolL area
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 # intersection between them
 CCL <- raster::intersect(CavePolyL,CaveModpolL)
-areaPolygon(CCL) / 1e6 # 1129784
+areaPolygon(CCL) / 1e6 # 1098905
 # percent of the polygon explained by the niche
-(1129784/1253455)*100 # 90.13
+(1098905/1253455)*100 # 87.67008
 
 ###
 # foss poly intersect with foss niche
 # FossPolyL area
 areaPolygon(FossPolyL) / 1e6 # 2373654
 # FossModpolL area
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(FossModpolL) / 1e6 # 3432082
 # intersection between them
 FFL <- raster::intersect(FossPolyL,FossModpolL)
-areaPolygon(FFL) / 1e6 # 1991733
+areaPolygon(FFL) / 1e6 # 2087956
 # percent of the polygon explained by the niche
-(1991733/2373654)*100 # 83.91
+(2087956/2373654)*100 # 87.96379
 
 ###
 # sax poly intersect with sax niche
 # SaxPolyL area
 areaPolygon(SaxPolyL) / 1e6 # 1886932
 # SaxModpolL area
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 # intersection between them
 SSL <- raster::intersect(SaxPolyL,SaxModpolL)
-areaPolygon(SSL) / 1e6 #  1684808
+areaPolygon(SSL) / 1e6 #  1706255
 # percent of the polygon explained by the niche
-(1684808/1886932)*100 # 89.28
+(1706255/1886932)*100 # 90.42483
 
 ###
 # intersection area arb-terr niches
 # Area for the niches
-areaPolygon(ArbModpolL) / 1e6 # 2190731
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(ArbModpolL) / 1e6 # 1285231
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 #inter bet Arb and Terr at 0.5 cutoff
 interATLN <- raster::intersect(ArbModpolL, TerrModpolL)
-areaPolygon(interATLN) / 1e6 # 1140372
+areaPolygon(interATLN) / 1e6 # 436090.6
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(1140372/2190731)*100 # 52.05
+(436090.6/1285231)*100 # 33.93
 # inter/terr niche
-(1140372/5408492)*100 # 21.08
+(436090.6/4485079)*100 # 9.723
 
 ###
 # intersection area arb-water niches
 # Area for the niches
-areaPolygon(ArbModpolL) / 1e6 # 2190731
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(ArbModpolL) / 1e6 # 1285231
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 #inter bet Arb and water at 0.5 cutoff
 interAWLN <- raster::intersect(ArbModpolL, AquaModpolL)
-areaPolygon(interAWLN) / 1e6 # 215399
+areaPolygon(interAWLN) / 1e6 # 1562.941
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(215399/2190731)*100 # 9.8
+(1562.941/1285231)*100 # 0.1216078
 # inter/water niche
-(215399/3652572)*100 # 5.89
+(1562.941/3177861)*100 # 0.04918217
 
 ###
 # intersection area arb-cave niches
 # Area for the niches
-areaPolygon(ArbModpolL) / 1e6 # 2190731
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(ArbModpolL) / 1e6 # 1285231
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 #inter bet Arb and cave at 0.5 cutoff
 interACLN <- raster::intersect(ArbModpolL, CaveModpolL)
-areaPolygon(interACLN) / 1e6 # 149254.2
+areaPolygon(interACLN) / 1e6 # 372.1321
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(149254.2/2190731)*100 # 6.8
+(372.1321/1285231)*100 # 0.02895449
 # inter/cave niche
-(149254.2/1979474)*100 # 7.5
+(372.1321/1450650)*100 # 0.02565278
 
 ###
 # intersection area arb-foss niches
 # Area for the niches
-areaPolygon(ArbModpolL) / 1e6 # 2190731
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(ArbModpolL) / 1e6 # 1285231
+areaPolygon(FossModpolL) / 1e6 # 3432082
 #inter bet Arb and foss at 0.5 cutoff
 interAFLN <- raster::intersect(ArbModpolL, FossModpolL)
-areaPolygon(interAFLN) / 1e6 # 836433.7
+areaPolygon(interAFLN) / 1e6 # 151899
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(836433.7/2190731)*100 # 38.18
+(151899/1285231)*100 # 11.81881
 # inter/foss niche
-(836433.7/4037977)*100 # 20.71
+(151899/3432082)*100 # 4.425856
 
 ###
 # intersection area arb-sax niches
 # Area for the niches
-areaPolygon(ArbModpolL) / 1e6 # 2190731
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(ArbModpolL) / 1e6 # 1285231
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 #inter bet Arb and sax at 0.5 cutoff
 interASLN <- raster::intersect(ArbModpolL, SaxModpolL)
-areaPolygon(interASLN) / 1e6 # 470506.9
+areaPolygon(interASLN) / 1e6 # 14654.73
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(470506.9/2190731)*100 # 21.5
+(14654.73/1285231)*100 # 1.140241
 # inter/sax niche
-(470506.9/2926900)*100 # 16.07
+(14654.73/2259151)*100 # 0.6486831
 
 ###
 # intersection area terr-water niches
 # Area for the niches
-areaPolygon(TerrModpolL) / 1e6 # 5408492
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(TerrModpolL) / 1e6 # 4485079
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 #inter bet Terr and Water at 0.5 cutoff
 interTWLN <- raster::intersect(TerrModpolL, AquaModpolL)
-areaPolygon(interTWLN) / 1e6 # 2846122
+areaPolygon(interTWLN) / 1e6 # 2705383
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(2846122/5408492)*100 # 52.62
+(2705383/4485079)*100 # 60.31963
 # inter/water niche
-(2846122/3652572)*100 # 77.92
+(2705383/3177861)*100 # 85.1322
 
 ###
 # intersection area terr-cave niches
 # Area for the niches
-areaPolygon(TerrModpolL) / 1e6 # 5408492
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(TerrModpolL) / 1e6 # 4485079
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 #inter bet Terr and Cave at 0.5 cutoff
 interTCLN <- raster::intersect(TerrModpolL, CaveModpolL)
-areaPolygon(interTCLN) / 1e6 # 1818663
+areaPolygon(interTCLN) / 1e6 # 1424333
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(1818663/5408492)*100 # 33.63
+(1424333/4485079)*100 # 31.75714
 # inter/cave niche
-(1818663/1979474)*100 # 91.87
+(1424333/1450650)*100 # 98.18585
 
 ###
 # intersection area terr-foss niches
 # Area for the niches
-areaPolygon(TerrModpolL) / 1e6 # 5408492
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(TerrModpolL) / 1e6 # 4485079
+areaPolygon(FossModpolL) / 1e6 # 3432082
 #inter bet Terr and Foss at 0.5 cutoff
 interTFLN <- raster::intersect(TerrModpolL, FossModpolL)
-areaPolygon(interTFLN) / 1e6 # 3620837
+areaPolygon(interTFLN) / 1e6 # 3047749
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(3620837/5408492)*100 # 66.95
+(3047749/4485079)*100 # 67.95307
 # inter/foss niche
-(3620837/4037977)*100 # 89.66
+(3047749/3432082)*100 # 88.80175
 
 ###
 # intersection area terr-Sax niches
 # Area for the niches
-areaPolygon(TerrModpolL) / 1e6 # 5408492
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(TerrModpolL) / 1e6 # 4485079
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 #inter bet Terr and Sax at 0.5 cutoff
 interTSLN <- raster::intersect(TerrModpolL, SaxModpolL)
-areaPolygon(interTSLN) / 1e6 # 2355656
+areaPolygon(interTSLN) / 1e6 # 1954294
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(2355656/5408492)*100 # 43.55
+(1954294/4485079)*100 # 43.57323
 # inter/sax niche
-(2355656/2926900)*100 # 80.48
+(1954294/2259151)*100 # 86.50568
 
 ###
 # intersection area water-cave niches
 # Area for the niches
-areaPolygon(AquaModpolL) / 1e6 # 3652572
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(AquaModpolL) / 1e6 # 3177861
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 #inter bet Water and Cave at 0.5 cutoff
 interWCLN <- raster::intersect(AquaModpolL, CaveModpolL)
-areaPolygon(interWCLN) / 1e6 # 1768032
+areaPolygon(interWCLN) / 1e6 # 1425004
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(1768032/3652572)*100 # 48.4
+(1425004/3177861)*100 # 44.84161
 # inter/cave niche
-(1768032/1979474)*100 # 89.31
+(1425004/1450650)*100 # 98.2321
 
 ###
 # intersection area water-foss niches
 # Area for the niches
-areaPolygon(AquaModpolL) / 1e6 # 3652572
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(AquaModpolL) / 1e6 # 3177861
+areaPolygon(FossModpolL) / 1e6 # 3432082
 #inter bet Water and Foss at 0.5 cutoff
 interWFLN <- raster::intersect(AquaModpolL, FossModpolL)
-areaPolygon(interWFLN) / 1e6 # 2705865
+areaPolygon(interWFLN) / 1e6 # 2428182
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(2705865/3652572)*100 # 74.08
+(2428182/3177861)*100 # 76.40932
 # inter/foss niche
-(2705865/4037977)*100 # 67.01
+(2428182/3432082)*100 # 70.74953
 
 ###
 # intersection area water-Sax niches
 # Area for the niches
-areaPolygon(AquaModpolL) / 1e6 # 3652572
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(AquaModpolL) / 1e6 # 3177861
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 #inter bet Water and Sax at 0.5 cutoff
 interWSLN <- raster::intersect(AquaModpolL, SaxModpolL)
-areaPolygon(interWSLN) / 1e6 # 2092599
+areaPolygon(interWSLN) / 1e6 # 2130045
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(2092599/3652572)*100 # 57.29
+(2130045/3652572)*100 # 58.3163
 # inter/Sax niche
-(2092599/2926900)*100 # 71.49
+(2130045/2259151)*100 # 94.2852
 
 ###
 # intersection area cave-foss niches
 # Area for the niches
-areaPolygon(CaveModpolL) / 1e6 # 1979474
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(CaveModpolL) / 1e6 # 1450650
+areaPolygon(FossModpolL) / 1e6 # 3432082
 #inter bet cave and foss at 0.5 cutoff
 interCFLN <- raster::intersect(CaveModpolL, FossModpolL)
-areaPolygon(interCFLN) / 1e6 # 1963321
+areaPolygon(interCFLN) / 1e6 # 1440614
 # percent of each niche that overlaps with the other by area
 # inter/cave niche
-(1963321/1979474)*100 # 99.18
+(1440614/1450650)*100 # 99.30817
 # inter/foss niche
-(1963321/4037977)*100 # 48.62
+(1440614/3432082)*100 # 41.97493
 
 ###
 # intersection area cave-Sax niches
 # Area for the niches
-areaPolygon(CaveModpolL) / 1e6 # 1979474
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(CaveModpolL) / 1e6 # 1450650
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 #inter bet cave and sax at 0.5 cutoff
 interCSLN <- raster::intersect(CaveModpolL, SaxModpolL)
-areaPolygon(interCSLN) / 1e6 # 1935910
+areaPolygon(interCSLN) / 1e6 # 1440980
 # percent of each niche that overlaps with the other by area
 # inter/cave niche
-(1935910/1979474)*100 # 97.799
+(1440980/1450650)*100 # 99.3334
 # inter/sax niche
-(1935910/2926900)*100 # 66.14
+(1440980/2259151)*100 # 63.78414
 
 ###
 # intersection area Foss-Sax niches
 # Area for the niches
-areaPolygon(FossModpolL) / 1e6 # 4037977
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(FossModpolL) / 1e6 # 3432082
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 #inter bet foss and sax at 0.5 cutoff
 interFSLN <- raster::intersect(FossModpolL, SaxModpolL)
-areaPolygon(interFSLN) / 1e6 # 2388154
+areaPolygon(interFSLN) / 1e6 # 2026926
 # percent of each niche that overlaps with the other by area
 # inter/foss niche
-(2388154/4037977)*100 # 59.14
+(2026926/3432082)*100 # 59.0582
 # inter/sax niche
-(2388154/2926900)*100 # 81.59
+(2026926/2259151)*100 # 89.7207
 
 ######################################################################################
 
@@ -905,282 +902,282 @@ areaPolygon(interFSLN) / 1e6 # 2388154
 # ArbPolyM1 area
 areaPolygon(ArbPolyM1) / 1e6 # 659573
 # ArbModpolM1 area
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
 # intersection between them
 AAM1 <- raster::intersect(ArbPolyM1,ArbModpolM1)
-areaPolygon(AAM1) / 1e6 # 388394.2
+areaPolygon(AAM1) / 1e6 # 479367.3
 # percent of the polygon explained by the niche
-(388394.2/659573)*100 # 58.88
+(479367.3/659573)*100 # 72.67843
 
 ###
 # terr poly intersect with terr niche
 # TerrPolyM1 area
 areaPolygon(TerrPolyM1) / 1e6 # 4456354
 # TerrModpolM1 area
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 # intersection between them
 TTM1 <- raster::intersect(TerrPolyM1,TerrModpolM1)
-areaPolygon(TTM1) / 1e6 # 3862585
+areaPolygon(TTM1) / 1e6 # 3740585
 # percent of the polygon explained by the niche
-(3862585/4456354)*100 # 86.67
+(3740585/4456354)*100 # 83.93824
 
 ###
 # water poly intersect with water niche
 # AquaPolyM1 area
 areaPolygon(AquaPolyM1) / 1e6 # 2829823
 # AquaModpolM1 area
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 # intersection between them
 WWM1 <- raster::intersect(AquaPolyM1,AquaModpolM1)
-areaPolygon(WWM1) / 1e6 # 2549519
+areaPolygon(WWM1) / 1e6 # 2640386
 # percent of the polygon explained by the niche
-(2549519/2829823)*100 # 90.09
+(2640386/2829823)*100 # 93.30569
 
 ###
 # cave poly intersect with cave niche
 # CavePolyM1 area
 areaPolygon(CavePolyM1) / 1e6 # 492224
 # CaveModpolM1 area
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 # intersection between them
 CCM1 <- raster::intersect(CavePolyM1,CaveModpolM1)
-areaPolygon(CCM1) / 1e6 # 433288.7
+areaPolygon(CCM1) / 1e6 # 408692.5
 # percent of the polygon explained by the niche
-(433288.7/492224)*100 # 88.02
+(408692.5/492224)*100 # 83.02978
 
 ###
 # foss poly intersect with foss niche
 # FossPolyM1 area
 areaPolygon(FossPolyM1) / 1e6 # 110435
 # FossModpolS area
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 # intersection between them
 FFM1 <- raster::intersect(FossPolyM1,FossModpolM1)
-areaPolygon(FFM1) / 1e6 # 106878.1
+areaPolygon(FFM1) / 1e6 # 87274.94
 # percent of the polygon explained by the niche
-(106878.1/110435)*100 # 96.77
+(87274.94/110435)*100 # 79.02833
 
 ###
 # sax poly intersect with sax niche
 # SaxPolyM1 area
 areaPolygon(SaxPolyM1) / 1e6 # 180106.9
 # SaxModpolM1 area
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 # intersection between them
 SSM1 <- raster::intersect(SaxPolyM1,SaxModpolM1)
-areaPolygon(SSM1) / 1e6 # 177934.5
+areaPolygon(SSM1) / 1e6 # 153589.4
 # percent of the polygon explained by the niche
-(177934.5/180106.9)*100 # 98.79
+(153589.4/180106.9)*100 # 85.2768
 
 ###
 # intersection area arb-terr niches
 # Area for the niches
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 #inter bet Arb and Terr at 0.5 cutoff
 interATM1N <- raster::intersect(ArbModpolM1, TerrModpolM1)
-areaPolygon(interATM1N) / 1e6 # 945315.1
+areaPolygon(interATM1N) / 1e6 # 410471.5
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(945315.1/2004242)*100 # 47.16
+(410471.5/1238624)*100 # 33.13931
 # inter/terr niche
-(945315.1/6508263)*100 # 14.52
+(410471.5/5034443)*100 # 8.153265
 
 ###
 # intersection area arb-water niches
 # Area for the niches
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 #inter bet Arb and water at 0.5 cutoff
 interAWM1N <- raster::intersect(ArbModpolM1, AquaModpolM1)
-areaPolygon(interAWM1N) / 1e6 # 172221.2
+areaPolygon(interAWM1N) / 1e6 # 2068.363
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(172221.2/2004242)*100 # 8.59
+(2068.363/1238624)*100 # 0.1669888
 # inter/water niche
-(172221.2/3844713)*100 # 4.479
+(2068.363/3185717)*100 # 0.06492614
 
 ###
 # intersection area arb-cave niches
 # Area for the niches
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 #inter bet Arb and cave at 0.5 cutoff
 interACM1N <- raster::intersect(ArbModpolM1, CaveModpolM1)
-areaPolygon(interACM1N) / 1e6 # 111807.2
+areaPolygon(interACM1N) / 1e6 # 0
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(111807.2/2004242)*100 # 5.6
+(0/2004242)*100 # 0
 # inter/cave niche
-(111807.2/1317313)*100 # 8.5
+(0/568391.4)*100 # 0
 
 ###
 # intersection area arb-foss niches
 # Area for the niches
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 #inter bet Arb and foss at 0.5 cutoff
 interAFM1N <- raster::intersect(ArbModpolM1, FossModpolM1)
-areaPolygon(interAFM1N) / 1e6 # 1530379
+areaPolygon(interAFM1N) / 1e6 # 140123.1
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(1530379/2004242)*100 # 76.4
+(140123.1/1238624)*100 # 11.3128
 # inter/foss niche
-(1530379/8001117)*100 # 19.13
+(140123.1/220695.9)*100 # 63.49148
 
 ###
 # intersection area arb-sax niches
 # Area for the niches
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 #inter bet Arb and sax at 0.5 cutoff
 interASM1N <- raster::intersect(ArbModpolM1, SaxModpolM1)
-areaPolygon(interASM1N) / 1e6 # 639932.5
+areaPolygon(interASM1N) / 1e6 # 388.6133
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(639932.5/2004242)*100 # 31.9
+(388.6133/1238624)*100 # 0.0313746
 # inter/sax niche
-(639932.5/3031525)*100 # 21.1
+(388.6133/358996.1)*100 # 0.10825
 
 ###
 # intersection area terr-water niches
 # Area for the niches
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 #inter bet Terr and Water at 0.5 cutoff
 interTWM1N <- raster::intersect(TerrModpolM1, AquaModpolM1)
-areaPolygon(interTWM1N) / 1e6 # 3298756
+areaPolygon(interTWM1N) / 1e6 # 2953425
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(3298756/6508263)*100 # 50.7
+(2953425/5034443)*100 # 58.66438
 # inter/water niche
-(3298756/3844713)*100 # 85.8
+(2953425/3185717)*100 # 92.70833
 
 ###
 # intersection area terr-cave niches
 # Area for the niches
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 #inter bet Terr and Cave at 0.5 cutoff
 interTCM1N <- raster::intersect(TerrModpolM1, CaveModpolM1)
-areaPolygon(interTCM1N) / 1e6 # 1317313
+areaPolygon(interTCM1N) / 1e6 # 568391.4
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(1317313/6508263)*100 # 20.24
+(568391.4/5034443)*100 # 11.29006
 # inter/cave niche
-(1317313/1317313)*100 # 100
+(568391.4/568391.4)*100 # 100
 
 ###
 # intersection area terr-foss niches
 # Area for the niches
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 #inter bet Terr and Foss at 0.5 cutoff
 interTFM1N <- raster::intersect(TerrModpolM1, FossModpolM1)
-areaPolygon(interTFM1N) / 1e6 # 1547993
+areaPolygon(interTFM1N) / 1e6 # 27518.65
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(1547993/6508263)*100 # 23.8
+(27518.65/5034443)*100 # 0.5466076
 # inter/foss niche
-(1547993/8001117)*100 # 19.3
+(27518.65/220695.9)*100 # 12.46904
 
 ###
 # intersection area terr-Sax niches
 # Area for the niches
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 #inter bet Terr and Sax at 0.5 cutoff
 interTSM1N <- raster::intersect(TerrModpolM1, SaxModpolM1)
-areaPolygon(interTSM1N) / 1e6 # 2891230
+areaPolygon(interTSM1N) / 1e6 # 358276.1
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(2891230/6508263)*100 # 44.4
+(358276.1/5034443)*100 # 7.116499
 # inter/sax niche
-(2891230/3031525)*100 # 95.4
+(358276.1/358996.1)*100 # 99.79944
 
 ###
 # intersection area water-cave niches
 # Area for the niches
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 #inter bet Water and Cave at 0.5 cutoff
 interWCM1N <- raster::intersect(AquaModpolM1, CaveModpolM1)
-areaPolygon(interWCM1N) / 1e6 # 1182930
+areaPolygon(interWCM1N) / 1e6 # 547455.2
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(1182930/3844713)*100 # 30.8
+(547455.2/3185717)*100 # 17.18468
 # inter/cave niche
-(1182930/1317313)*100 # 89.8
+(547455.2/568391.4)*100 # 96.31659
 
 ###
 # intersection area water-foss niches
 # Area for the niches
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
+areaPolygon(FossModpolM1) / 1e6 #  220695.9
 #inter bet Water and Foss at 0.5 cutoff
 interWFM1N <- raster::intersect(AquaModpolM1, FossModpolM1)
-areaPolygon(interWFM1N) / 1e6 # 631424.6
+areaPolygon(interWFM1N) / 1e6 # 0
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(631424.6/3844713)*100 # 16.4
+(0/3185717)*100 # 0
 # inter/foss niche
-(631424.6/8001117)*100 # 7.9
+(0/220695.9)*100 # 0
 
 ###
 # intersection area water-Sax niches
 # Area for the niches
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
-areaPolygon(SaxModpolM1) / 1e6 # 2506735
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 #inter bet Water and Sax at 0.5 cutoff
 interWSM1N <- raster::intersect(AquaModpolM1, SaxModpolM1)
-areaPolygon(interWSM1N) / 1e6 # 2007863
+areaPolygon(interWSM1N) / 1e6 # 351980.2
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(2007863/3844713)*100 # 52.2
+(351980.2/3185717)*100 # 11.0487
 # inter/Sax niche
-(2007863/3031525)*100 # 66.23
+(351980.2/358996.1)*100 # 98.04569
 
 ###
 # intersection area cave-foss niches
 # Area for the niches
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 #inter bet cave and foss at 0.5 cutoff
 interCFM1N <- raster::intersect(CaveModpolM1, FossModpolM1)
-areaPolygon(interCFM1N) / 1e6 # 267966.8
+areaPolygon(interCFM1N) / 1e6 # 0
 # percent of each niche that overlaps with the other by area
 # inter/cave niche
-(267966.8/1317313)*100 # 20.3
+(0/568391.4)*100 # 0
 # inter/foss niche
-(267966.8/8001117)*100 # 3.3
+(0/220695.9)*100 # 0
 
 ###
 # intersection area cave-Sax niches
 # Area for the niches
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 #inter bet cave and sax at 0.5 cutoff
 interCSM1N <- raster::intersect(CaveModpolM1, SaxModpolM1)
-areaPolygon(interCSM1N) / 1e6 # 1311009
+areaPolygon(interCSM1N) / 1e6 # 270299.6
 # percent of each niche that overlaps with the other by area
 # inter/cave niche
-(1311009/1317313)*100 # 99.5
+(270299.6/568391.4)*100 # 47.55519
 # inter/sax niche
-(1311009/3031525)*100 # 43.2
+(270299.6/358996.1)*100 # 75.29319
 
 ###
 # intersection area Foss-Sax niches
 # Area for the niches
-areaPolygon(FossModpolM1) / 1e6 # 8001117
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 #inter bet foss and sax at 0.5 cutoff
 interFSM1N <- raster::intersect(FossModpolM1, SaxModpolM1)
-areaPolygon(interFSM1N) / 1e6 # 819313.3
+areaPolygon(interFSM1N) / 1e6 # 0
 # percent of each niche that overlaps with the other by area
 # inter/foss niche
-(819313.3/8001117)*100 # 10.2
+(0/8001117)*100 # 0
 # inter/sax niche
-(819313.3/3031525)*100 # 27.02
+(0/358996.1)*100 # 0
 
 
 ######################################################################################
@@ -1189,282 +1186,282 @@ areaPolygon(interFSM1N) / 1e6 # 819313.3
 # ArbPolyM2 area
 areaPolygon(ArbPolyM2) / 1e6 # 4598454
 # ArbModpolM2 area
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
 # intersection between them
 AAM2 <- raster::intersect(ArbPolyM2,ArbModpolM2)
-areaPolygon(AAM2) / 1e6 # 783495.5
+areaPolygon(AAM2) / 1e6 # 569226
 # percent of the polygon explained by the niche
-(783495.5/4598454)*100 # 17.03
+(569226/4598454)*100 # 12.37864
 
 ###
 # terr poly intersect with terr niche
 # TerrPolyM2 area
 areaPolygon(TerrPolyM2) / 1e6 # 586519.8
 # TerrModpolM1 area
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
 # intersection between them
 TTM2 <- raster::intersect(TerrPolyM2,TerrModpolM2)
-areaPolygon(TTM2) / 1e6 # 388261.9
+areaPolygon(TTM2) / 1e6 # 442997
 # percent of the polygon explained by the niche
-(388261.9/586519.8)*100 # 66.2
+(442997/586519.8)*100 # 75.52976
 
 ###
 # water poly intersect with water niche
 # AquaPolyM2 area
 areaPolygon(AquaPolyM2) / 1e6 # 2191861
 # AquaModpolM2 area
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 # intersection between them
 WWM2 <- raster::intersect(AquaPolyM2,AquaModpolM2)
-areaPolygon(WWM2) / 1e6 # 1735944
+areaPolygon(WWM2) / 1e6 # 2041626
 # percent of the polygon explained by the niche
-(1735944/2829823)*100 # 61.3
+(2041626/2191861)*100 # 93.14578
 
 ###
 # cave poly intersect with cave niche
 # CavePolyM2 area
 areaPolygon(CavePolyM2) / 1e6 # 484303.2
 # CaveModpolM2 area
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 # intersection between them
 CCM2 <- raster::intersect(CavePolyM2,CaveModpolM2)
-areaPolygon(CCM2) / 1e6 # 441455.9
+areaPolygon(CCM2) / 1e6 # 421105.1
 # percent of the polygon explained by the niche
-(441455.9/484303.2)*100 # 91.1
+(421105.1/484303.2)*100 # 86.95072
 
 ###
 # foss poly intersect with foss niche
 # FossPolyM2 area
 areaPolygon(FossPolyM2) / 1e6 # 2178794
 # FossModpolM2 area
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 # intersection between them
 FFM2 <- raster::intersect(FossPolyM2,FossModpolM2)
-areaPolygon(FFM2) / 1e6 # 1972081
+areaPolygon(FFM2) / 1e6 # 1970358
 # percent of the polygon explained by the niche
-(1972081/2178794)*100 # 90.5
+(1970358/2178794)*100 # 90.43342
 
 ###
 # sax poly intersect with sax niche
 # SaxPolyM2 area
 areaPolygon(SaxPolyM2) / 1e6 # 486247.8
 # SaxModpolM2 area
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 # intersection between them
 SSM2 <- raster::intersect(SaxPolyM2,SaxModpolM2)
-areaPolygon(SSM2) / 1e6 # 431468.1
+areaPolygon(SSM2) / 1e6 # 425038.6
 # percent of the polygon explained by the niche
-(431468.1/486247.8)*100 # 88.7
+(425038.6/486247.8)*100 # 87.41193
 
 ###
 # intersection area arb-terr niches
 # Area for the niches
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
 #inter bet Arb and Terr at 0.5 cutoff
 interATM2N <- raster::intersect(ArbModpolM2, TerrModpolM2)
-areaPolygon(interATM2N) / 1e6 # 2316881
+areaPolygon(interATM2N) / 1e6 # 995023.9
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(2316881/7069824)*100 # 32.7
+(995023.9/5422425)*100 # 18.35016
 # inter/terr niche
-(2316881/2891744)*100 # 80.1
+(995023.9/1210240)*100 # 82.21707
 
 ###
 # intersection area arb-water niches
 # Area for the niches
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 #inter bet Arb and water at 0.5 cutoff
 interAWM2N <- raster::intersect(ArbModpolM2, AquaModpolM2)
-areaPolygon(interAWM2N) / 1e6 # 2170841
+areaPolygon(interAWM2N) / 1e6 # 2390726
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(2170841/7069824)*100 # 30.7
+(2390726/5422425)*100 # 44.08961
 # inter/water niche
-(2170841/2214916)*100 # 98.01
+(2390726/2438405)*100 # 98.04466
 
 ###
 # intersection area arb-cave niches
 # Area for the niches
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 #inter bet Arb and cave at 0.5 cutoff
 interACM2N <- raster::intersect(ArbModpolM2, CaveModpolM2)
-areaPolygon(interACM2N) / 1e6 # 1398388
+areaPolygon(interACM2N) / 1e6 # 619542
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(1398388/7069824)*100 # 19.8
+(619542/5422425)*100 # 11.42555
 # inter/cave niche
-(1398388/1405879)*100 # 99.5
+(619542/619542)*100 # 100
 
 ###
 # intersection area arb-foss niches
 # Area for the niches
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 #inter bet Arb and foss at 0.5 cutoff
 interAFM2N <- raster::intersect(ArbModpolM2, FossModpolM2)
-areaPolygon(interAFM2N) / 1e6 # 3621071
+areaPolygon(interAFM2N) / 1e6 # 2931211
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(3621071/7069824)*100 # 51.2
+(2931211/5422425)*100 # 54.0572
 # inter/foss niche
-(3621071/3757558)*100 # 96.4
+(2931211/3000761)*100 # 97.68225
 
 ###
 # intersection area arb-sax niches
 # Area for the niches
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 #inter bet Arb and sax at 0.5 cutoff
 interASM2N <- raster::intersect(ArbModpolM2, SaxModpolM2)
-areaPolygon(interASM2N) / 1e6 # 1567445
+areaPolygon(interASM2N) / 1e6 # 741251.8
 # percent of each niche that overlaps with the other by area
 # inter/arb niche
-(1567445/7069824)*100 # 22.2
+(741251.8/5422425)*100 # 13.67012
 # inter/sax niche
-(1567445/1615342)*100 # 97.03
+(741251.8/744082.7)*100 # 99.61954
 
 ###
 # intersection area terr-water niches
 # Area for the niches
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 #inter bet Terr and Water at 0.5 cutoff
 interTWM2N <- raster::intersect(TerrModpolM2, AquaModpolM2)
-areaPolygon(interTWM2N) / 1e6 # 834921.5
+areaPolygon(interTWM2N) / 1e6 # 618757.2
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(834921.5/2891744)*100 # 28.9
+(618757.2/1210240)*100 # 51.12682
 # inter/water niche
-(834921.5/2214916)*100 # 37.7
+(618757.2/2438405)*100 # 25.37549
 
 ###
 # intersection area terr-cave niches
 # Area for the niches
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 #inter bet Terr and Cave at 0.5 cutoff
 interTCM2N <- raster::intersect(TerrModpolM2, CaveModpolM2)
-areaPolygon(interTCM2N) / 1e6 # 630460.9
+areaPolygon(interTCM2N) / 1e6 # 128342
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(630460.9/2891744)*100 # 21.8
+(128342/1210240)*100 # 10.60467
 # inter/cave niche
-(630460.9/1405879)*100 # 44.8
+(128342/619542)*100 # 20.71563
 
 ###
 # intersection area terr-foss niches
 # Area for the niches
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 #inter bet Terr and Foss at 0.5 cutoff
 interTFM2N <- raster::intersect(TerrModpolM2, FossModpolM2)
-areaPolygon(interTFM2N) / 1e6 # 992514.3
+areaPolygon(interTFM2N) / 1e6 # 585655.3
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(992514.3/2891744)*100 # 34.3
+(585655.3/1210240)*100 # 48.39167
 # inter/foss niche
-(992514.3/3757558)*100 # 26.4
+(585655.3/3000761)*100 # 19.51689
 
 ###
 # intersection area terr-Sax niches
 # Area for the niches
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 #inter bet Terr and Sax at 0.5 cutoff
 interTSM2N <- raster::intersect(TerrModpolM2, SaxModpolM2)
-areaPolygon(interTSM2N) / 1e6 # 1076879
+areaPolygon(interTSM2N) / 1e6 # 380625.9
 # percent of each niche that overlaps with the other by area
 # inter/terr niche
-(1076879/2891744)*100 # 37.2
+(380625.9/1210240)*100 # 31.45045
 # inter/sax niche
-(1076879/1615342)*100 # 66.7
+(380625.9/744082.7)*100 # 51.15371
 
 ###
 # intersection area water-cave niches
 # Area for the niches
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 #inter bet Water and Cave at 0.5 cutoff
 interWCM2N <- raster::intersect(AquaModpolM2, CaveModpolM2)
-areaPolygon(interWCM2N) / 1e6 # 1220006
+areaPolygon(interWCM2N) / 1e6 # 570314.4
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(1220006/2214916)*100 # 55.1
+(570314.4/2438405)*100 # 23.38883
 # inter/cave niche
-(1220006/1405879)*100 # 86.8
+(570314.4/619542)*100 # 92.05419
 
 ###
 # intersection area water-foss niches
 # Area for the niches
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 #inter bet Water and Foss at 0.5 cutoff
 interWFM2N <- raster::intersect(AquaModpolM2, FossModpolM2)
-areaPolygon(interWFM2N) / 1e6 # 2117673
+areaPolygon(interWFM2N) / 1e6 # 2160864
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(2117673/2214916)*100 # 95.6
+(2160864/2438405)*100 # 88.61793
 # inter/foss niche
-(2117673/3757558)*100 # 56.3
+(2160864/3000761)*100 # 72.01053
 
 ###
 # intersection area water-Sax niches
 # Area for the niches
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 #inter bet Water and Sax at 0.5 cutoff
 interWSM2N <- raster::intersect(AquaModpolM2, SaxModpolM2)
-areaPolygon(interWSM2N) / 1e6 # 1291558
+areaPolygon(interWSM2N) / 1e6 # 686827.4
 # percent of each niche that overlaps with the other by area
 # inter/water niche
-(1291558/2214916)*100 # 58.3
+(686827.4/2214916)*100 # 31.00918
 # inter/Sax niche
-(1291558/1615342)*100 # 79.96
+(686827.4/744082.7)*100 # 92.30525
 
 ###
 # intersection area cave-foss niches
 # Area for the niches
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(CaveModpolM2) / 1e6 # 619542
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 #inter bet cave and foss at 0.5 cutoff
 interCFM2N <- raster::intersect(CaveModpolM2, FossModpolM2)
-areaPolygon(interCFM2N) / 1e6 # 1337564
+areaPolygon(interCFM2N) / 1e6 # 606644.5
 # percent of each niche that overlaps with the other by area
 # inter/cave niche
-(1337564/1405879)*100 # 95.1
+(606644.5/619542)*100 # 97.91822
 # inter/foss niche
-(1337564/3757558)*100 # 35.6
+(606644.5/3000761)*100 # 20.21636
 
 ###
 # intersection area cave-Sax niches
 # Area for the niches
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(CaveModpolM2) / 1e6 # 619542
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 #inter bet cave and sax at 0.5 cutoff
 interCSM2N <- raster::intersect(CaveModpolM2, SaxModpolM2)
-areaPolygon(interCSM2N) / 1e6 # 875332.2
+areaPolygon(interCSM2N) / 1e6 # 155806.1
 # percent of each niche that overlaps with the other by area
 # inter/cave niche
-(875332.2/1405879)*100 # 62.3
+(155806.1/619542)*100 # 25.14859
 # inter/sax niche
-(875332.2/1615342)*100 # 54.2
+(155806.1/744082.7)*100 # 20.93935
 
 ###
 # intersection area Foss-Sax niches
 # Area for the niches
-areaPolygon(FossModpolM2) / 1e6 # 3757558
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(FossModpolM2) / 1e6 # 3000761
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 #inter bet foss and sax at 0.5 cutoff
 interFSM2N <- raster::intersect(FossModpolM2, SaxModpolM2)
-areaPolygon(interFSM2N) / 1e6 # 1283081
+areaPolygon(interFSM2N) / 1e6 # 686078.2
 # percent of each niche that overlaps with the other by area
 # inter/foss niche
-(1283081/3757558)*100 # 34.14
+(686078.2/3000761)*100 # 22.86347
 # inter/sax niche
-(1283081/1615342)*100 # 79.4
+(686078.2/744082.7)*100 # 92.20456
 
 
 #######################################
@@ -1472,643 +1469,643 @@ areaPolygon(interFSM2N) / 1e6 # 1283081
 #######################################
 
 # intersect arb polygon with terr niche model
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 interADTL <- raster::intersect(ArbPolyL, TerrModpolL)
-areaPolygon(interADTL) / 1e6 # 253027.7
-(253027.7/5408492)*100 # 4.7
+areaPolygon(interADTL) / 1e6 # 228119.1
+(228119.1/4485079)*100 # 5.086178
 # this is arb spp present where terr can live
 
 # intersect arb polygon with Cave niche model
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 interADCL <- raster::intersect(ArbPolyL, CaveModpolL)
-areaPolygon(interADCL) / 1e6 # 14753.05
-(14753.05/1979474)*100 # 0.7453015
+areaPolygon(interADCL) / 1e6 # 15506.35
+(15506.35/1450650)*100 # 1.068924
 # this is arb spp present where cave can live
 
 # intersect arb polygon with Sax niche model
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 interADSL <- raster::intersect(ArbPolyL, SaxModpolL)
-areaPolygon(interADSL) / 1e6 # 108980.4
-(108980.4/2926900)*100 # 3.723407
+areaPolygon(interADSL) / 1e6 # 24037.58
+(24037.58/2259151)*100 # 1.064009
 # this is arb spp present where sax can live
 
 # intersect arb polygon with Water niche model
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 interADWL <- raster::intersect(ArbPolyL, AquaModpolL)
-areaPolygon(interADWL) / 1e6 # 6764.454
-(6764.454/3652572)*100 #0.185197
+areaPolygon(interADWL) / 1e6 # 15606.52
+(15606.52/3177861)*100 # 0.4911014
 # this is arb spp present where water can live
 
 # intersect arb polygon with Foss niche model
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(FossModpolL) / 1e6 # 3432082
 interADFL <- raster::intersect(ArbPolyL, FossModpolL)
-areaPolygon(interADFL) / 1e6 # 193791
-(193791/4037977)*100 # 4.79921
+areaPolygon(interADFL) / 1e6 # 76418.94
+(76418.94/3432082)*100 # 2.226606
 # this is arb spp present where foss can live
 
 # intersect terr polygon with arb niche model
-areaPolygon(ArbModpolL) / 1e6 # 2190731
+areaPolygon(ArbModpolL) / 1e6 # 1285231
 interTDAL <- raster::intersect(TerrPolyL, ArbModpolL)
-areaPolygon(interTDAL) / 1e6 # 559046.2
-(559046.2/2190731)*100 # 25.51871
+areaPolygon(interTDAL) / 1e6 # 402392.4
+(402392.4/1285231)*100 # 31.30896
 # this is terr spp present where arb can live
 
 # intersect terr polygon with Cave niche model
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 interTDCL <- raster::intersect(TerrPolyL, CaveModpolL)
-areaPolygon(interTDCL) / 1e6 # 902565
-(902565/1979474)*100 # 45.5962
+areaPolygon(interTDCL) / 1e6 # 787702.9
+(787702.9/1450650)*100 # 54.3
 # this is terr spp present where cave can live
 
 # intersect terr polygon with Sax niche model
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 interTDSL <- raster::intersect(TerrPolyL, SaxModpolL)
-areaPolygon(interTDSL) / 1e6 # 1114785
-(1114785/2926900)*100 #  38.08757
+areaPolygon(interTDSL) / 1e6 # 1068010
+(1068010/2259151)*100 # 47.27484
 # this is terr spp present where sax can live
 
 # intersect terr polygon with Water niche model
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 interTDWL <- raster::intersect(TerrPolyL, AquaModpolL)
-areaPolygon(interTDWL) / 1e6 # 1778568
-(1778568/3652572)*100 # 48.69358
+areaPolygon(interTDWL) / 1e6 # 1800371
+(1800371/3177861)*100 # 56.65355
 # this is terr spp present where water can live
 
 # intersect terr polygon with Foss niche model
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(FossModpolL) / 1e6 # 3432082
 interTDFL <- raster::intersect(TerrPolyL, FossModpolL)
-areaPolygon(interTDFL) / 1e6 # 2006834
-(2006834/4037977)*100 # 49.699
+areaPolygon(interTDFL) / 1e6 # 1831950
+(1831950/3432082)*100 # 53.37722
 # this is terr spp present where foss can live
 
 # intersect Water polygon with Arb niche model
-areaPolygon(ArbModpolL) / 1e6 # 2190731
+areaPolygon(ArbModpolL) / 1e6 # 1285231
 interWDAL <- raster::intersect(AquaPolyL, ArbModpolL)
-areaPolygon(interWDAL) / 1e6 # 192616.1
-(192616.1/2190731)*100 # 8.792321
+areaPolygon(interWDAL) / 1e6 # 3677.841
+(3677.841/1285231)*100 # 0.2861619
 # this is water spp present where arb can live
 
 # intersect Water polygon with cave niche model
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 interWDCL <- raster::intersect(AquaPolyL, CaveModpolL)
-areaPolygon(interWDCL) / 1e6 # 1610668
-(1610668/1979474)*100 # 81.36848
+areaPolygon(interWDCL) / 1e6 # 1280260
+(1280260/1450650)*100 # 88.25423
 # this is water spp present where cave can live
 
 # intersect Water polygon with Sax niche model
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 interWDSL <- raster::intersect(AquaPolyL, SaxModpolL)
-areaPolygon(interWDSL) / 1e6 # 1821721
-(1821721/2926900)*100 # 62.24063
+areaPolygon(interWDSL) / 1e6 # 1873615
+(1873615/2259151)*100 # 82.93447
 # this is water spp present where sax can live
 
 # intersect Water polygon with Terr niche model
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 interWDTL <- raster::intersect(AquaPolyL, TerrModpolL)
-areaPolygon(interWDTL) / 1e6 # 2400350
-(2400350/5408492)*100 # 44.38113
+areaPolygon(interWDTL) / 1e6 # 2424644
+(2424644/4485079)*100 # 54.06023
 # this is water spp present where terr can live
 
 # intersect Water polygon with Foss niche model
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(FossModpolL) / 1e6 # 3432082
 interWDFL <- raster::intersect(AquaPolyL, FossModpolL)
-areaPolygon(interWDFL) / 1e6 # 2282488
-(2282488/4037977)*100 # 56.52553
+areaPolygon(interWDFL) / 1e6 # 2176119
+(2176119/3432082)*100 # 63.40522
 # this is water spp present where foss can live
 
 # intersect Cave polygon with Arb niche model
-areaPolygon(ArbModpolL) / 1e6 # 2190731
+areaPolygon(ArbModpolL) / 1e6 # 1285231
 interCDAL <- raster::intersect(CavePolyL, ArbModpolL)
-areaPolygon(interCDAL) / 1e6 # 80505.6
-(80505.6/2190731)*100 # 3.674828
+areaPolygon(interCDAL) / 1e6 # 758.3557
+(758.3557/1285231)*100 # 0.0590054
 # this is cave spp present where arb can live
 
 # intersect Cave polygon with water niche model
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(AquaModpolL) / 1e6 #  3177861
 interCDWL <- raster::intersect(CavePolyL, AquaModpolL)
-areaPolygon(interCDWL) / 1e6 # 1075630
-(1075630/3652572)*100 # 29.44856
+areaPolygon(interCDWL) / 1e6 # 1161286
+(1161286/3177861)*100 # 36.54301
 # this is cave spp present where water can live
 
 # intersect Cave polygon with Sax niche model
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(SaxModpolL) / 1e6 # 2259151
 interCDSL <- raster::intersect(CavePolyL, SaxModpolL)
-areaPolygon(interCDSL) / 1e6 # 1115486
-(1115486/2926900)*100 # 38.11152
+areaPolygon(interCDSL) / 1e6 # 1177995
+(1177995/2259151)*100 # 52.14326
 # this is cave spp present where sax can live
 
 # intersect Cave polygon with terr niche model
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 interCDTL <- raster::intersect(CavePolyL, TerrModpolL)
-areaPolygon(interCDTL) / 1e6 # 1184639
-(1184639/5408492)*100 # 21.90331
+areaPolygon(interCDTL) / 1e6 # 1185329
+(1185329/4485079)*100 # 26.42827
 # this is cave spp present where terr can live
 
 # intersect Cave polygon with foss niche model
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(FossModpolL) / 1e6 # 3432082
 interCDFL <- raster::intersect(CavePolyL, FossModpolL)
-areaPolygon(interCDFL) / 1e6 # 1218438
-(1218438/4037977)*100 # 30.17447
+areaPolygon(interCDFL) / 1e6 # 1207149
+(1207149/3432082)*100 # 35.1725
 # this is cave spp present where foss can live
 
 # intersect Foss polygon with Arb niche model
-areaPolygon(ArbModpolL) / 1e6 # 2190731
+areaPolygon(ArbModpolL) / 1e6 # 1285231
 interFDAL <- raster::intersect(FossPolyL, ArbModpolL)
-areaPolygon(interFDAL) / 1e6 #  297467.2
-( 297467.2/2190731)*100 # 13.57844
+areaPolygon(interFDAL) / 1e6 # 208744.7
+(208744.7/1285231)*100 # 16.2418
 # this is foss spp present where arb can live
 
 # intersect Foss polygon with water niche model
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 interFDWL <- raster::intersect(FossPolyL, AquaModpolL)
-areaPolygon(interFDWL) / 1e6 # 1643511
-(1643511/3652572)*100 # 44.99599
+areaPolygon(interFDWL) / 1e6 # 1690441
+(1690441/3177861)*100 # 53.1943
 # this is foss spp present where water can live
 
 # intersect Foss polygon with Sax niche model
-areaPolygon(SaxModpolL) / 1e6 # 2926900
+areaPolygon(SaxModpolL) / 1e6 #  2259151
 interFDSL <- raster::intersect(FossPolyL, SaxModpolL)
-areaPolygon(interFDSL) / 1e6 #1374328
-(1374328/2926900)*100 # 46.95507
+areaPolygon(interFDSL) / 1e6 # 1453786
+(1453786/2259151)*100 # 64.35099
 # this is foss spp present where sax can live
 
 # intersect Foss polygon with Terr niche model
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 interFDTL <- raster::intersect(FossPolyL, TerrModpolL)
-areaPolygon(interFDTL) / 1e6 # 1902620
-(1902620/5408492)*100 # 35.17838
+areaPolygon(interFDTL) / 1e6 # 1997694
+(1997694/4485079)*100 # 44.54089
 # this is foss spp present where terr can live
 
 # intersect Foss polygon with Cave niche model
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 interFDCL <- raster::intersect(FossPolyL, CaveModpolL)
-areaPolygon(interFDCL) / 1e6 #1281696
-(1281696/1979474)*100 # 64.74932
+areaPolygon(interFDCL) / 1e6 # 1117259
+(1117259/1450650)*100 # 77.01782
 # this is foss spp present where cave can live
 
 # intersect Sax polygon with Arb niche model
-areaPolygon(ArbModpolL) / 1e6 # 2190731
+areaPolygon(ArbModpolL) / 1e6 # 1285231
 interSDAL <- raster::intersect(SaxPolyL, ArbModpolL)
-areaPolygon(interSDAL) / 1e6 # 184501
-(184501/2190731)*100 # 8.421892
+areaPolygon(interSDAL) / 1e6 # 51210.41
+(51210.41/1285231)*100 # 3.98453
 # this is sax spp present where arb can live
 
 # intersect Sax polygon with water niche model
-areaPolygon(AquaModpolL) / 1e6 # 3652572
+areaPolygon(AquaModpolL) / 1e6 # 3177861
 interSDWL <- raster::intersect(SaxPolyL, AquaModpolL)
-areaPolygon(interSDWL) / 1e6 # 1601007
-(1601007/3652572)*100 # 43.83232
+areaPolygon(interSDWL) / 1e6 # 1693343
+(1693343/3177861)*100 # 53.28562
 # this is sax spp present where water can live
 
 # intersect Sax polygon with Foss niche model
-areaPolygon(FossModpolL) / 1e6 # 4037977
+areaPolygon(FossModpolL) / 1e6 # 3432082
 interSDFL <- raster::intersect(SaxPolyL, FossModpolL)
-areaPolygon(interSDFL) / 1e6 # 1696941
-(1696941/4037977)*100 # 42.02453
+areaPolygon(interSDFL) / 1e6 # 1667418
+(1667418/3432082)*100 # 48.58328
 # this is sax spp present where foss can live
 
 # intersect Sax polygon with terr niche model
-areaPolygon(TerrModpolL) / 1e6 # 5408492
+areaPolygon(TerrModpolL) / 1e6 # 4485079
 interSDTL <- raster::intersect(SaxPolyL, TerrModpolL)
-areaPolygon(interSDTL) / 1e6 # 1632758
-(1632758/5408492)*100 # 30.18878
+areaPolygon(interSDTL) / 1e6 # 1690966
+(1690966/4485079)*100 # 37.70203
 # this is sax spp present where terr can live
 
 # intersect Sax polygon with cave niche model
-areaPolygon(CaveModpolL) / 1e6 # 1979474
+areaPolygon(CaveModpolL) / 1e6 # 1450650
 interSDCL <- raster::intersect(SaxPolyL, CaveModpolL)
-areaPolygon(interSDCL) / 1e6 # 1504028
-(1504028/1979474)*100 # 75.9812
+areaPolygon(interSDCL) / 1e6 # 1314201
+(1314201/1450650)*100 # 90.59394
 # this is sax spp present where cave can live
 
 ##############################################################################################
 
 # intersect arb polygon with terr niche model
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 interADTM1 <- raster::intersect(ArbPolyM1, TerrModpolM1)
-areaPolygon(interADTM1) / 1e6 # 254997.6
-(254997.6/6508263)*100 # 3.918059
+areaPolygon(interADTM1) / 1e6 # 212216.4
+(212216.4/5034443)*100 # 4.215291
 # this is arb spp present where terr can live
 
 # intersect arb polygon with Cave niche model
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 interADCM1 <- raster::intersect(ArbPolyM1, CaveModpolM1)
-areaPolygon(interADCM1) / 1e6 # 21626.82
-(21626.82/1317313)*100 # 1.641737
+areaPolygon(interADCM1) / 1e6 # 0
+(0/568391.4)*100 # 0
 # this is arb spp present where cave can live
 
 # intersect arb polygon with Sax niche model
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 interADSM1 <- raster::intersect(ArbPolyM1, SaxModpolM1)
-areaPolygon(interADSM1) / 1e6 # 146211.3
-(146211.3/3031525)*100 # 4.823028
+areaPolygon(interADSM1) / 1e6 # 142.7997
+(142.7997/358996.1)*100 #  0.03977751
 # this is arb spp present where sax can live
 
 # intersect arb polygon with Water niche model
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 interADWM1 <- raster::intersect(ArbPolyM1, AquaModpolM1)
 # this is zero, they dont overlap
 # this is arb spp present where water can live
 
 # intersect arb polygon with Foss niche model
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 interADFM1 <- raster::intersect(ArbPolyM1, FossModpolM1)
-areaPolygon(interADFM1) / 1e6 # 483649.5
-(483649.5/8001117)*100 # 6.044775
+areaPolygon(interADFM1) / 1e6 # 91648.27
+(91648.27/220695.9)*100 # 41.52695
 # this is arb spp present where foss can live
 
 # intersect terr polygon with arb niche model
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
 interTDAM1 <- raster::intersect(TerrPolyM1, ArbModpolM1)
-areaPolygon(interTDAM1) / 1e6 # 698608
-(698608/2004242)*100 # 34.85647
+areaPolygon(interTDAM1) / 1e6 # 523088.6
+(523088.6/1238624)*100 # 42.23143
 # this is terr spp present where arb can live
 
 # intersect terr polygon with Cave niche model
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 interTDCM1 <- raster::intersect(TerrPolyM1, CaveModpolM1)
-areaPolygon(interTDCM1) / 1e6 # 1198917
-(1198917/1317313)*100 # 91.01231
+areaPolygon(interTDCM1) / 1e6 # 562254.6
+(562254.6/568391.4)*100 # 98.92032
 # this is terr spp present where cave can live
 
 # intersect terr polygon with Sax niche model
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 interTDSM1 <- raster::intersect(TerrPolyM1, SaxModpolM1)
-areaPolygon(interTDSM1) / 1e6 # 2190280
-(2190280/3031525)*100 # 72.25011
+areaPolygon(interTDSM1) / 1e6 # 356901.4
+(356901.4/358996.1)*100 # 99.41651
 # this is terr spp present where sax can live
 
 # intersect terr polygon with Water niche model
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 interTDWM1 <- raster::intersect(TerrPolyM1, AquaModpolM1)
-areaPolygon(interTDWM1) / 1e6 # 2742525
-(2742525/3844713)*100 # 71.33237
+areaPolygon(interTDWM1) / 1e6 # 2757471
+(2757471/3185717)*100 # 86.55731
 # this is terr spp present where water can live
 
 # intersect terr polygon with Foss niche model
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 interTDFM1 <- raster::intersect(TerrPolyM1, FossModpolM1)
-areaPolygon(interTDFM1) / 1e6 # 1188821
-(1188821/8001117)*100 # 14.85819
+areaPolygon(interTDFM1) / 1e6 #  68932.18
+(68932.18/220695.9)*100 # 31.23401
 # this is terr spp present where foss can live
 
 # intersect Water polygon with Arb niche model
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
 interWDAM1 <- raster::intersect(AquaPolyM1, ArbModpolM1)
-areaPolygon(interWDAM1) / 1e6 # 173803.6
-(173803.6/2004242)*100 # 8.671787
+areaPolygon(interWDAM1) / 1e6 # 1601.906
+(1601.906/1238624)*100 # 0.1293295
 # this is water spp present where arb can live
 
 # intersect Water polygon with cave niche model
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 interWDCM1 <- raster::intersect(AquaPolyM1, CaveModpolM1)
-areaPolygon(interWDCM1) / 1e6 # 1064592
-(1064592/1317313)*100 # 80.81542
+areaPolygon(interWDCM1) / 1e6 # 463548.4
+(463548.4/568391.4)*100 # 81.55444
 # this is water spp present where cave can live
 
 # intersect Water polygon with Sax niche model
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 interWDSM1 <- raster::intersect(AquaPolyM1, SaxModpolM1)
-areaPolygon(interWDSM1) / 1e6 # 1768477
-(1768477/3031525)*100 # 58.33622
+areaPolygon(interWDSM1) / 1e6 # 356338
+(356338/358996.1)*100 # 99.25957
 # this is water spp present where sax can live
 
 # intersect Water polygon with Terr niche model
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 interWDTM1 <- raster::intersect(AquaPolyM1, TerrModpolM1)
-areaPolygon(interWDTM1) / 1e6 # 2691229
-(2691229/6508263)*100 # 41.35096
+areaPolygon(interWDTM1) / 1e6 # 2611339
+(2611339/5034443)*100 # 51.86947
 # this is water spp present where terr can live
 
 # intersect Water polygon with Foss niche model
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 interWDFM1 <- raster::intersect(AquaPolyM1, FossModpolM1)
-areaPolygon(interWDFM1) / 1e6 # 529616.1
-(529616.1/8001117)*100 # 6.619277
+areaPolygon(interWDFM1) / 1e6 # 0
+(0/220695.9)*100 # 0
 # this is water spp present where foss can live
 
 # intersect Cave polygon with Arb niche model
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
 interCDAM1 <- raster::intersect(CavePolyM1, ArbModpolM1)
-areaPolygon(interCDAM1) / 1e6 # 11266.7
-(11266.7/2004242)*100 # 0.5621427
+areaPolygon(interCDAM1) / 1e6 # 428.6043
+(428.6043/1238624)*100 # 0.03460326
 # this is cave spp present where arb can live
 
 # intersect Cave polygon with water niche model
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 interCDWM1 <- raster::intersect(CavePolyM1, AquaModpolM1)
-areaPolygon(interCDWM1) / 1e6 # 414112.5
-(414112.5/3844713)*100 # 10.77096
+areaPolygon(interCDWM1) / 1e6 # 440487.8
+(440487.8/3185717)*100 # 13.82696
 # this is cave spp present where water can live
 
 # intersect Cave polygon with Sax niche model
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 interCDSM1 <- raster::intersect(CavePolyM1, SaxModpolM1)
-areaPolygon(interCDSM1) / 1e6 # 456968.9
-(456968.9/3031525)*100 # 15.0739
+areaPolygon(interCDSM1) / 1e6 # 195580.5
+(195580.5/358996.1)*100 # 54.47984
 # this is cave spp present where sax can live
 
 # intersect Cave polygon with terr niche model
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 interCDTM1 <- raster::intersect(CavePolyM1, TerrModpolM1)
-areaPolygon(interCDTM1) / 1e6 # 459493.1
-(459493.1/6508263)*100 # 7.06015
+areaPolygon(interCDTM1) / 1e6 # 459201.2
+(459201.2/5034443)*100 # 9.121192
 # this is cave spp present where terr can live
 
 # intersect Cave polygon with foss niche model
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 interCDFM1 <- raster::intersect(CavePolyM1, FossModpolM1)
-areaPolygon(interCDFM1) / 1e6 # 59040.59
-(59040.59/8001117)*100 # 0.7379043
+areaPolygon(interCDFM1) / 1e6 # 0
+(0/220695.9)*100 # 0
 # this is cave spp present where foss can live
 
 # intersect Foss polygon with Arb niche model
-areaPolygon(ArbModpolM1) / 1e6 # 2004242
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
 interFDAM1 <- raster::intersect(FossPolyM1, ArbModpolM1)
-areaPolygon(interFDAM1) / 1e6 # 86378
-(86378/2004242)*100 # 4.309759
+areaPolygon(interFDAM1) / 1e6 # 68450.68
+(68450.68/1238624)*100 # 5.526349
 # this is foss spp present where arb can live
 
 # intersect Foss polygon with water niche model
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 interFDWM1 <- raster::intersect(FossPolyM1, AquaModpolM1)
 # this is zero, they do not intersect
 # this is foss spp present where water can live
 
 # intersect Foss polygon with Sax niche model
-areaPolygon(SaxModpolM1) / 1e6 # 3031525
+areaPolygon(SaxModpolM1) / 1e6 # 358996.1
 interFDSM1 <- raster::intersect(FossPolyM1, SaxModpolM1)
-areaPolygon(interFDSM1) / 1e6 # 132.4006
-(132.4006/3031525)*100 # 0.004367459
+areaPolygon(interFDSM1) / 1e6 # 0
+(0/358996.1)*100 # 0
 # this is foss spp present where sax can live
 
 # intersect Foss polygon with Terr niche model
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 interFDTM1 <- raster::intersect(FossPolyM1, TerrModpolM1)
-areaPolygon(interFDTM1) / 1e6 # 8759.187
-(8759.187/6508263)*100 # 0.1345856
+areaPolygon(interFDTM1) / 1e6 # 3849.092
+(3849.092/5034443)*100 # 0.07645517
 # this is foss spp present where terr can live
 
 # intersect Foss polygon with Cave niche model
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 interFDCM1 <- raster::intersect(FossPolyM1, CaveModpolM1)
 # this is zero, they do not intersect
 # this is foss spp present where cave can live
 
 # intersect Sax polygon with Arb niche model
-areaPolygon(ArbModpolM1) / 1e6 #  2004242
+areaPolygon(ArbModpolM1) / 1e6 # 1238624
 interSDAM1 <- raster::intersect(SaxPolyM1, ArbModpolM1)
-areaPolygon(interSDAM1) / 1e6 # 16688.77
-(16688.77/2004242)*100 # 0.8326724
+areaPolygon(interSDAM1) / 1e6 # 751.0628
+(751.0628/1238624)*100 # 0.06063687
 # this is sax spp present where arb can live
 
 # intersect Sax polygon with water niche model
-areaPolygon(AquaModpolM1) / 1e6 # 3844713
+areaPolygon(AquaModpolM1) / 1e6 # 3185717
 interSDWM1 <- raster::intersect(SaxPolyM1, AquaModpolM1)
-areaPolygon(interSDWM1) / 1e6 #  125439.5
-(125439.5/3844713)*100 # 3.262649
+areaPolygon(interSDWM1) / 1e6 #  171737.1
+(171737.1/3185717)*100 # 5.390846
 # this is sax spp present where water can live
 
 # intersect Sax polygon with Foss niche model
-areaPolygon(FossModpolM1) / 1e6 # 8001117
+areaPolygon(FossModpolM1) / 1e6 # 220695.9
 interSDFM1 <- raster::intersect(SaxPolyM1, FossModpolM1)
-areaPolygon(interSDFM1) / 1e6 # 48538.48
-(48538.48/8001117)*100 # 0.6066463
+areaPolygon(interSDFM1) / 1e6 # 216.7672
+(216.7672/220695.9)*100 # 0.09821986
 # this is sax spp present where foss can live
 
 # intersect Sax polygon with terr niche model
-areaPolygon(TerrModpolM1) / 1e6 # 6508263
+areaPolygon(TerrModpolM1) / 1e6 # 5034443
 interSDTM1 <- raster::intersect(SaxPolyM1, TerrModpolM1)
-areaPolygon(interSDTM1) / 1e6 # 178898.1
-(178898.1/6508263)*100 # 2.748784
+areaPolygon(interSDTM1) / 1e6 # 177320.5
+(177320.5/5034443)*100 # 3.522147
 # this is sax spp present where terr can live
 
 # intersect Sax polygon with cave niche model
-areaPolygon(CaveModpolM1) / 1e6 # 1317313
+areaPolygon(CaveModpolM1) / 1e6 # 568391.4
 interSDCM1 <- raster::intersect(SaxPolyM1, CaveModpolM1)
-areaPolygon(interSDCM1) / 1e6 # 148092.4
-(148092.4/1317313)*100 # 11.24201
+areaPolygon(interSDCM1) / 1e6 # 120628.8
+(120628.8/568391.4)*100 # 21.22284
 # this is sax spp present where cave can live
 
 ##############################################################################################
 
 # intersect arb polygon with terr niche model
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
+areaPolygon(TerrModpolM2) / 1e6 #1210240
 interADTM2 <- raster::intersect(ArbPolyM2, TerrModpolM2)
-areaPolygon(interADTM2) / 1e6 # 1311364
-(1311364/2891744)*100 # 45.34855
+areaPolygon(interADTM2) / 1e6 # 860980.4
+(860980.4/1210240)*100 # 71.14129
 # this is arb spp present where terr can live
 
 # intersect arb polygon with Cave niche model
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 interADCM2 <- raster::intersect(ArbPolyM2, CaveModpolM2)
-areaPolygon(interADCM2) / 1e6 # 1231383
-(1231383/1405879)*100 # 87.58812
+areaPolygon(interADCM2) / 1e6 # 611974.8
+(611974.8/619542)*100 # 98.77858
 # this is arb spp present where cave can live
 
 # intersect arb polygon with Sax niche model
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 interADSM2 <- raster::intersect(ArbPolyM2, SaxModpolM2)
-areaPolygon(interADSM2) / 1e6 # 1278082
-(1278082/1615342)*100 # 79.12145
+areaPolygon(interADSM2) / 1e6 # 707441.6
+(707441.6/744082.7)*100 # 95.07567
 # this is arb spp present where sax can live
 
 # intersect arb polygon with Water niche model
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 interADWM2 <- raster::intersect(ArbPolyM2, AquaModpolM2)
-areaPolygon(interADWM2) / 1e6 # 1806221
-(1806221/2214916)*100 # 81.54806
+areaPolygon(interADWM2) / 1e6 # 2064579
+(2064579/2438405)*100 # 84.66924
 # this is arb spp present where water can live
 
 # intersect arb polygon with Foss niche model
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 interADFM2 <- raster::intersect(ArbPolyM2, FossModpolM2)
-areaPolygon(interADFM2) / 1e6 # 2669063
-(2669063/3757558)*100 # 71.03185
+areaPolygon(interADFM2) / 1e6 # 2397664
+(2397664/3000761)*100 # 79.90186
 # this is arb spp present where foss can live
 
 # intersect terr polygon with arb niche model
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
+areaPolygon(ArbModpolM2) / 1e6 # 619542
 interTDAM2 <- raster::intersect(TerrPolyM2, ArbModpolM2)
-areaPolygon(interTDAM2) / 1e6 # 456202.4
-(456202.4/7069824)*100 # 6.452811
+areaPolygon(interTDAM2) / 1e6 # 445856.3
+(445856.3/619542)*100 # 71.96547
 # this is terr spp present where arb can live
 
 # intersect terr polygon with Cave niche model
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 interTDCM2 <- raster::intersect(TerrPolyM2, CaveModpolM2)
-areaPolygon(interTDCM2) / 1e6 # 77345.76
-(77345.76/1405879)*100 # 5.501594
+areaPolygon(interTDCM2) / 1e6 # 48742.96
+(48742.96/619542)*100 # 7.86758
 # this is terr spp present where cave can live
 
 # intersect terr polygon with Sax niche model
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 interTDSM2 <- raster::intersect(TerrPolyM2, SaxModpolM2)
-areaPolygon(interTDSM2) / 1e6 # 244599.7
-(244599.7/1615342)*100 # 15.14229
+areaPolygon(interTDSM2) / 1e6 # 85453.15
+(85453.15/744082.7)*100 # 11.48436
 # this is terr spp present where sax can live
 
 # intersect terr polygon with Water niche model
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 interTDWM2 <- raster::intersect(TerrPolyM2, AquaModpolM2)
-areaPolygon(interTDWM2) / 1e6 # 205186.5
-(205186.5/2214916)*100 # 9.26385
+areaPolygon(interTDWM2) / 1e6 # 226003.9
+(226003.9/2438405)*100 # 9.268514
 # this is terr spp present where water can live
 
 # intersect terr polygon with Foss niche model
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 interTDFM2 <- raster::intersect(TerrPolyM2, FossModpolM2)
-areaPolygon(interTDFM2) / 1e6 # 321956.1
-(321956.1/3757558)*100 # 8.568227
+areaPolygon(interTDFM2) / 1e6 # 209156.6
+(209156.6/3000761)*100 # 6.970119
 # this is terr spp present where foss can live
 
 # intersect Water polygon with Arb niche model
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
 interWDAM2 <- raster::intersect(AquaPolyM2, ArbModpolM2)
-areaPolygon(interWDAM2) / 1e6 # 2076688
-(2076688/7069824)*100 # 29.37397
+areaPolygon(interWDAM2) / 1e6 # 2120162
+(2120162/5422425)*100 # 39.09989
 # this is water spp present where arb can live
 
 # intersect Water polygon with cave niche model
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 interWDCM2 <- raster::intersect(AquaPolyM2, CaveModpolM2)
-areaPolygon(interWDCM2) / 1e6 # 1052952
-(1052952/1405879)*100 # 74.89635
+areaPolygon(interWDCM2) / 1e6 # 482903.1
+(482903.1/619542)*100 # 77.94518
 # this is water spp present where cave can live
 
 # intersect Water polygon with Sax niche model
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 interWDSM2 <- raster::intersect(AquaPolyM2, SaxModpolM2)
-areaPolygon(interWDSM2) / 1e6 # 1201398
-(1201398/1615342)*100 # 74.37422
+areaPolygon(interWDSM2) / 1e6 # 673854
+(673854/744082.7)*100 # 
 # this is water spp present where sax can live
 
 # intersect Water polygon with Terr niche model
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
 interWDTM2 <- raster::intersect(AquaPolyM2, TerrModpolM2)
-areaPolygon(interWDTM2) / 1e6 # 776202.9
-(776202.9/2891744)*100 # 26.84203
+areaPolygon(interWDTM2) / 1e6 # 612603.4
+(612603.4/1210240)*100 # 50.61834
 # this is water spp present where terr can live
 
 # intersect Water polygon with Foss niche model
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(FossModpolM2) / 1e6 #3000761
 interWDFM2 <- raster::intersect(AquaPolyM2, FossModpolM2)
-areaPolygon(interWDFM2) / 1e6 # 2012075
-(2012075/3757558)*100 # 53.54741
+areaPolygon(interWDFM2) / 1e6 # 1906659
+(1906659/3000761)*100 # 63.53918
 # this is water spp present where foss can live
 
 # intersect Cave polygon with Arb niche model
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
 interCDAM2 <- raster::intersect(CavePolyM2, ArbModpolM2)
-areaPolygon(interCDAM2) / 1e6 # 460583.2
-(460583.2/7069824)*100 # 6.514776
+areaPolygon(interCDAM2) / 1e6 # 468919.5
+(468919.5/5422425)*100 # 8.647782
 # this is cave spp present where arb can live
 
 # intersect Cave polygon with water niche model
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 interCDWM2 <- raster::intersect(CavePolyM2, AquaModpolM2)
-areaPolygon(interCDWM2) / 1e6 # 419199.5
-(419199.5/2214916)*100 # 18.9262
+areaPolygon(interCDWM2) / 1e6 # 424255.6
+(424255.6/2438405)*100 # 17.3989
 # this is cave spp present where water can live
 
 # intersect Cave polygon with Sax niche model
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 interCDSM2 <- raster::intersect(CavePolyM2, SaxModpolM2)
-areaPolygon(interCDSM2) / 1e6 # 280878.3
-(280878.3/1615342)*100 # 17.38816
+areaPolygon(interCDSM2) / 1e6 # 83977.9
+(83977.9/744082.7)*100 # 11.2861
 # this is cave spp present where sax can live
 
 # intersect Cave polygon with terr niche model
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
+areaPolygon(TerrModpolM2) / 1e6 #1210240
 interCDTM2 <- raster::intersect(CavePolyM2, TerrModpolM2)
-areaPolygon(interCDTM2) / 1e6 # 229112.2
-(229112.2/2891744)*100 #  7.922977
+areaPolygon(interCDTM2) / 1e6 # 83018.22
+(83018.22/1210240)*100 # 6.859649
 # this is cave spp present where terr can live
 
 # intersect Cave polygon with foss niche model
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 interCDFM2 <- raster::intersect(CavePolyM2, FossModpolM2)
-areaPolygon(interCDFM2) / 1e6 # 463073.3
-(463073.3/3757558)*100 # 12.32378
+areaPolygon(interCDFM2) / 1e6 # 2011769
+(2011769/3000761)*100 # 67.04196
 # this is cave spp present where foss can live
 
 # intersect Foss polygon with Arb niche model
-areaPolygon(ArbModpolM2) / 1e6 # 7069824
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
 interFDAM2 <- raster::intersect(FossPolyM2, ArbModpolM2)
-areaPolygon(interFDAM2) / 1e6 # 1975428
-(1975428/7069824)*100 # 27.94169
+areaPolygon(interFDAM2) / 1e6 # 2011769
+(2011769/5422425)*100 # 37.10091
 # this is foss spp present where arb can live
 
 # intersect Foss polygon with water niche model
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 interFDWM2 <- raster::intersect(FossPolyM2, AquaModpolM2)
-areaPolygon(interFDWM2) / 1e6 #  1399241
-(1399241/2214916)*100 # 63.17355
+areaPolygon(interFDWM2) / 1e6 #  1574994
+(1574994/2438405)*100 # 64.59116
 # this is foss spp present where water can live
 
 # intersect Foss polygon with Sax niche model
-areaPolygon(SaxModpolM2) / 1e6 # 1615342
+areaPolygon(SaxModpolM2) / 1e6 # 744082.7
 interFDSM2 <- raster::intersect(FossPolyM2, SaxModpolM2)
-areaPolygon(interFDSM2) / 1e6 # 832857
-(832857/1615342)*100 # 51.55917
+areaPolygon(interFDSM2) / 1e6 # 537939.4
+(537939.4/744082.7)*100 # 72.29565
 # this is foss spp present where sax can live
 
 # intersect Foss polygon with Terr niche model
-areaPolygon(TerrModpolM2) / 1e6 #  2891744
+areaPolygon(TerrModpolM2) / 1e6 #  1210240
 interFDTM2 <- raster::intersect(FossPolyM2, TerrModpolM2)
-areaPolygon(interFDTM2) / 1e6 # 523687.5
-(523687.5/2891744)*100 # 18.10975
+areaPolygon(interFDTM2) / 1e6 # 487918.9
+(487918.9/1210240)*100 # 40.31588
 # this is foss spp present where terr can live
 
 # intersect Foss polygon with Cave niche model
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 interFDCM2 <- raster::intersect(FossPolyM2, CaveModpolM2)
-areaPolygon(interFDCM2) / 1e6 # 894300.6
-(894300.6/1405879)*100 # 63.61149
+areaPolygon(interFDCM2) / 1e6 # 449362.8
+(449362.8/619542)*100 # 72.53145
 # this is foss spp present where cave can live
 
 # intersect Sax polygon with Arb niche model
-areaPolygon(ArbModpolM2) / 1e6 #  7069824
+areaPolygon(ArbModpolM2) / 1e6 # 5422425
 interSDAM2 <- raster::intersect(SaxPolyM2, ArbModpolM2)
-areaPolygon(interSDAM2) / 1e6 # 472748.7
-(472748.7/7069824)*100 # 6.686852
+areaPolygon(interSDAM2) / 1e6 # 474380.7
+(474380.7/5422425)*100 # 8.748497
 # this is sax spp present where arb can live
 
 # intersect Sax polygon with water niche model
-areaPolygon(AquaModpolM2) / 1e6 # 2214916
+areaPolygon(AquaModpolM2) / 1e6 # 2438405
 interSDWM2 <- raster::intersect(SaxPolyM2, AquaModpolM2)
-areaPolygon(interSDWM2) / 1e6 # 407093.7
-(407093.7/2214916)*100 # 18.37965
+areaPolygon(interSDWM2) / 1e6 # 428326.7
+(428326.7/2438405)*100 # 17.56586
 # this is sax spp present where water can live
 
 # intersect Sax polygon with Foss niche model
-areaPolygon(FossModpolM2) / 1e6 # 3757558
+areaPolygon(FossModpolM2) / 1e6 # 3000761
 interSDFM2 <- raster::intersect(SaxPolyM2, FossModpolM2)
-areaPolygon(interSDFM2) / 1e6 # 435987.3
-(435987.3/3757558)*100 # 11.60294
+areaPolygon(interSDFM2) / 1e6 # 428297.4
+(428297.4/3000761)*100 # 14.27296
 # this is sax spp present where foss can live
 
 # intersect Sax polygon with terr niche model
-areaPolygon(TerrModpolM2) / 1e6 # 2891744
+areaPolygon(TerrModpolM2) / 1e6 # 1210240
 interSDTM2 <- raster::intersect(SaxPolyM2, TerrModpolM2)
-areaPolygon(interSDTM2) / 1e6 # 238153.2
-(238153.2/2891744)*100 # 8.235625
+areaPolygon(interSDTM2) / 1e6 # 194748.8
+(194748.8/1210240)*100 # 16.09175
 # this is sax spp present where terr can live
 
 # intersect Sax polygon with cave niche model
-areaPolygon(CaveModpolM2) / 1e6 # 1405879
+areaPolygon(CaveModpolM2) / 1e6 # 619542
 interSDCM2 <- raster::intersect(SaxPolyM2, CaveModpolM2)
-areaPolygon(interSDCM2) / 1e6 # 338502
-(338502/1405879)*100 # 24.07761
+areaPolygon(interSDCM2) / 1e6 # 95429.33
+(95429.33/619542)*100 # 15.40321
 # this is sax spp present where cave can live
 
 ##################
 # niche equivalency
 ##################
 
-
 # climate data
-ClimateData <- stack('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogCGTiff.gri')
+ClimateData <- stack('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataTogetherFinalGTiff.gri')
+
 # crop data to reasonable extent
 max.lat = 140
 min.lat = -140
@@ -2118,11 +2115,54 @@ geographic.extent <- extent(x = c(min.lat, max.lat, min.lon, max.lon))
 predictors.crop <- crop(x = ClimateData, y = geographic.extent)
 predictors <- predictors.crop
 
-# get the points from the Maxent_strict script and make sure its the *New versions
+# get point data ready
+ArbPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_lenient/chull.shp")
+TerrPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Terr_Points_lenient/chull.shp")
+ArbPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_M1/chull.shp")
+TerrPointsM1 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Terr_Points_M1/chull.shp")
+ArbPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_M2/chull.shp")
+TerrPointsM2 <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Terr_Points_M2/chull.shp")
 
-# takes a shit ton of time and crashes computer :(
-dismo::nicheEquivalency(sp1=ArbNew, sp2=TerrNew, predictors = predictors,
-                        n=2, model=maxent, verbose=T)
+# make point data frame
+ArbLDF <- data.frame(ArbPointsL)
+ArbLDF <- ArbLDF[,1:2]
+TerrLDF <- data.frame(TerrPointsL)
+TerrLDF <- TerrLDF[,1:2]
 
-# also note there is another niche.equivalency in ENM with breadth but i cant load it 
-# also in phyloclim that requires one file of occ points and not defined two
+ArbM1DF <- data.frame(ArbPointsM1)
+ArbM1DF <- ArbM1DF[,1:2]
+TerrM1DF <- data.frame(TerrPointsM1)
+TerrM1DF <- TerrM1DF[,1:2]
+
+ArbM2DF <- data.frame(ArbPointsM2)
+ArbM2DF <- ArbM2DF[,1:2]
+TerrM2DF <- data.frame(TerrPointsM2)
+TerrM2DF <- TerrM2DF[,1:2]
+
+# leninet
+IDTestL <- dismo::nicheEquivalency(sp1=ArbLDF, sp2=TerrLDF, predictors = predictors,
+                                  n=100, model=maxent, verbose=T)
+chars <- capture.output(print(IDTestL))
+writeLines(chars, con = file("output_lenient.txt"))
+
+# M1
+IDTestM1 <- dismo::nicheEquivalency(sp1=ArbM1DF, sp2=TerrM1DF, predictors = predictors,
+                                   n=100, model=maxent, verbose=T)
+chars <- capture.output(print(IDTestM1))
+writeLines(chars, con = file("output_M1.txt"))
+
+# M2
+IDTestM2 <- dismo::nicheEquivalency(sp1=ArbM2DF, sp2=TerrM2DF, predictors = predictors,
+                                    n=100, model=maxent, verbose=T)
+chars <- capture.output(print(IDTestM2))
+writeLines(chars, con = file("output_M2.txt"))
+
+
+
+
+
+
+
+
+
+

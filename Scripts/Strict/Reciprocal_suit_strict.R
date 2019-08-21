@@ -744,7 +744,7 @@ writeLines(chars, con = file("output.txt"))
 
 
 
-# nah bitch dont do this below
+# dont do this below
 ######################################
 # background test
 ?bg.similarity.test
