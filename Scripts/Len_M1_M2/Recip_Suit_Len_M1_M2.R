@@ -2112,8 +2112,7 @@ min.lat = -140
 max.lon = 70
 min.lon = -20
 geographic.extent <- extent(x = c(min.lat, max.lat, min.lon, max.lon))
-predictors.crop <- crop(x = ClimateData, y = geographic.extent)
-predictors <- predictors.crop
+predictors <- crop(x = ClimateData, y = geographic.extent)
 
 # get point data ready
 ArbPointsL <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Scripts/Len_M1_M2/Points/Arb_Points_lenient/chull.shp")
@@ -2142,8 +2141,26 @@ TerrM2DF <- TerrM2DF[,1:2]
 # leninet
 IDTestL <- dismo::nicheEquivalency(sp1=ArbLDF, sp2=TerrLDF, predictors = predictors,
                                   n=100, model=maxent, verbose=T)
+IDTestL$statistic
 chars <- capture.output(print(IDTestL))
 writeLines(chars, con = file("output_lenient.txt"))
+
+OutputSimple <- rbind(IDTestL$statistic, IDTestL$null.distribution)
+D_Rand <- OutputSimple[-1,1]
+D_Obs <- OutputSimple[1,1]
+(length(which(D_Rand < D_Obs))+1)/100 # p = 0.01
+I_Rand <- OutputSimple[-1,2]
+I_Obs <- OutputSimple[1,2]
+(length(which(I_Rand < I_Obs))+1)/100 # p = 0.01
+write.csv(OutputSimple, "IandDOutput_lenient.csv", row.names = F)
+pdf("IandDSig_lenient.pdf", height = 3, width = 5)
+par(mfrow=c(1,2), mar = c(4,4,2,1))
+hist(D_Rand, col = "blue", xlim = c(0, 1), main = "Shoener's D", xlab = "D", ylab = "Frequency")
+abline(v = D_Obs, col = "blue", lwd = 3)
+par(mar=c(4,2,2,1))
+hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
+abline(v = I_Obs, col = "red", lwd = 3)
+dev.off()
 
 # M1
 IDTestM1 <- dismo::nicheEquivalency(sp1=ArbM1DF, sp2=TerrM1DF, predictors = predictors,
