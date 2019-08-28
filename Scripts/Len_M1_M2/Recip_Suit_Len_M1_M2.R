@@ -2141,10 +2141,8 @@ TerrM2DF <- TerrM2DF[,1:2]
 # leninet
 IDTestL <- dismo::nicheEquivalency(sp1=ArbLDF, sp2=TerrLDF, predictors = predictors,
                                   n=100, model=maxent, verbose=T)
-IDTestL$statistic
 chars <- capture.output(print(IDTestL))
 writeLines(chars, con = file("output_lenient.txt"))
-
 OutputSimple <- rbind(IDTestL$statistic, IDTestL$null.distribution)
 D_Rand <- OutputSimple[-1,1]
 D_Obs <- OutputSimple[1,1]
@@ -2167,13 +2165,44 @@ IDTestM1 <- dismo::nicheEquivalency(sp1=ArbM1DF, sp2=TerrM1DF, predictors = pred
                                    n=100, model=maxent, verbose=T)
 chars <- capture.output(print(IDTestM1))
 writeLines(chars, con = file("output_M1.txt"))
+OutputSimple <- rbind(IDTestM1$statistic, IDTestM1$null.distribution)
+D_Rand <- OutputSimple[-1,1]
+D_Obs <- OutputSimple[1,1]
+(length(which(D_Rand < D_Obs))+1)/100 # p = 0.01
+I_Rand <- OutputSimple[-1,2]
+I_Obs <- OutputSimple[1,2]
+(length(which(I_Rand < I_Obs))+1)/100 # p = 0.01
+write.csv(OutputSimple, "IandDOutput_M1.csv", row.names = F)
+pdf("IandDSig_M1.pdf", height = 3, width = 5)
+par(mfrow=c(1,2), mar = c(4,4,2,1))
+hist(D_Rand, col = "blue", xlim = c(0, 1), main = "Shoener's D", xlab = "D", ylab = "Frequency")
+abline(v = D_Obs, col = "blue", lwd = 3)
+par(mar=c(4,2,2,1))
+hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
+abline(v = I_Obs, col = "red", lwd = 3)
+dev.off()
 
-# M2
+# M2 - here lauren
 IDTestM2 <- dismo::nicheEquivalency(sp1=ArbM2DF, sp2=TerrM2DF, predictors = predictors,
                                     n=100, model=maxent, verbose=T)
 chars <- capture.output(print(IDTestM2))
 writeLines(chars, con = file("output_M2.txt"))
-
+OutputSimple <- rbind(IDTestM2$statistic, IDTestM2$null.distribution)
+D_Rand <- OutputSimple[-1,1]
+D_Obs <- OutputSimple[1,1]
+(length(which(D_Rand < D_Obs))+1)/100 # p = 0.01
+I_Rand <- OutputSimple[-1,2]
+I_Obs <- OutputSimple[1,2]
+(length(which(I_Rand < I_Obs))+1)/100 # p = 0.01
+write.csv(OutputSimple, "IandDOutput_M2.csv", row.names = F)
+pdf("IandDSig_M2.pdf", height = 3, width = 5)
+par(mfrow=c(1,2), mar = c(4,4,2,1))
+hist(D_Rand, col = "blue", xlim = c(0, 1), main = "Shoener's D", xlab = "D", ylab = "Frequency")
+abline(v = D_Obs, col = "blue", lwd = 3)
+par(mar=c(4,2,2,1))
+hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
+abline(v = I_Obs, col = "red", lwd = 3)
+dev.off()
 
 
 
