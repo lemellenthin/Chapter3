@@ -8,8 +8,10 @@ library(rgdal)
 library(rgeos)
 library(dismo)
 
+#load climate data
 ClimateData <- raster::stack("Data/Raw/Bioclim and Shapefile Data/RawClimateFiles/ResizedClimateFilesForMaxEnt/AllDataTogetherFinalGTiff.gri")
 
+# load polygons
 ArbPolyS <- rgdal::readOGR("Data/Pruned/Chapter3/MaxEnt/ArbPoly_strict/chull.shp")
 TerrPolyS <- rgdal::readOGR("Data/Pruned/Chapter3/MaxEnt/TerrPoly_strict/chull.shp")
 ArbPointsS <- rgdal::readOGR("Data/Pruned/Chapter3/MaxEnt/Arb_Points_strict/chull.shp")
@@ -28,9 +30,9 @@ Sys.setenv(NOAWT=TRUE)
 library(rJava)
 .jinit()
 
+#niche equivalency test
 OutputTest <- dismo::nicheEquivalency(sp1=ArbPointsS, sp2=TerrPointsS, predictors = predictors,
                         n=1, model=maxent, verbose=T) 
-
 OutputTest$statistic
 
 Output <- dismo::nicheEquivalency(sp1=ArbPointsS, sp2=TerrPointsS, predictors = predictors,
@@ -46,9 +48,7 @@ I_Obs <- OutputSimple[1,2]
 (length(which(I_Rand < I_Obs))+1)/100 # p = 0.01
 
 # writing output file and figures
-
 write.csv(OutputSimple, "Data/Pruned/Chapter3/MaxEnt/IandDOutput.csv", row.names = F)
-
 pdf("Figures Scripts/Chapter3/IandDSig.pdf", height = 3, width = 5)
 par(mfrow=c(1,2), mar = c(4,4,2,1))
 hist(D_Rand, col = "blue", xlim = c(0, 1), main = "Shoener's D", xlab = "D", ylab = "Frequency")

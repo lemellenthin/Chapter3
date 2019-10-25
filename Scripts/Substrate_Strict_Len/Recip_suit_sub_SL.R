@@ -11,7 +11,7 @@
 
 # packages
 library(phyloclim); library(geosphere); library(raster)
-library(rgdal); library(rgeos)
+library(rgdal); library(rgeos); library(maxent); library(dismo)
 
 # load the maxent predictions
 DirtModS <- raster("./Analysis_Scripts/Chapter3/Scripts/Substrate_Strict_Len/Predictions/DirtMod_prediction_strict.grd")
@@ -81,6 +81,77 @@ areaPolygon(RockModpolL) / 1e6
 # 2313223
 areaPolygon(WaterModpolL) / 1e6
 # 3251389
+
+######################################################################################################
+# strict reciprocal suitability 10/20/19
+
+# How much habitat that dirt species live in is suitable for veg life 0.5 cut off veg niche
+areaPolygon(VegModpolS) / 1e6 #  1308248
+areaPolygon(DirtPolyS) / 1e6 # 4543085
+intersectionTA <- raster::intersect(VegModpolS, DirtPolyS)
+areaPolygon(intersectionTA) / 1e6 # 593912.5
+# divide the intersection by the dirt polygon area
+(593912.5/4543085)*100 # 13.07289
+
+# How much habitat that veg species live in is suitable for dirt life 0.5 cut off dirt niche
+areaPolygon(DirtModpolS) / 1e6 #  5152820
+areaPolygon(VegPolyS) / 1e6 # 671261.5
+intersectionAT <- raster::intersect(DirtModpolS, VegPolyS)
+areaPolygon(intersectionAT) / 1e6 # 236260.3
+# divide the intersection by the veg polygon area
+(236260.3/671261.5)*100 # 35.19646
+
+# veg polygon and veg niche 0.5 cut off veg niche
+areaPolygon(VegModpolS) / 1e6 #  1308248
+areaPolygon(VegPolyS) / 1e6 # 671261.5
+intersectionAA <- raster::intersect(VegModpolS, VegPolyS)
+areaPolygon(intersectionAA) / 1e6 # 493240.1
+# divide the intersection by the veg polygon area
+(493240.1/671261.5)*100 # 73.47958
+
+# dirt polygon and dirt niche 0.5 cut off dirt niche
+areaPolygon(DirtModpolS) / 1e6 #  5152820
+areaPolygon(DirtPolyS) / 1e6 # 4543085
+intersectionTT <- raster::intersect(DirtModpolS, DirtPolyS)
+areaPolygon(intersectionTT) / 1e6 # 3771700
+# divide the intersection by the dirt polygon area
+(3771700/4543085)*100 # 83.02068
+
+# lenient reciprocal suitability 10/20/19
+
+# How much habitat that dirt species live in is suitable for veg life 0.5 cut off veg niche
+areaPolygon(VegModpolL) / 1e6 #  2401722
+areaPolygon(DirtPolyL) / 1e6 # 3920842
+intersectionTA <- raster::intersect(VegModpolL, DirtPolyL)
+areaPolygon(intersectionTA) / 1e6 # 1192061
+# divide the intersection by the dirt polygon area
+(1192061/3920842)*100 # 30.40319
+
+# How much habitat that veg species live in is suitable for dirt life 0.5 cut off dirt niche
+areaPolygon(DirtModpolL) / 1e6 # 4847568
+areaPolygon(VegPolyL) / 1e6 # 971408.6
+intersectionAT <- raster::intersect(DirtModpolL, VegPolyL)
+areaPolygon(intersectionAT) / 1e6 # 478055.7
+# divide the intersection by the veg polygon area
+(478055.7/971408.6)*100 # 49.21263
+
+# veg polygon and veg niche 0.5 cut off veg niche
+areaPolygon(VegModpolL) / 1e6 #  2401722
+areaPolygon(VegPolyL) / 1e6 #  971408.6
+intersectionAA <- raster::intersect(VegModpolL, VegPolyL)
+areaPolygon(intersectionAA) / 1e6 # 721217.6
+# divide the intersection by the veg polygon area
+(721217.6/971408.6)*100 # 74.24451
+
+# dirt polygon and dirt niche 0.5 cut off dirt niche
+areaPolygon(DirtModpolL) / 1e6 #  4847568
+areaPolygon(DirtPolyL) / 1e6 # 3920842
+intersectionTT <- raster::intersect(DirtModpolL, DirtPolyL)
+areaPolygon(intersectionTT) / 1e6 # 3310788
+# divide the intersection by the dirt polygon area
+(3310788/3920842)*100 # 84.44074
+
+######################################################################################################
 
 # niche overlap 
 # dirt and veg
@@ -691,13 +762,44 @@ IDTestS <- dismo::nicheEquivalency(sp1=DirtSDF, sp2=VegSDF, predictors = predict
                                    n=100, model=maxent, verbose=T)
 chars <- capture.output(print(IDTestS))
 writeLines(chars, con = file("output_sub_strict.txt"))
+OutputSimple <- rbind(IDTestS$statistic, IDTestS$null.distribution)
+D_Rand <- OutputSimple[-1,1]
+D_Obs <- OutputSimple[1,1]
+(length(which(D_Rand < D_Obs))+1)/100 # p = 0.01
+I_Rand <- OutputSimple[-1,2]
+I_Obs <- OutputSimple[1,2]
+(length(which(I_Rand < I_Obs))+1)/100 # p = 0.01
+write.csv(OutputSimple, "IandDOutput_subS.csv", row.names = F)
+pdf("IandDSig_subS.pdf", height = 3, width = 5)
+par(mfrow=c(1,2), mar = c(4,4,2,1))
+hist(D_Rand, col = "blue", xlim = c(0, 1), main = "Shoener's D", xlab = "D", ylab = "Frequency")
+abline(v = D_Obs, col = "blue", lwd = 3)
+par(mar=c(4,2,2,1))
+hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
+abline(v = I_Obs, col = "red", lwd = 3)
+dev.off()
 
 # lenient
 IDTestL <- dismo::nicheEquivalency(sp1=DirtLDF, sp2=VegLDF, predictors = predictors,
                                     n=100, model=maxent, verbose=T)
 chars <- capture.output(print(IDTestL))
 writeLines(chars, con = file("output_sub_lenient.txt"))
-
+OutputSimple <- rbind(IDTestL$statistic, IDTestL$null.distribution)
+D_Rand <- OutputSimple[-1,1]
+D_Obs <- OutputSimple[1,1]
+(length(which(D_Rand < D_Obs))+1)/100 # p = 0.01
+I_Rand <- OutputSimple[-1,2]
+I_Obs <- OutputSimple[1,2]
+(length(which(I_Rand < I_Obs))+1)/100 # p = 0.01
+write.csv(OutputSimple, "IandDOutput_subL.csv", row.names = F)
+pdf("IandDSig_subL.pdf", height = 3, width = 5)
+par(mfrow=c(1,2), mar = c(4,4,2,1))
+hist(D_Rand, col = "blue", xlim = c(0, 1), main = "Shoener's D", xlab = "D", ylab = "Frequency")
+abline(v = D_Obs, col = "blue", lwd = 3)
+par(mar=c(4,2,2,1))
+hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
+abline(v = I_Obs, col = "red", lwd = 3)
+dev.off()
 
 
 

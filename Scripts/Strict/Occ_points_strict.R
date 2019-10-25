@@ -36,67 +36,74 @@ anyNA(Class1$Species) # want FALSE
 #
 ### prune arboreal polys - A ##
 Arb <- Class1[Class1$Strict == "A", ]
-Arb$Species #56
+Arb$Species #56 species
 ArbPoly <- Polygons[match(Arb$Species,Polygons$binomial), ]  
 ArbPolyAll <- aggregate(ArbPoly, dissolve=T)
-ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_strict", layer= "chull", driver = "ESRI Shapefile")
-ArbPolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/ArbPoly_strict/chull.shp")
+# below is making a file for the ArbPolygons but cannot use in making the points because of class ID
+#ArbPolyAll.SP <- SpatialPolygonsDataFrame(ArbPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(ArbPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/ArbPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#ArbPolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/ArbPoly_strict/chull.shp")
 #
 ### prune terrestrial polys - T ###
 Terr <- Class1[Class1$Strict == "T", ]
-Terr$Species #201
+Terr$Species #201 species
 TerrPolygon <- Polygons[match(Terr$Species, Polygons$binomial), ] 
 TerrPolybuffer <- rgeos::gBuffer(TerrPolygon, width = 0, byid=F)
 TerrPolyAll <- aggregate(TerrPolybuffer, dissolve=T)
-TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_strict", layer= "chull", driver = "ESRI Shapefile")
-TerrPolyAll <-readOGR("./Analysis_Scripts/Chapter3/Polygons/TerrPoly_strict/chull.shp")
+# below is making a file for the ArbPolygons but cannot use in making the points because of class ID
+#TerrPolyAll.SP <- SpatialPolygonsDataFrame(TerrPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(TerrPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/TerrPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#TerrPolyAll <-readOGR("./Analysis_Scripts/Chapter3/Polygons/TerrPoly_strict/chull.shp")
 #
 ### prune aquatic polys - W##
 Aqua <- Class1[Class1$Strict == "W", ]
 Aqua$Species # 32
 AquaPoly <- Polygons[match(Aqua$Species, Polygons$binomial), ]
 AquaPolyAll <- aggregate(AquaPoly, dissolve=T)
-AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_strict", layer= "chull", driver = "ESRI Shapefile")
-AquaPolyAll <-readOGR("./Analysis_Scripts/Chapter3/Polygons/AquaPoly_strict/chull.shp")
+# below is making a file for the ArbPolygons but cannot use in making the points because of class ID
+#AquaPolyAll.SP <- SpatialPolygonsDataFrame(AquaPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(AquaPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/AquaPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#AquaPolyAll <-readOGR("./Analysis_Scripts/Chapter3/Polygons/AquaPoly_strict/chull.shp")
 #
 ### prune cave polys - C##
 Cave <- Class1[Class1$Strict == "C", ]
 Cave$Species # 11
 CavePoly <- Polygons[match(Cave$Species, Polygons$binomial), ]
 CavePolyAll <- aggregate(CavePoly, dissolve=T)
-CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_strict", layer= "chull", driver = "ESRI Shapefile")
-CavePolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/CavePoly_strict/chull.shp")
+# below is making a file for the ArbPolygons but cannot use in making the points because of class ID
+#CavePolyAll.SP <- SpatialPolygonsDataFrame(CavePolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(CavePolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/CavePoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#CavePolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/CavePoly_strict/chull.shp")
 #
 ### prune saxicolous polys - S##
 Sax <- Class1[Class1$Strict == "S", ]
 Sax$Species # 7
 SaxPoly <- Polygons[match(Sax$Species, Polygons$binomial), ]
 SaxPolyAll <- aggregate(SaxPoly, dissolve=T)
-SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_strict", layer= "chull", driver = "ESRI Shapefile")
-SaxPolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/SaxPoly_strict/chull.shp")
+# below is making a file for the ArbPolygons but cannot use in making the points because of class ID
+#SaxPolyAll.SP <- SpatialPolygonsDataFrame(SaxPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(SaxPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/SaxPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#SaxPolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/SaxPoly_strict/chull.shp")
 #
 ### prune fossorial polys - F##
 Foss <- Class1[Class1$Strict == "F", ]
 Foss$Species  # 3
 FossPoly <- Polygons[match(Foss$Species, Polygons$binomial), ]
 FossPolyAll <- aggregate(FossPoly, dissolve=T)
-FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
-writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_strict", layer= "chull", driver = "ESRI Shapefile")
-FossPolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/FossPoly_strict/chull.shp")
+# below is making a file for the ArbPolygons but cannot use in making the points because of class ID
+#FossPolyAll.SP <- SpatialPolygonsDataFrame(FossPolyAll, data=data.frame(binomial=1), match.ID = F)
+#writeOGR(FossPolyAll.SP, "./Analysis_Scripts/Chapter3/Polygons/FossPoly_strict", layer= "chull", driver = "ESRI Shapefile")
+#FossPolyAll <- readOGR("./Analysis_Scripts/Chapter3/Polygons/FossPoly_strict/chull.shp")
 #
 ##############
-# note to lauren the AllPolygon files have to be in SpatialPolygons format and not SpatialPolygonsDataFrame format
+# note that AllPolygon files have to be in SpatialPolygons format and not SpatialPolygonsDataFrame format!!!!
 #
 # make points and point files with all of the PolyAll files
 #
-# #MH with small res -- # FOR MICROHABITAT - ARB - 54 points
+# #MH with small res -- # FOR MICROHABITAT - ARB - 432
 # #creating the grid to put the polygons in
 gridMA <- raster(extent(ArbPolyAll))
+res(gridMA)
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(ArbPolyAll)
 dry.gridMAA <- raster::intersect(gridMA, ArbPolyAll)
@@ -110,7 +117,7 @@ ArbPointsS <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs =
 writeOGR(ArbPointsS, "./Analysis_Scripts/Chapter3/Points/Arb_Points_strict_ressmall", layer= "chull", driver = "ESRI Shapefile",
          overwrite=T)
 #
-# #MH with small res --# FOR MICROHABITAT - TERR - 186 points
+# #MH with small res --# FOR MICROHABITAT - TERR - 3664
 gridMA <- raster(extent(TerrPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(TerrPolyAll)
@@ -127,7 +134,7 @@ writeOGR(TerrPointsS, "./Analysis_Scripts/Chapter3/Points/Terr_Points_strict_res
          overwrite=TRUE)
 
 #
-#MH with small res -- # FOR MICROHABITAT - AQUA - 92 points
+#MH with small res -- # FOR MICROHABITAT - AQUA 
 gridMA <- raster(extent(AquaPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(AquaPolyAll)
@@ -144,7 +151,7 @@ writeOGR(AquaPointsS, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_strict_res
          overwrite=T)
 
 #
-#MH with small res -- # FOR MICROHABITAT - CAVE - 28 points
+#MH with small res -- # FOR MICROHABITAT - CAVE
 gridMA <- raster(extent(CavePolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(CavePolyAll)
@@ -160,7 +167,7 @@ writeOGR(CavePointsS, "./Analysis_Scripts/Chapter3/Points/Cave_Points_strict_res
          overwrite=T)
 
 #
-#MH with small res -- # FOR MICROHABITAT - SAX - 18 points
+#MH with small res -- # FOR MICROHABITAT - SAX 
 gridMA <- raster(extent(SaxPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(SaxPolyAll)
@@ -176,7 +183,7 @@ SaxPointsS <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs =
 writeOGR(SaxPointsS, "./Analysis_Scripts/Chapter3/Points/Sax_Points_strict_ressmall", layer= "chull", driver = "ESRI Shapefile",
          overwrite=T)
 #
-#MH with small res -- # FOR MICROHABITAT - FOSS - 11 points
+#MH with small res -- # FOR MICROHABITAT - FOSS 
 gridMA <- raster(extent(FossPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(FossPolyAll)

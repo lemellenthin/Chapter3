@@ -2,31 +2,16 @@
 ##            Recreate iucn polygons        #####
 #################################################
 
-# THIS WAS USING LM MADE POLYGONS AND COMBINING WITH IUCN POLYGONS
+# MAKING EOO FOR NEW POLYGONS AND AGGREGATING ALL THE POLYGONS
 
 library(alphahull)
 library(ggplot2)
 library(ConR)
 library(data.table)
 
-# file of polygons without LM makings for comparison
-  #UniqueNLMPolys
-UniqueNLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/chull.shp")
-# 293
-# file of polygons with LM makings
-  #UniqueLMPolys
-UniqueLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
-# 18
-
-# used polys
-All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.shp")
-# 311
-
-
-
 ###############################################
 # species I was not able to make polygons for #
-# Bolitoglossa mucuyensis 
+# Bolitoglossa mucuyensis - LM made
 # Plethodon savannah
 # Bolitoglossa cataguana
 # Bolitoglossa chinanteca
@@ -34,7 +19,6 @@ All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.s
 # Nototriton picucha
 
 #List of species I have to add polygons to or redo with code
-
 # Batrachoseps regius
     #polygon made from 163 points, this will replace the old one
 # Batrachoseps relictus
@@ -72,9 +56,12 @@ All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.s
 
 ########################################
 # Batrachoseps regius
-Batreg <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Batrachoseps_regius.txt.tsv", quote=""))
+Batreg <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons/Polygons_Dec/Batrachoseps_regius.txt.tsv", quote=""))
 # make into the colums needed
 Batraregius <-  cbind(Batreg$decimallatitude, Batreg$decimallongitude, Batreg$scientificname)
+# delete <- cbind(Batreg$decimallongitude, Batreg$decimallatitude)
+# delete2 <- SpatialPoints(delete)
+# plot(delete2)
 colnames(Batraregius) <- c("ddlat", "ddlon","tax")
 Batraregius <- as.data.frame(Batraregius)
 Batraregius[,1] <- as.character(Batraregius[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
@@ -94,6 +81,27 @@ EOO.results.BR <- EOO.computing(Batraregius, method.range = "alpha.hull",
                              export_shp = T, write_shp = F,
                              alpha=1, exclude.area = T,  # alpha is analogous to level of confidence in sampling breadth
                              country_map = land) # EOO (extent of occupation outine) IUCN powerpoint in Extras folder
+# deletepoly <- EOO.results.BR$Species1$spatial.polygon
+# plot(deletepoly)
+# crs(deletepoly)
+# projection(deletepoly) <- '+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0'
+# projection(delete2) <- '+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0'
+# crs(delete2)
+# plot(deletepoly)
+# plot(delete2, add=T, col="red")
+# 
+# leaflet:::leaflet() %>%
+#   leaflet::addTiles() %>%
+#   leaflet:::addPolygons(data = deletepoly,
+#                         color = "black",
+#                         weight = 1,
+#                         smoothFactor = 0.1,
+#                         opacity = 1.0,
+#                         fillOpacity = 0.5
+#                         ) %>%
+#   leaflet:::addMarkers(data = delete2)
+
+
 #class(EOO.results.BR$Species1$spatial.polygon) #it is a spatial polygon
 Batraregius.SP <- SpatialPolygonsDataFrame(EOO.results.BR$Species1$spatial.polygon, data=data.frame(binomial=1))
 writeOGR(Batraregius.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batraregius", driver="ESRI Shapefile", layer = "chull")
@@ -305,6 +313,7 @@ Eurbis.SHP
 plot(EOO.results.EB[[1]][[2]], col="red")
 plot(land, add=T)
 
+
 #######################################
 # Eurycea longicauda
 Eurlon <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Eurycea_longicauda.txt.tsv", quote=""))
@@ -330,6 +339,7 @@ Eurlon.SHP$binomial <- "Eurycea longicauda"
 proj4string(Eurlon.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 plot(EOO.results.EL[[1]][[2]], col="red")
 plot(land, add=T)
+
 
 #######################################
 # Plethodon aureolus
@@ -359,6 +369,7 @@ Pleaur.SHP
 
 plot(EOO.results.PA[[1]][[2]], col="red")
 plot(land, add=T)
+
 
 #######################################
 # Plethodon chlorobryonis
@@ -417,6 +428,7 @@ Pledor.SHP
 plot(EOO.results.PD[[1]][[2]], col="red")
 plot(land, add=T)
 
+
 #######################################
 # Plethodon jordani
 
@@ -446,6 +458,7 @@ Plejor.SHP
 plot(EOO.results.PJ[[1]][[2]], col="red")
 plot(land, add=T)
 
+
 #######################################
 # Plethodon richmondi
 
@@ -474,6 +487,7 @@ Pleric.SHP
 
 plot(EOO.results.PR[[1]][[2]], col="red")
 plot(land, add=T)
+
 
 #######################################
 # Plethodon wehrlei
@@ -766,8 +780,6 @@ Despla.SHP
 
 plot(EOO.results.H[[1]][[2]], col="red")
 plot(land, add=T)
-
-
 
 #######################################
 # Eurycea aquatica

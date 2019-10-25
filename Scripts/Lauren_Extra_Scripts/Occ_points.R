@@ -35,6 +35,7 @@ Class$Species <- as.character(Class$Species)
 Class$Species[which(Class$Species == "Pseudoeurycea lineolus")] <- "Pseudoeurycea lineola" #match the species names
 Class1 <- Class[match(Polygons$binomial, Class$Species), ]
 anyNA(Class1$Species) # want FALSE
+colnames(Class1)
 
 # prune the polygons by substrate and micro habitat
 #

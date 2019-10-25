@@ -113,10 +113,6 @@ CaveModpolM2 <- rasterToPolygons(CaveModM2SS,function(x) x == 1,dissolve=T)
 FossModpolM2 <- rasterToPolygons(FossModM2SS,function(x) x == 1,dissolve=T)
 SaxModpolM2 <- rasterToPolygons(SaxModM2SS,function(x) x == 1,dissolve=T)
 
-#
-#maybe <- extract(ArbSS, ArbPoly)
-#summary(maybe[[1]])
-
 # get the area of the niche polygon at a 0.5 cutoff scale
 areaPolygon(ArbModpolL) / 1e6
 # 1285231
@@ -157,6 +153,118 @@ areaPolygon(FossModpolM2) / 1e6
 areaPolygon(SaxModpolM2) / 1e6
 # 744082.7
 
+#############################################################################################
+
+# 10/20/19
+##############################################################
+# lenient reciprocal suitability
+
+# How much habitat that terrestrial species live in is suitable for arboreal life 0.5 cut off arboreal niche
+areaPolygon(ArbModpolL) / 1e6 #  1285231
+areaPolygon(TerrPolyL) / 1e6 # 3138294
+intersectionTA <- raster::intersect(ArbModpolL, TerrPolyL)
+areaPolygon(intersectionTA) / 1e6 # 402392.4
+# divide the intersection by the terrestrial polygon area
+(402392.4/3138294)*100 # 12.82201
+
+# How much habitat that arboreal species live in is suitable for terrestrial life 0.5 cut off terrestrial niche
+areaPolygon(TerrModpolL) / 1e6 #  4485079
+areaPolygon(ArbPolyL) / 1e6 # 675927
+intersectionAT <- raster::intersect(TerrModpolL, ArbPolyL)
+areaPolygon(intersectionAT) / 1e6 # 228119.1
+# divide the intersection by the arboreal polygon area
+(228119.1/675927)*100 # 33.74907
+
+# arb polygon and arb niche 0.5 cut off arb niche
+areaPolygon(ArbModpolL) / 1e6 # 1285231
+areaPolygon(ArbPolyL) / 1e6 # 675927
+intersectionAA <- raster::intersect(ArbModpolL, ArbPolyL)
+areaPolygon(intersectionAA) / 1e6 # 500333.2
+# divide the intersection by the arboreal polygon area
+(500333.2/675927)*100 # 74.02178
+
+# terr polygon and terr niche 0.5 cut off terr niche
+areaPolygon(TerrModpolL) / 1e6 #  4485079
+# terrestrial polygon
+areaPolygon(TerrPolyL) / 1e6 # 3138294
+intersectionTT <- raster::intersect(TerrModpolL, TerrPolyL)
+areaPolygon(intersectionTT) / 1e6 # 2654509
+# divide the intersection by the terr polygon area
+(2654509/3138294)*100 # 84.58446
+
+##############################################################
+# M1 reciprocal suitability
+
+# How much habitat that terrestrial species live in is suitable for arboreal life 0.5 cut off arboreal niche
+areaPolygon(ArbModpolM1) / 1e6 #  1238624
+areaPolygon(TerrPolyM1) / 1e6 # 4456354
+intersectionTA <- raster::intersect(ArbModpolM1, TerrPolyM1)
+areaPolygon(intersectionTA) / 1e6 # 523088.6
+# divide the intersection by the terrestrial polygon area
+(523088.6/4456354)*100 # 11.73804
+
+# How much habitat that arboreal species live in is suitable for terrestrial life 0.5 cut off terrestrial niche
+areaPolygon(TerrModpolM1) / 1e6 #  5034443
+areaPolygon(ArbPolyM1) / 1e6 # 659573
+intersectionAT <- raster::intersect(TerrModpolM1, ArbPolyM1)
+areaPolygon(intersectionAT) / 1e6 # 212216.4
+# divide the intersection by the arboreal polygon area
+(212216.4/659573)*100 # 32.17482
+
+# arb polygon and arb niche 0.5 cut off arb niche
+areaPolygon(ArbModpolM1) / 1e6 #  1238624
+# arboreal polygon
+areaPolygon(ArbPolyM1) / 1e6 # 659573
+intersectionAA <- raster::intersect(ArbModpolM1, ArbPolyM1)
+areaPolygon(intersectionAA) / 1e6 # 479367.3
+# divide the intersection by the arboreal polygon area
+(479367.3/659573)*100 # 72.67843
+
+# terr polygon and terr niche 0.5 cut off terr niche
+areaPolygon(TerrModpolM1) / 1e6 #  5034443
+# terrestrial polygon
+areaPolygon(TerrPolyM1) / 1e6 # 4456354
+intersectionTT <- raster::intersect(TerrModpolM1, TerrPolyM1)
+areaPolygon(intersectionTT) / 1e6 # 3740585
+# divide the intersection by the terr polygon area
+(3740585/4456354)*100 # 83.93824
+
+##############################################################
+# M2 reciprocal suitability
+
+# How much habitat that terrestrial species live in is suitable for arboreal life 0.5 cut off arboreal niche
+areaPolygon(ArbModpolM2) / 1e6 #  5422425
+areaPolygon(TerrPolyM2) / 1e6 # 586519.8
+intersectionTA <- raster::intersect(ArbModpolM2, TerrPolyM2)
+areaPolygon(intersectionTA) / 1e6 # 445856.3
+# divide the intersection by the terrestrial polygon area
+(445856.3/586519.8)*100 # 76.01726
+
+# How much habitat that arboreal species live in is suitable for terrestrial life 0.5 cut off terrestrial niche
+areaPolygon(TerrModpolM2) / 1e6 #  1210240
+areaPolygon(ArbPolyM2) / 1e6 # 4598454
+intersectionAT <- raster::intersect(TerrModpolM2, ArbPolyM2)
+areaPolygon(intersectionAT) / 1e6 # 860980.4
+# divide the intersection by the arboreal polygon area
+(860980.4/4598454)*100 # 18.72326
+
+# arb polygon and arb niche 0.5 cut off arb niche
+areaPolygon(ArbModpolM2) / 1e6 #  5422425
+areaPolygon(ArbPolyM2) / 1e6 #  4598454
+intersectionAA <- raster::intersect(ArbModpolM2, ArbPolyM2)
+areaPolygon(intersectionAA) / 1e6 # 569226
+# divide the intersection by the arboreal polygon area
+(569226/4598454)*100 # 12.37864 -- yikes
+
+# terr polygon and terr niche 0.5 cut off terr niche
+areaPolygon(TerrModpolM2) / 1e6 #  1210240
+areaPolygon(TerrPolyM2) / 1e6 # 586519.8
+intersectionTT <- raster::intersect(TerrModpolM2, TerrPolyM2)
+areaPolygon(intersectionTT) / 1e6 # 442997
+# divide the intersection by the terr polygon area
+(442997/586519.8)*100 # 75.52976
+
+#############################################################################################
 
 # niche overlap 
 # arb and terr
@@ -2182,7 +2290,7 @@ hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
 abline(v = I_Obs, col = "red", lwd = 3)
 dev.off()
 
-# M2 - here lauren
+# M2
 IDTestM2 <- dismo::nicheEquivalency(sp1=ArbM2DF, sp2=TerrM2DF, predictors = predictors,
                                     n=100, model=maxent, verbose=T)
 chars <- capture.output(print(IDTestM2))
@@ -2203,12 +2311,6 @@ par(mar=c(4,2,2,1))
 hist(I_Rand, col = "red", xlim = c(0, 1), main = "Warren's I", xlab = "I")
 abline(v = I_Obs, col = "red", lwd = 3)
 dev.off()
-
-
-
-
-
-
 
 
 

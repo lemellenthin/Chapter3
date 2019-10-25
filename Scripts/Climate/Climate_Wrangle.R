@@ -4,9 +4,7 @@
 ##########################################################
 ##########################################################
 
-# THIS IS FOR MAKING FILES TO SUMMARIZE OVER ENTIRE POLYGONS
-# USED FOR STANDARD NORMAL DEVIATES ANALYSIS
-# TO DECIDE WHAT WE SHOULD USE IN THE MODELS
+# THIS IS FOR GOING IN THE POLYGONS AND ASKING FOR THE CLIMATE AND THE SUMMARY STATISTICS
 
 # Load packages
 library(maptools);library(raster);library(rgeos);library(rgdal)
@@ -14,13 +12,11 @@ library(sp);library(tidyr);library(dplyr);library(maps);library(ape)
 library(stringr);library(ggmap);library(data.table);library(jpeg)
 library(tiff);library(utils); library(biomod2)
 library(rasterVis); library(elevatr)
-
-# AllPolysforanalysis is IUCN + LM Polys #311 spp
-# UniqueNLMPolys is IUCN only  #293 spp
+library(utils)
 
 # Get species names
 # you need to make sure all caudata files are downloaded from the cloud before running this line
-Caudata <- readOGR("Analysis_Scripts/Chapter3/CAUDATA/CAUDATA.shp")
+Caudata <- readOGR("CAUDATA/CAUDATA.shp")
 
 # Exploring shape file
 class(Caudata)
@@ -82,7 +78,6 @@ proj4string(UniquePolys) <- CRS('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS8
 #writeOGR(UniquePolys, "UniquePolys", layer="chull", driver="ESRI Shapefile")
 UniquePolys <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/UniquePolys/chull.shp")
 length(UniquePolys)
-length(unique(UniquePolys$binomial))
 
 ##########################################################################
 #####################  UNIQUEPOLY FILE WITHOUT LM POLYS CODE #############
@@ -348,7 +343,8 @@ crs(UniqueNLMPolys)
   AddPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewPolyBind/chull.shp")
   sort(table(AddPolys$binomial))
  
-
+  
+  
 ####### only new LM polys ###########
   LMNewPolyCheck <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
   LMNewPolyCheck$binomial
@@ -373,7 +369,7 @@ crs(UniqueNLMPolys)
            layer="chull", driver="ESRI Shapefile")
   IUCNNNew <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/IUCNNNEW/chull.shp")
   
-#### overall ####
+  #### overall ####
   # combine LMNewPolyCheck, AddPolys, and (IUCNNNew)
   # LMNewPolyCheck 18 new spp
   # IUCNNNew only IUCN 280 spp
@@ -395,7 +391,6 @@ crs(UniqueNLMPolys)
 ################### end new file with LM IUCN poly section #######
 ##################################################################
 
-  
 ##################################################################
 ############# CLIMATE ANALYSIS FOR POLYS #########################
 ##################################################################
@@ -461,7 +456,7 @@ wc19 <- raster::stack('Analysis_Scripts/Chapter3/Climate Data/Salamander Range/W
 # precipitation of coldest quarter
 ###########################
 
-# MAKE JPEG FILES FOR VISUALS # we dont really need these
+# MAKE JPEG FILES FOR VISUALS #
 ###########################
 jpeg(file = "./Salamander Climate Plots/WC201.jpg")
 plot(wc01, col = topo.colors(255))
@@ -606,9 +601,86 @@ length(RecordsDF$binomial)
 unique(RecordsDF$binomial)
 write.csv(RecordsDF, file = "Analysis_Scripts/Chapter3/Climate Data/Output_for_Analysis/Bioclim_IUCNLMRecords.csv")
 
-# at the end there should be 2 files
-# Bioclim_IUCNLMRecords
-# Bioclim_IUCNRecords
+
+#### new task from erica
+# create two files 
+  # one from the top extent of NA species to the tropic of cancer
+  # one from the bottom extent of NA species excluding B.maeloni to the tropic of cancer
+
+# climate variables
+elevation <- stack('./Analysis_Scripts/Chapter3/Climate Data/alt_2-5m_bil_elevation_raw/alt.bil')
+bioclim_vars <- stack(c(list.files('./Analysis_Scripts/Chapter3/Climate Data/wc2_raw_bioclim', full.names = T, pattern = '.tif')))
+bioclim_keep <- stack(bioclim_vars$wc2.0_bio_2.5m_1, bioclim_vars$wc2.0_bio_2.5m_5, bioclim_vars$wc2.0_bio_2.5m_6,
+                      bioclim_vars$wc2.0_bio_2.5m_16, bioclim_vars$wc2.0_bio_2.5m_17, bioclim_vars$wc2.0_bio_2.5m_12)
+
+# # make each at the same extent
+elevation1 <- crop(elevation, bioclim_keep)
+bioclim_keep1 <- crop(bioclim_keep, elevation)
+
+# #combine into stack
+alldata_togetherErica <- stack(elevation1, bioclim_keep1)
+writeRaster(alldata_togetherErica, paste0('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataForEricasAnalysis',
+                       format = 'GTiff'))
+
+# READ IN DATA #
+alldata_erica <- stack('./Analysis_Scripts/Chapter3/Climate Data/SDM/AllDataForEricasAnalysisGTiff.gri')
+plot(alldata_erica$alt)
+alldata_erica
+
+#check polygon extent
+Polygons <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforanalysis/chull.shp") 
+# check crs
+crs(Polygons)
+projection(Polygons) <- '+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0'
+crs(Polygons)
+Polygons
+
+# crop data to top extent
+xmin = -129
+xmax = -20
+ymin = 23.5
+ymax = 56
+geographic.extent <- extent(x = c(xmin, xmax, ymin, ymax))
+predictors.top <- crop(x = alldata_erica, y = geographic.extent)
+plot(predictors.top)
+Top <- stack(predictors.top)
+
+# crop data to bottom extent
+xmin = -129
+xmax = -20
+ymin = -7
+ymax = 23.5
+geographic.extent <- extent(x = c(xmin, xmax, ymin, ymax))
+predictors.bottom <- crop(x = alldata_erica, y = geographic.extent)
+plot(predictors.bottom)
+Bottom <- stack(predictors.bottom)
+
+# get the land data to crop from
+data(wrld_simpl)
+plot(wrld_simpl)
+class(wrld_simpl)
+WorldPoly <- aggregate(wrld_simpl, dissolve=T, byid=F)
+WorldPoly
+plot(WorldPoly)
+
+#extract and keep data
+AboveData <- data.frame(raster::extract(Top, WorldPoly))
+AboveData # 866358
+write.csv(AboveData, file = "Analysis_Scripts/Chapter3/Climate Data/Output_for_Analysis/ClimateDataAboveCancer.csv")
+
+BelowData <- data.frame(raster::extract(Bottom, WorldPoly))
+BelowData # 381026
+write.csv(BelowData, file = "Analysis_Scripts/Chapter3/Climate Data/Output_for_Analysis/ClimateDataBelowCancer.csv")
+
+
+
+
+
+
+
+
+
+
 
 
 

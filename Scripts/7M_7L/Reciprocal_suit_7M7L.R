@@ -103,6 +103,77 @@ areaPolygon(FossModpol7L) / 1e6
 areaPolygon(SaxModpol7L) / 1e6
 # 
 
+######################################################################################################
+# 7M reciprocal suitability 10/20/19
+
+# How much habitat that dirt species live in is suitable for veg life 0.5 cut off veg niche
+areaPolygon(ArbModpol7M) / 1e6 #  1094396
+areaPolygon(TerrPoly7M) / 1e6 # 4547682
+intersectionTA <- raster::intersect(ArbModpol7M, TerrPoly7M)
+areaPolygon(intersectionTA) / 1e6 # 534436.7
+# divide the intersection by the dirt polygon area
+(534436.7/4547682)*100 # 11.75185
+
+# How much habitat that veg species live in is suitable for dirt life 0.5 cut off dirt niche
+areaPolygon(TerrModpol7M) / 1e6 #  5076573
+areaPolygon(ArbPoly7M) / 1e6 # 593188.5
+intersectionAT <- raster::intersect(TerrModpol7M, ArbPoly7M)
+areaPolygon(intersectionAT) / 1e6 # 209912.3
+# divide the intersection by the veg polygon area
+(209912.3/593188.5)*100 # 35.38712
+
+# veg polygon and veg niche 0.5 cut off veg niche
+areaPolygon(ArbModpol7M) / 1e6 # 1094396
+areaPolygon(ArbPoly7M) / 1e6 # 593188.5
+intersectionAA <- raster::intersect(ArbModpol7M, ArbPoly7M)
+areaPolygon(intersectionAA) / 1e6 # 438276.4
+# divide the intersection by the veg polygon area
+(438276.4/593188.5)*100 # 73.88484
+
+# dirt polygon and dirt niche 0.5 cut off dirt niche
+areaPolygon(TerrModpol7M) / 1e6 #  5076573
+areaPolygon(TerrPoly7M) / 1e6 # 4547682
+intersectionTT <- raster::intersect(TerrModpol7M, TerrPoly7M)
+areaPolygon(intersectionTT) / 1e6 # 3728410
+# divide the intersection by the dirt polygon area
+(3728410/4547682)*100 # 81.98484
+
+# 7L reciprocal suitability 10/20/19
+
+# How much habitat that dirt species live in is suitable for veg life 0.5 cut off veg niche
+areaPolygon(ArbModpol7L) / 1e6 #  1283715
+areaPolygon(TerrPoly7L) / 1e6 # 3138294
+intersectionTA <- raster::intersect(ArbModpol7L, TerrPoly7L)
+areaPolygon(intersectionTA) / 1e6 # 398310.4
+# divide the intersection by the dirt polygon area
+(398310.4/3138294)*100 # 12.69194
+
+# How much habitat that veg species live in is suitable for dirt life 0.5 cut off dirt niche
+areaPolygon(TerrModpol7L) / 1e6 # 4590369
+areaPolygon(ArbPoly7L) / 1e6 # 675927
+intersectionAT <- raster::intersect(TerrModpol7L, ArbPoly7L)
+areaPolygon(intersectionAT) / 1e6 #  239518.7
+# divide the intersection by the veg polygon area
+(239518.7/675927)*100 # 35.43559
+
+# veg polygon and veg niche 0.5 cut off veg niche
+areaPolygon(ArbModpol7L) / 1e6 #  1283715
+areaPolygon(ArbPoly7L) / 1e6 #   675927
+intersectionAA <- raster::intersect(ArbModpol7L, ArbPoly7L)
+areaPolygon(intersectionAA) / 1e6 # 500257.3
+# divide the intersection by the veg polygon area
+(500257.3/675927)*100 # 74.01055
+
+# dirt polygon and dirt niche 0.5 cut off dirt niche
+areaPolygon(TerrModpol7L) / 1e6 #  4590369
+areaPolygon(TerrPoly7L) / 1e6 # 3138294
+intersectionTT <- raster::intersect(TerrModpol7L, TerrPoly7L)
+areaPolygon(intersectionTT) / 1e6 # 2664304
+# divide the intersection by the dirt polygon area
+(2664304/3138294)*100 # 84.89657
+
+######################################################################################################
+
 # niche overlap 
 # arb and terr
 dismo::nicheOverlap(ArbMod7MSS, TerrMod7MSS, stat='I', mask=T, checkNegatives = T)
@@ -788,14 +859,8 @@ IDTest7L <- dismo::nicheEquivalency(sp1=ArbDF7L, sp2=TerrDF7L, predictors = pred
 chars7L <- capture.output(print(IDTest7L))
 writeLines(chars7L, con = file("output_7L.txt"))
 
-
-
-
 # OVERLAP 7L
 # change all M to L
-
-
-
 
 # niche overlap 
 # arb and terr

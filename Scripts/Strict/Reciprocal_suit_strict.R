@@ -67,6 +67,43 @@ areaPolygon(FossModpolS) / 1e6
 areaPolygon(SaxModpolS) / 1e6
 # 350360.8
 
+######################################################################################################
+# strict reciprocal suitability 10/20/19
+
+# How much habitat that terrestrial species live in is suitable for arboreal life 0.5 cut off arboreal niche
+areaPolygon(ArbModpolS) / 1e6 #  1051674
+areaPolygon(TerrPolyS) / 1e6 # 4547682
+intersectionTA <- raster::intersect(ArbModpolS, TerrPolyS)
+areaPolygon(intersectionTA) / 1e6 # 533192.7
+# divide the intersection by the terrestrial polygon area
+(533192.7/4547682)*100 # 11.72449
+
+# How much habitat that arboreal species live in is suitable for terrestrial life 0.5 cut off terrestrial niche
+areaPolygon(TerrModpolS) / 1e6 #  5144655
+areaPolygon(ArbPolyS) / 1e6 # 593188.5
+intersectionAT <- raster::intersect(TerrModpolS, ArbPolyS)
+areaPolygon(intersectionAT) / 1e6 # 211004.3
+# divide the intersection by the arboreal polygon area
+(211004.3/593188.5)*100 # 35.57121
+
+# arb polygon and arb niche 0.5 cut off arb niche
+areaPolygon(ArbModpolS) / 1e6 #  1051674
+areaPolygon(ArbPolyS) / 1e6 # 593188.5
+intersectionAA <- raster::intersect(ArbModpolS, ArbPolyS)
+areaPolygon(intersectionAA) / 1e6 # 429296.8
+# divide the intersection by the arboreal polygon area
+(429296.8/593188.5)*100 # 72.37106
+
+# terr polygon and terr niche 0.5 cut off terr niche
+areaPolygon(TerrModpolS) / 1e6 #  5144655
+areaPolygon(TerrPolyS) / 1e6 # 4547682
+intersectionTT <- raster::intersect(TerrModpolS, TerrPolyS)
+areaPolygon(intersectionTT) / 1e6 # 3744265
+# divide the intersection by the terr polygon area
+(3744265/4547682)*100 # 82.33348
+
+######################################################################################################
+
 # niche overlap 
 # arb and terr
 dismo::nicheOverlap(ArbModSSS, TerrModSSS, stat='I', mask=T, checkNegatives = T)
@@ -220,15 +257,15 @@ dismo::nicheOverlap(FossModS, SaxModS, stat='D', mask=T, checkNegatives = T)
 
 ###
 # arb poly intersect with arb niche
-# ArbPolyS area
+# ArbPolyS the species polygon
 areaPolygon(ArbPolyS) / 1e6 # 593188.5*
-# ArbModpolS area
+# ArbModpolS area 0.5 cut off
 areaPolygon(ArbModpolS) / 1e6 # 1051674*
 # intersection between them
 AAS <- raster::intersect(ArbPolyS,ArbModpolS)
 areaPolygon(AAS) / 1e6 # 429296.8
 # percent of the polygon explained by the niche
-(429296.8/593188.5)*100 # 72.37
+(429296.8/593188.5)*100 # 72.37******
 
 ###
 # terr poly intersect with terr niche
@@ -292,7 +329,7 @@ areaPolygon(SSS) / 1e6 # 151507
 
 ###
 # intersection area arb-terr niches
-# Area for the niches
+# Area for the niches with 0.5 cutoff
 areaPolygon(ArbModpolS) / 1e6 # 1051674
 areaPolygon(TerrModpolS) / 1e6 # 5144655
 #inter bet Arb and Terr at 0.5 cutoff
@@ -500,16 +537,18 @@ areaPolygon(interFSSN) / 1e6 # 0
 # inter/sax niche
 (0/350360.8)*100 # 0
 
-
 #######################################
 #### distribution inter with niche ###
 #######################################
 
 # intersect arb polygon with terr niche model
+# terr niche model with 0.5 cutoff
 areaPolygon(TerrModpolS) / 1e6 # 5144655*
+areaPolygon(ArbPolyS) / 1e6 # 593188.5
 interADTS <- raster::intersect(ArbPolyS, TerrModpolS)
 areaPolygon(interADTS) / 1e6 # 211004.3
 (211004.3/5144655)*100 # 4.10
+(211004.3/593188.5)*100 # 35.57121
 # this is arb spp present where terr can live
 
 # intersect arb polygon with Cave niche model
@@ -540,10 +579,17 @@ areaPolygon(interADFS) / 1e6 # 88711.5
 # this is arb spp present where foss can live
 
 # intersect terr polygon with arb niche model
+# ArbModpolS is the 0.5 cutoff polygon
 areaPolygon(ArbModpolS) / 1e6 # 1051674*
+areaPolygon(TerrPolyS) / 1e6 # 4547682
+#TerrPolyS is the terrestrial distribution polygon
 interTDAS <- raster::intersect(TerrPolyS, ArbModpolS)
 areaPolygon(interTDAS) / 1e6 # 533192.7*
+# intersection of arb niche with terr polygon
+# intersection / area of arb niche
 (533192.7/1051674)*100 # 50.699
+# intersection / area of terrestrial polygon
+(533192.7/4547682)*100 # 11.72449
 # this is terr spp present where arb can live
 
 # intersect terr polygon with Cave niche model
@@ -792,12 +838,8 @@ if (file.exists(maxent.exe)){
 }
 
 open <- raster('R.phyloclim.temp/out/_proj.asc')
-open
 test <- stack(c(list.files('R.phyloclim.temp/out', full.names = T, pattern = '_proj.asc')))
-test
 file(fname, "r")
-
-
 
 ###############################
 # path to MAXENT
@@ -817,7 +859,6 @@ preds <- list.files(path = data.path, pattern = "[.]asc")
 preds <- paste(data.path, preds, sep = "/")
 preds <- stack(lapply(X = preds, FUN = raster))
 
-
 # testing against 9 permutations of the data
 # -------------------------------------------
 reps <- 9
@@ -832,12 +873,6 @@ if (file.exists(maxent.exe)){
 } else {
   message("get a copy of MAXENT (see Details)")
 }
-
-
-
-
-
-
 
 
 

@@ -151,7 +151,6 @@ PairwiseResults
 write.csv(ANOVA.PVal, "Data/Pruned/Chapter4/ANOVA.PVal.Lenient.csv", row.names = T)
 write.csv(PairwiseResults, "Data/Pruned/Chapter4/PairwisePvals.Lenient.csv", row.names = T)
 
-
 # overall conclusions of these 4 bioclim variables: arboreal species need warmer, wetter environments.
 
 # 5 pairwise tests [A compared to all C, F, S, T, and W], so bonferroni would be 0.05^5

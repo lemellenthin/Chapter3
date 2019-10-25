@@ -56,7 +56,6 @@ crs(TerrPolySP)
 crs(TerrModS) 
 crs(ArbModS) 
 
-
 # 1
 png("1.png", width = 2000, height = 2000)
 plot(land, xlim=c(-150,-10), ylim=c(-20,55), axes=F, col="white",bg='light gray') 
@@ -179,7 +178,6 @@ plot(TerrPoly, add = T)
 text("84.4% Overlap", x=-110, y=0,cex = .5)
 dev.off()
 
-
 #############################################
 ## ERICA FIGURE #############################
 ##############################################
@@ -219,9 +217,6 @@ Terrspecies <- buffer(ArbPoly, width=0)
 idk <- intersect(ArbPoly, TerrPoly)
 idk@polygons
 
-
-
-
 # leaflet
 leaflet:::leaflet() %>%
   leaflet::addTiles() %>%
@@ -259,6 +254,50 @@ leaflet:::leaflet() %>%
                         group= "Arb",
                         popup = AllNew$binomial
   )
+
+
+#########################################################################
+## this is a box plot of all the AUC scoring for all the k-fold runs ####
+#########################################################################
+
+library(readxl); library(utils); library(graphics)
+
+getwd()
+
+# read in the data
+AUCscores <- read.csv("./Analysis_Scripts/Chapter3/Docs/AUC_scores.csv", header=T)
+class(AUCscores)
+class(AUCscores$Maxent.Run)
+
+boxplot <- graphics::boxplot(formula=AUC~Maxent.Run, data=AUCscores,
+                             main="AUC Scores for k-fold runs", xlab= "Classification scheme",
+                             ylab="AUC Score")
+
+########## with ggplot
+library(ggplot2)
+p <- ggplot(AUCscores, aes(Maxent.Run, AUC))
+p + geom_boxplot() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

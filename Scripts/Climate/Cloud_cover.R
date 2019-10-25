@@ -11,21 +11,21 @@ library(rgdal)
 library(rgeos)
 library(ggplot2)
 
-
+# load in ipcc cloud data
 cloud.raw <- stack(list.files('./Analysis_Scripts/Chapter3/Climate Data/Cloud_cover/cru_cld_clim_1991-2000', full.names = T, 
                               pattern = '.tif'))
-cloud.raw
 
+# we have to assign the 0-255 a value. the current values are artifacts of raster format and NOT actual values
 rescale <- function(x, x.min = NULL, x.max = NULL, new.min = 0, new.max = 1) {
   if(is.null(x.min)) x.min = min(x)
   if(is.null(x.max)) x.max = max(x)
   new.min + (x - x.min) * ((new.max - new.min) / (x.max - x.min))
 }
-
 right <- rescale(cloud.raw, x.min = 0, x.max = 255, new.min = 0, new.max = 1)
 right2 <- mean(right)
 right2
 
+# write new usable raster file for cloud cover
 writeRaster(right2, paste0('Analysis_Scripts/Chapter3/Climate Data/Cloud_cover/IPCC_data'),format = 'GTiff')
 
 
