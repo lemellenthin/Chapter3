@@ -2,7 +2,7 @@
 ##            Recreate iucn polygons        #####
 #################################################
 
-# THIS WAS USING LM MADE POLYGONS AND COMBINING WITH IUCN POLYGONS
+# LM MADE POLYGONS AND COMBINING WITH IUCN POLYGONS
 
 library(alphahull)
 library(ggplot2)
@@ -11,62 +11,49 @@ library(data.table)
 
 # file of polygons without LM makings for comparison
   #UniqueNLMPolys
-UniqueNLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/chull.shp")
-# 293
+UniqueNLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/chull.shp") # 293
+
 # file of polygons with LM makings
   #UniqueLMPolys
-UniqueLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
-# 18
+UniqueLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp") # 18
 
 # used polys
-All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.shp")
-# 311
+All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.shp") # 311
+
 
 ###############################################
 # species I was not able to make polygons for #
-# Bolitoglossa mucuyensis 
+# Bolitoglossa mucuyensis - LM made
 # Plethodon savannah
 # Bolitoglossa cataguana
 # Bolitoglossa chinanteca
 # Bolitoglossa kaqchikelorum
 # Nototriton picucha
 
-#List of species I have to add polygons to or redo with code
 
-# Batrachoseps regius
-    #polygon made from 163 points, this will replace the old one
-# Batrachoseps relictus
-    #polygon made from 611 points, add to OG
-# Bolitoglossa dunni
-    #polygon made from 26 points, add to OG
-#LM MADE # Bolitoglossa mucuyensis      ###############
-    #only one point on vertnet, no new polys
-# Bolitoglossa odonnelli
-    #polygons made from 36 points, this will be an addition to IUCN polygons to add in honduras
-# Bradytriton silus
-    #polygons made from 31 points, this will replace the old one
-# Desmognathus conanti
-    #polygons made from 1,111 points, add to OG
-# Desmognathus fuscus
-    # polygons made from 6,000 points, this will add to the IUCN polygons
-# Eurycea bislineata
-    # polygons made from 5,997 points, this will add to the IUCN polygons
-# Eurycea longicauda
-    # polygons made from 2,578 points, this will add to the IUCN polygons
-# Plethodon aureolus
-    # polygons made from 762 points, this will add to the IUCN polygons
-# LM MADE # Plethodon chlorobryonis   ###############
-    # polygons made from 1913 points, this will replace the polygon I made bc it is better
-# Plethodon dorsalis
-     # polygons made from 1,794 points, this will add to IUCN polygons
-# Plethodon jordani
-     # polygons made from 1,998 points, this will add to IUCN polygons
-# Plethodon richmondi
-     # polygons made from 3,043 points, this will add to IUCN polygons
-# LM MADE ### Plethodon savannah #############
-     # polygon not made, only 2 unique points, costa rica and georgia
-# Plethodon wehrlei
-     # polygon made from 1,591 points, this will add to the IUCN polygons
+#List of species I have to add polygons to 
+# Batrachoseps regius - polygon made from 163 points, this will replace the old one
+# Batrachoseps relictus - polygon made from 611 points, add to OG
+# Bolitoglossa dunni - polygon made from 26 points, add to OG
+#LM MADE # Bolitoglossa mucuyensis ############### - only one point on vertnet, no new polys
+# Bolitoglossa odonnelli - polygons made from 36 points, this will be an addition to IUCN polygons to add in honduras
+# Bradytriton silus - polygons made from 31 points, this will replace the old one
+# Desmognathus conanti - polygons made from 1,111 points, add to OG
+# Desmognathus fuscus - polygons made from 6,000 points, this will add to the IUCN polygons
+# Eurycea bislineata - polygons made from 5,997 points, this will add to the IUCN polygons
+# Eurycea longicauda - polygons made from 2,578 points, this will add to the IUCN polygons
+# Plethodon aureolus - polygons made from 762 points, this will add to the IUCN polygons
+# LM MADE # Plethodon chlorobryonis ############### - polygons made from 1913 points, this will replace the polygon I made bc it is better
+# Plethodon dorsalis - polygons made from 1,794 points, this will add to IUCN polygons
+# Plethodon jordani - polygons made from 1,998 points, this will add to IUCN polygons
+# Plethodon richmondi - polygons made from 3,043 points, this will add to IUCN polygons
+# LM MADE ### Plethodon savannah ############# - polygon not made, only 2 unique points, costa rica and georgia
+# Plethodon wehrlei - polygon made from 1,591 points, this will add to the IUCN polygons
+
+# to plot and check EOO results
+#plot(EOO.results.XX[[1]][[2]], col="red")
+#plot(land, add=T)
+
 
 ########################################
 # Batrachoseps regius
@@ -83,8 +70,6 @@ Batraregius[,3] <- as.character(Batraregius[,3])
 # this is just getting a polygon by connecting the outside dots
 EEO.results_BRe <- EOO.computing(Batraregius, file.name = "Batraregius_EOO", export_shp = T)
 plot(EEO.results_BRe[[1]][[2]], col="grey")
-data(land)
-plot(EEO.results_BRe[[1]][[2]], col="grey")
 plot(land, add=T)
 # This only adds shorelines when the polygon overlaps with it. if nothing happens, the polygon is not touching any water
 
@@ -92,20 +77,17 @@ EOO.results.BR <- EOO.computing(Batraregius, method.range = "alpha.hull",
                              export_shp = T, write_shp = F,
                              alpha=1, exclude.area = T,  # alpha is analogous to level of confidence in sampling breadth
                              country_map = land) # EOO (extent of occupation outine) IUCN powerpoint in Extras folder
+
 #class(EOO.results.BR$Species1$spatial.polygon) #it is a spatial polygon
 Batraregius.SP <- SpatialPolygonsDataFrame(EOO.results.BR$Species1$spatial.polygon, data=data.frame(binomial=1))
 writeOGR(Batraregius.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batraregius", driver="ESRI Shapefile", layer = "chull")
 Batraregius.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batraregius/chull.shp")
 Batraregius.SHP$binomial <- "Batrachoseps regius"
 proj4string(Batraregius.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Batraregius.SHP
-#plot(EOO.results.BR$Species1$spatial.polygon, col="red")
-#plot(land, add=T)
 
 # the alpha value changes the contour of the polygon. closer to 1 is more contoured and higher is less contoured
 # right now set the alpha value to 1 for all polygons
-# if we find out later that my polys are different and we delineate that to be 
-#    because alpha values, we can further assess the alpha value later on
+
 
 #######################################
 # Batrachoseps relictus
@@ -129,9 +111,6 @@ writeOGR(Batrarel.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batrarel", 
 Batrarel.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batrarel/chull.shp")
 Batrarel.SHP$binomial <- "Batrachoseps relictus"
 proj4string(Batrarel.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Batrarel.SHP
-plot(EOO.results.BRR[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Bolitoglossa dunni
@@ -156,10 +135,6 @@ writeOGR(Bolitodunn.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolitodun
 Bolitodunn.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolitodunn/chull.shp")
 Bolitodunn.SHP$binomial <- "Bolitoglossa dunni"
 proj4string(Bolitodunn.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Bolitodunn.SHP
-
-plot(EOO.results.BD[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Bolitoglossa odonnelli
@@ -184,10 +159,6 @@ writeOGR(Bolitood.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolitood", 
 Bolitood.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolitood/chull.shp")
 Bolitood.SHP$binomial <- "Bolitoglossa odonnelli"
 proj4string(Bolitood.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Bolitood.SHP
-
-plot(EOO.results.BO[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Bradytriton silus
@@ -212,11 +183,6 @@ writeOGR(Bradysil.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bradysil", 
 Bradysil.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bradysil/chull.shp")
 Bradysil.SHP$binomial <- "Bradytriton silus"
 proj4string(Bradysil.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Bradysil.SHP
-
-plot(EOO.results.BS[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #######################################
 # Desmognathus conanti
@@ -241,11 +207,6 @@ writeOGR(Desmocon.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmocon", 
 Desmocon.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmocon/chull.shp")
 Desmocon.SHP$binomial <- "Desmognathus conanti"
 proj4string(Desmocon.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Desmocon.SHP
-
-plot(EOO.results.DC[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #######################################
 # Desmognathus fuscus
@@ -270,10 +231,6 @@ writeOGR(Desmofus.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmofus", 
 Desmofus.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmofus/chull.shp")
 Desmofus.SHP$binomial <- "Desmognathus fuscus"
 proj4string(Desmofus.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Desmofus.SHP
-plot(Desmofus.SHP)
-plot(EOO.results.DF[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Eurycea bislineata
@@ -298,10 +255,6 @@ writeOGR(Eurbis.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eurbis", driv
 Eurbis.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eurbis/chull.shp")
 Eurbis.SHP$binomial <- "Eurycea bislineata"
 proj4string(Eurbis.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Eurbis.SHP
-
-plot(EOO.results.EB[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Eurycea longicauda
@@ -326,8 +279,6 @@ writeOGR(Eurlon.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eurlon", driv
 Eurlon.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eurlon/chull.shp")
 Eurlon.SHP$binomial <- "Eurycea longicauda"
 proj4string(Eurlon.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-plot(EOO.results.EL[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Plethodon aureolus
@@ -353,10 +304,6 @@ writeOGR(Pleaur.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleaur", driv
 Pleaur.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleaur/chull.shp")
 Pleaur.SHP$binomial <- "Plethodon aureolus"
 proj4string(Pleaur.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Pleaur.SHP
-
-plot(EOO.results.PA[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Plethodon chlorobryonis
@@ -383,9 +330,6 @@ Plechl.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plech
 Plechl.SHP$binomial <- "Plethodon chlorobryonis"
 proj4string(Plechl.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-plot(EOO.results.PC[[1]][[2]], col="red")
-plot(land, add=T)
-
 #######################################
 # Plethodon dorsalis
 
@@ -410,10 +354,6 @@ writeOGR(Pledor.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pledor", driv
 Pledor.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pledor/chull.shp")
 Pledor.SHP$binomial <- "Plethodon dorsalis"
 proj4string(Pledor.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Pledor.SHP
-
-plot(EOO.results.PD[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Plethodon jordani
@@ -439,10 +379,6 @@ writeOGR(Plejor.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plejor", driv
 Plejor.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plejor/chull.shp")
 Plejor.SHP$binomial <- "Plethodon jordani"
 proj4string(Plejor.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Plejor.SHP
-
-plot(EOO.results.PJ[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Plethodon richmondi
@@ -468,10 +404,6 @@ writeOGR(Pleric.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleric", driv
 Pleric.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleric/chull.shp")
 Pleric.SHP$binomial <- "Plethodon richmondi"
 proj4string(Pleric.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Pleric.SHP
-
-plot(EOO.results.PR[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Plethodon wehrlei
@@ -497,17 +429,12 @@ writeOGR(Pleweh.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleweh", driv
 Pleweh.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleweh/chull.shp")
 Pleweh.SHP$binomial <- "Plethodon wehrlei"
 proj4string(Pleweh.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Pleweh.SHP
-
-plot(EOO.results.PW[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #########################################
-## LM REDO LM POLYGONS OH BOY ##########
+## LM POLYGONS OH BOY ##########
 ########################################
 
-# SPECIES I MADE THAT NEED TO BE REDONE - 18
+# SPECIES I MADE - 18
 
 # Batrachoseps altasierrae
   # polygon redone from 120 points
@@ -575,10 +502,6 @@ writeOGR(Batalta.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batalta", dr
 Batalta.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batalta/chull.shp")
 Batalta.SHP$binomial <- "Batrachoseps altasierrae"
 proj4string(Batalta.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Batalta.SHP
-
-plot(EOO.results.A[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Batrachoseps bramei
@@ -605,11 +528,6 @@ writeOGR(Batbram.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batbram", dr
 Batbram.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Batbram/chull.shp")
 Batbram.SHP$binomial <- "Batrachoseps bramei"
 proj4string(Batbram.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Batbram.SHP
-
-plot(EOO.results.B[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #######################################
 # Bolitoglossa nympha
@@ -636,11 +554,6 @@ writeOGR(Bolnym.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolnym", driv
 Bolnym.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolnym/chull.shp")
 Bolnym.SHP$binomial <- "Bolitoglossa nympha"
 proj4string(Bolnym.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Bolnym.SHP
-
-plot(EOO.results.C[[1]][[2]], col="red")
-plot(land, add=T)
-91-68
 
 #######################################
 # Bolitoglossa robinsoni
@@ -667,11 +580,6 @@ writeOGR(Bolrob.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolrob", driv
 Bolrob.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Bolrob/chull.shp")
 Bolrob.SHP$binomial <- "Bolitoglossa robinsoni"
 proj4string(Bolrob.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Bolrob.SHP
-
-plot(EOO.results.D[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #######################################
 # Chiropterotriton miquihuanus
@@ -698,11 +606,6 @@ writeOGR(Chimiq.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Chimiq", driv
 Chimiq.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Chimiq/chull.shp")
 Chimiq.SHP$binomial <- "Chiropterotriton miquihuanus"
 proj4string(Chimiq.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Chimiq.SHP
-
-plot(EOO.results.E[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #######################################
 # Desmognathus organi
@@ -729,11 +632,6 @@ writeOGR(Desor.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desor", driver
 Desor.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desor/chull.shp")
 Desor.SHP$binomial <- "Desmognathus organi"
 proj4string(Desor.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Desor.SHP
-
-plot(EOO.results.G[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 #######################################
 # Desmognathus planiceps
@@ -760,12 +658,6 @@ writeOGR(Despla.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Despla", driv
 Despla.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Despla/chull.shp")
 Despla.SHP$binomial <- "Desmognathus planiceps"
 proj4string(Despla.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Despla.SHP
-
-plot(EOO.results.H[[1]][[2]], col="red")
-plot(land, add=T)
-
-
 
 #######################################
 # Eurycea aquatica
@@ -792,11 +684,6 @@ writeOGR(Eaqua.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eaqua", driver
 Eaqua.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eaqua/chull.shp")
 Eaqua.SHP$binomial <- "Eurycea aquatica"
 proj4string(Eaqua.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Eaqua.SHP
-
-plot(EOO.results.I[[1]][[2]], col="red")
-plot(land, add=T)
-146-130 # this is needed when the xls file has rows where lat long are missing... this number is the true number of points used to create this polygon
 
 
 #######################################
@@ -824,10 +711,7 @@ writeOGR(Echam.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Echam", driver
 Echam.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Echam/chull.shp")
 Echam.SHP$binomial <- "Eurycea chamberlaini"
 proj4string(Echam.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Echam.SHP
 
-plot(EOO.results.J[[1]][[2]], col="red")
-plot(land, add=T)
 
 #######################################
 # Eurycea longicauda melanopleura
@@ -854,12 +738,6 @@ writeOGR(Elome.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Elome", driver
 Elome.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Elome/chull.shp")
 Elome.SHP$binomial <- "Eurycea longicauda melanopleura"
 proj4string(Elome.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Elome.SHP
-
-plot(EOO.results.K[[1]][[2]], col="red")
-plot(land, add=T)
-495+333 # adding rows that were cutoff in printout
-828-764
 
 
 
@@ -888,10 +766,6 @@ writeOGR(Onica.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Onica", driver
 Onica.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Onica/chull.shp")
 Onica.SHP$binomial <- "Oedipina nica"
 proj4string(Onica.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Onica.SHP
-
-plot(EOO.results.L[[1]][[2]], col="red")
-plot(land, add=T)
 
 
 #######################################
@@ -919,10 +793,6 @@ writeOGR(Plechat.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechat", dr
 Plechat.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechat/chull.shp")
 Plechat.SHP$binomial <- "Plethodon chattahoochee"
 proj4string(Plechat.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Plechat.SHP
-
-plot(EOO.results.M[[1]][[2]], col="red")
-plot(land, add=T)
 
 
 #######################################
@@ -949,10 +819,6 @@ writeOGR(Plechlo.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechlo", dr
 Plechlo.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechlo/chull.shp")
 Plechlo.SHP$binomial <- "Plethodon chlorobryonis"
 proj4string(Plechlo.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Plechlo.SHP
-
-plot(EOO.results.N[[1]][[2]], col="red")
-plot(land, add=T)
 
 
 #######################################
@@ -980,10 +846,6 @@ writeOGR(Plegrob.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plegrobm", d
 Plegrob.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plegrobm/chull.shp")
 Plegrob.SHP$binomial <- "Plethodon grobmani"
 proj4string(Plegrob.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Plegrob.SHP
-
-plot(EOO.results.O[[1]][[2]], col="red")
-plot(land, add=T)
 
 
 #######################################
@@ -1011,11 +873,6 @@ writeOGR(Plemiss.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plemiss", dr
 Plemiss.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plemiss/chull.shp")
 Plemiss.SHP$binomial <- "Plethodon mississippi"
 proj4string(Plemiss.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Plemiss.SHP
-
-plot(EOO.results.P[[1]][[2]], col="red")
-plot(land, add=T)
-
 
 
 #######################################
@@ -1043,10 +900,6 @@ writeOGR(Pleocm.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleocm", driv
 Pleocm.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleocm/chull.shp")
 Pleocm.SHP$binomial <- "Plethodon ocmulgee"
 proj4string(Pleocm.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Pleocm.SHP
-
-plot(EOO.results.Q[[1]][[2]], col="red")
-plot(land, add=T)
 
 
 #######################################
@@ -1074,10 +927,6 @@ writeOGR(Plevar.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plevar", driv
 Plevar.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plevar/chull.shp")
 Plevar.SHP$binomial <- "Plethodon variolatus"
 proj4string(Plevar.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-Plevar.SHP
-
-plot(EOO.results.R[[1]][[2]], col="red")
-plot(land, add=T)
 
 
 
