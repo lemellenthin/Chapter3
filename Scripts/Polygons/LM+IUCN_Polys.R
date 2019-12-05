@@ -11,6 +11,7 @@ UniqueNLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/c
 UniqueNLMPolys$binomial
 sort(UniqueNLMPolys$binomial)
 
+# new species that I made
 which(is.na(match(Polygons$binomial, UniqueNLMPolys$binomial)))
 # 1-18
 # Batrachoseps altasierrae, Batrachoseps bramei, Bolitoglossa nympha            
@@ -22,22 +23,38 @@ which(is.na(match(Polygons$binomial, UniqueNLMPolys$binomial)))
 
 # file of polygons with LM makings #UniqueLMPolys
 UniqueLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp") # 18
+UniqueLMPolys$binomial
 
-# used polys
-All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.shp") # 311
+# all the polygons both new and additions
+Add <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllLMPolysBinded/chull.shp") #31
+Add$binomial
+# just the additions
+which(is.na(match(Add$binomial, UniqueLMPolys$binomial)))
+# the 13 additions
+# Batrachoseps regius 
+# Batrachoseps relictus
+# Bolitoglossa dunni
+# Bolitoglossa odonnelli
+# Bradytriton silus
+# Desmognathus fuscus
+# Eurycea bislineata
+# Eurycea longicauda
+# Plethodon aureolus
+# Plethodon dorsalis
+# Plethodon jordani
+# Plethodon richmondi
+# Plethodon wehrlei
 
+# used polys 311
 Polygons <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforanalysis/chull.shp")
 Polygons$binomial
 sort(Polygons$binomial)
 
-poly <- rgeos::gBuffer(Polygons, width = 0, byid=F)
+# these are the ones dropped out bc ranges in europe/korea
 poly2 <- rgeos::gBuffer(Polygons, width = 0, byid=T)
-idk <- crop(poly, predictors)
 idk2 <- crop(poly2, predictors)
-plot(idk)
 plot(idk2)
 sort(idk2$binomial)
-
 which(is.na(match(Polygons$binomial, idk2$binomial)))
 # [1] 187 189 190 191 192 195 196 200
 Polygons$binomial
@@ -50,47 +67,40 @@ Polygons$binomial
 # [196] Hydromantes supramontis
 # [200] Karsenia koreana 
 
-
-
-
-
 ###############################################
 # species I was not able to make polygons for #
 # Bolitoglossa mucuyensis, Plethodon savannah, Bolitoglossa cataguana
 # Bolitoglossa chinanteca, Bolitoglossa kaqchikelorum, Nototriton picucha
 
-# List of species I have to add polygons to 
+# List of species I have to add polygons to -13
 # Batrachoseps regius - polygon made from 163 points, this will replace the old one
 # Batrachoseps relictus - polygon made from 611 points, add to OG
 # Bolitoglossa dunni - polygon made from 26 points, add to OG
-# LM MADE # Bolitoglossa mucuyensis ## - only one point on vertnet, no new polys
 # Bolitoglossa odonnelli - polygons made from 36 points, this will be an addition to IUCN polygons to add in honduras
 # Bradytriton silus - polygons made from 31 points, this will replace the old one
-# Desmognathus conanti - polygons made from 1,111 points, add to OG
 # Desmognathus fuscus - polygons made from 6,000 points, this will add to the IUCN polygons
 # Eurycea bislineata - polygons made from 5,997 points, this will add to the IUCN polygons
 # Eurycea longicauda - polygons made from 2,578 points, this will add to the IUCN polygons
 # Plethodon aureolus - polygons made from 762 points, this will add to the IUCN polygons
-# LM MADE # Plethodon chlorobryonis ## - polygons made from 1913 points, this will replace the polygon I made
 # Plethodon dorsalis - polygons made from 1,794 points, this will add to IUCN polygons
 # Plethodon jordani - polygons made from 1,998 points, this will add to IUCN polygons
 # Plethodon richmondi - polygons made from 3,043 points, this will add to IUCN polygons
-# LM MADE ### Plethodon savannah ## - polygon not made, only 2 unique points, costa rica and georgia
 # Plethodon wehrlei - polygon made from 1,591 points, this will add to the IUCN polygons
 
 ## NOTES ##
 # to plot and check EOO results
 # plot(EOO.results.XX[[1]][[2]], col="red")
 # plot(land, add=T)
-
+#
 # the alpha value changes the contour of the polygon. closer to 1 is more contoured and higher is less contoured
 # right now set the alpha value to 1 for all polygons
-
+#
 # this is just getting a polygon by connecting the outside dots
 # EEO.results_BRe <- EOO.computing(Batraregius, file.name = "Batraregius_EOO", export_shp = T)
 # This only adds shorelines when the polygon overlaps with it. if nothing happens, the polygon is not touching any water
 
-
+## LM additional POLYGONS  ##########
+########################################
 ########################################
 # Batrachoseps regius
 Batreg <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Batrachoseps_regius.txt.tsv", quote=""))
@@ -212,30 +222,6 @@ Bradysil.SHP$binomial <- "Bradytriton silus"
 proj4string(Bradysil.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 #######################################
-# Desmognathus conanti
-Desmocon <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Desmognathus_conanti.txt.tsv", quote=""))
-# make into the colums needed
-Desmocon <-  cbind(Desmocon$decimallatitude, Desmocon$decimallongitude, Desmocon$scientificname)
-colnames(Desmocon) <- c("ddlat", "ddlon","tax")
-Desmocon <- as.data.frame(Desmocon)
-Desmocon[,1] <- as.character(Desmocon[,1]) 
-Desmocon[,1] <- as.numeric(Desmocon[,1]) 
-Desmocon[,2] <- as.character(Desmocon[,2])
-Desmocon[,2] <- as.numeric(Desmocon[,2])
-Desmocon[,3] <- as.character(Desmocon[,3])
-
-EOO.results.DC <- EOO.computing(Desmocon, method.range = "alpha.hull", 
-                                export_shp = T, alpha=1, exclude.area = T, 
-                                country_map = land)
-
-class(EOO.results.DC$Species1$spatial.polygon)
-Desmocon.SP <- SpatialPolygonsDataFrame(EOO.results.DC$Species1$spatial.polygon, data=data.frame(binomial=1), match.ID = F)
-writeOGR(Desmocon.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmocon", driver="ESRI Shapefile", layer = "chull")
-Desmocon.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmocon/chull.shp")
-Desmocon.SHP$binomial <- "Desmognathus conanti"
-proj4string(Desmocon.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-
-#######################################
 # Desmognathus fuscus
 Desmofus <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons/Polygons_Dec/Desmognathus_fuscus.txt.tsv", quote=""))
 # make into the colums needed
@@ -331,31 +317,6 @@ writeOGR(Pleaur.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleaur", driv
 Pleaur.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleaur/chull.shp")
 Pleaur.SHP$binomial <- "Plethodon aureolus"
 proj4string(Pleaur.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-
-#######################################
-# Plethodon chlorobryonis
-
-Plechl <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon_chlorobryonis.txt.tsv", quote=""))
-# make into the colums needed
-Plechl <-  cbind(Plechl$decimallatitude, Plechl$decimallongitude, Plechl$scientificname)
-colnames(Plechl) <- c("ddlat", "ddlon","tax")
-Plechl <- as.data.frame(Plechl)
-Plechl[,1] <- as.character(Plechl[,1]) 
-Plechl[,1] <- as.numeric(Plechl[,1]) 
-Plechl[,2] <- as.character(Plechl[,2])
-Plechl[,2] <- as.numeric(Plechl[,2])
-Plechl[,3] <- as.character(Plechl[,3])
-
-EOO.results.PC <- EOO.computing(Plechl, method.range = "alpha.hull", 
-                                export_shp = T, alpha
-                                =1, exclude.area = T, 
-                                country_map = land)
-class(EOO.results.PC$Species1$spatial.polygon)
-Plechl.SP <- SpatialPolygonsDataFrame(EOO.results.PC$Species1$spatial.polygon, data=data.frame(binomial=1), match.ID = F)
-writeOGR(Plechl.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechl", driver="ESRI Shapefile", layer = "chull")
-Plechl.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechl/chull.shp")
-Plechl.SHP$binomial <- "Plethodon chlorobryonis"
-proj4string(Plechl.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 #######################################
 # Plethodon dorsalis
@@ -458,33 +419,34 @@ Pleweh.SHP$binomial <- "Plethodon wehrlei"
 proj4string(Pleweh.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 #########################################
-## LM POLYGONS  ##########
+## LM  new POLYGONS  ##########
 ########################################
-
-# SPECIES I MADE - 18
-
-# Batrachoseps altasierrae - polygon redone from 120 points
-# Batrachoseps bramei - polygon redone from 145 points
+# only one point so couldnt make
+# Bolitoglossa mucuyensis # only one point no #
+# Plethodon savannah # only two points #
+# Nototriton picucha # only 2 points #
 # Bolitoglossa cataguana # its a line #
 # Bolitoglossa chinanteca # its a line #
 # Bolitoglossa kaqchikelorum # its a line #
-# Bolitoglossa mucuyensis # only one point no #
+
+# SPECIES I MADE - 18
+# Batrachoseps altasierrae - polygon redone from 120 points
+# Batrachoseps bramei - polygon redone from 145 points
 # Bolitoglossa nympha - polygon redone from 23 points
 # Bolitoglossa robinsoni - polygon redone from 23 points
 # Chiropterotriton miquihuanus - polygon redone from 18 points
+# Desmognathus conanti - polygons made from 1,111 points, add to OG
 # Desmognathus organi - polygon redone from 188 points
 # Desmognathus planiceps - polygon redone from 70 points
 # Eurycea aquatica - polygon redone from 16 points
 # Eurycea chamberlaini - polygon redone from 60 points
 # Eurycea longicauda melanopleura - polygon redone from 64 points
-# Nototriton picucha # only 2 points #
 # Oedipina nica - polygon redone from 15 points
 # Plethodon chattahoochee - polygon redone from 482 points
-# Plethodon chlorobryonis - polygon redone from 1,913 points
+# Plethodon chlorobryonis - polygon redone from 1,913 points 
 # Plethodon grobmani - polygon redone from 1,929 points
 # Plethodon mississippi - polygon redone from 1,646 points
 # Plethodon ocmulgee - polygon redone from 257 points
-# Plethodon savannah # only two points #
 # Plethodon variolatus - polygon redone from 1,009 points
 
 #######################################
@@ -616,6 +578,30 @@ writeOGR(Chimiq.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Chimiq", driv
 Chimiq.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Chimiq/chull.shp")
 Chimiq.SHP$binomial <- "Chiropterotriton miquihuanus"
 proj4string(Chimiq.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+
+#######################################
+# Desmognathus conanti
+Desmocon <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Desmognathus_conanti.txt.tsv", quote=""))
+# make into the colums needed
+Desmocon <-  cbind(Desmocon$decimallatitude, Desmocon$decimallongitude, Desmocon$scientificname)
+colnames(Desmocon) <- c("ddlat", "ddlon","tax")
+Desmocon <- as.data.frame(Desmocon)
+Desmocon[,1] <- as.character(Desmocon[,1]) 
+Desmocon[,1] <- as.numeric(Desmocon[,1]) 
+Desmocon[,2] <- as.character(Desmocon[,2])
+Desmocon[,2] <- as.numeric(Desmocon[,2])
+Desmocon[,3] <- as.character(Desmocon[,3])
+
+EOO.results.DC <- EOO.computing(Desmocon, method.range = "alpha.hull", 
+                                export_shp = T, alpha=1, exclude.area = T, 
+                                country_map = land)
+
+class(EOO.results.DC$Species1$spatial.polygon)
+Desmocon.SP <- SpatialPolygonsDataFrame(EOO.results.DC$Species1$spatial.polygon, data=data.frame(binomial=1), match.ID = F)
+writeOGR(Desmocon.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmocon", driver="ESRI Shapefile", layer = "chull")
+Desmocon.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Desmocon/chull.shp")
+Desmocon.SHP$binomial <- "Desmognathus conanti"
+proj4string(Desmocon.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 #######################################
 # Desmognathus organi
@@ -801,28 +787,27 @@ proj4string(Plechat.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def
 
 #######################################
 # Plethodon chlorobryonis
-
-Plechlo <-as.data.frame(readxl::read_xls("./Analysis_Scripts/Chapter3/Polygons/Pchlorobryonis.xls"))
-N <- Plechlo
+Plechl <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons/Polygons_Dec/Plethodon_chlorobryonis.txt.tsv", quote=""))
 # make into the colums needed
-N <-  cbind(N$decimallatitude, N$decimallongitude, N$scientificname)
-colnames(N) <- c("ddlat", "ddlon","tax")
-N <- as.data.frame(N)
-N[,1] <- as.character(N[,1])
-N[,1] <- as.numeric(N[,1]) 
-N[,2] <- as.character(N[,2])
-N[,2] <- as.numeric(N[,2])
-N[,3] <- as.character(N[,3])
+Plechl <-  cbind(Plechl$decimallatitude, Plechl$decimallongitude, Plechl$scientificname)
+colnames(Plechl) <- c("ddlat", "ddlon","tax")
+Plechl <- as.data.frame(Plechl)
+Plechl[,1] <- as.character(Plechl[,1]) 
+Plechl[,1] <- as.numeric(Plechl[,1]) 
+Plechl[,2] <- as.character(Plechl[,2])
+Plechl[,2] <- as.numeric(Plechl[,2])
+Plechl[,3] <- as.character(Plechl[,3])
 
-EOO.results.N <- EOO.computing(N, method.range = "alpha.hull", 
-                               export_shp = T, alpha=1, exclude.area = T, 
-                               country_map = land)
-class(EOO.results.N$Species1$spatial.polygon)
-Plechlo.SP <- SpatialPolygonsDataFrame(EOO.results.N$Species1$spatial.polygon, data=data.frame(binomial=1), match.ID = F)
-writeOGR(Plechlo.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechlo", driver="ESRI Shapefile", layer = "chull")
-Plechlo.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechlo/chull.shp")
-Plechlo.SHP$binomial <- "Plethodon chlorobryonis"
-proj4string(Plechlo.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+EOO.results.PC <- EOO.computing(Plechl, method.range = "alpha.hull", 
+                                export_shp = T, alpha
+                                =1, exclude.area = T, 
+                                country_map = land)
+class(EOO.results.PC$Species1$spatial.polygon)
+Plechl.SP <- SpatialPolygonsDataFrame(EOO.results.PC$Species1$spatial.polygon, data=data.frame(binomial=1), match.ID = F)
+writeOGR(Plechl.SP, "Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechl", driver="ESRI Shapefile", layer = "chull")
+Plechl.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plechl/chull.shp")
+Plechl.SHP$binomial <- "Plethodon chlorobryonis"
+proj4string(Plechl.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 #######################################
 # Plethodon grobmani
@@ -932,7 +917,7 @@ proj4string(Plevar.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
 ##### combo all of the polygons I made into one object ####
 ###########################################################
 
-# combine all
+# combine all both new and additions
 AllLMPolys <- c(Batalta.SHP, Batbram.SHP, Batraregius.SHP,
   Batrarel.SHP, Bolitodunn.SHP, Bolitood.SHP, Bolnym.SHP, 
   Bolrob.SHP, Bradysil.SHP, Chimiq.SHP, Desmocon.SHP, Desmofus.SHP,
@@ -978,5 +963,312 @@ writeOGR(obj=AllNewLMPolysBinded, dsn="Analysis_Scripts/Chapter3/Shapefiles/AllN
 LMNewPolyCheck <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
 plot(LMNewPolyCheck)
 plot(LMPolyCheck[31, ])
+
+
+##########################################################################
+#####################  UNIQUEPOLY FILE WITHOUT LM POLYS CODE #############
+##########################################################################
+
+# Selecting just our species for new polyanalysis for w/out LMpolys
+BBN <- read.tree("Data/Pruned/BB.PrunedToKnownHabitats.tre")
+BBN$tip.label <- str_replace_all(BBN$tip.label, "[[:punct:]]"," ") 
+Species <- BBN$tip.label
+length(unique(BBN$tip.label)) #495
+BBN$tip.label[match(BB$tip.label,BBN$tip.label)]
+BBN$tip.label[is.na(match(BB$tip.label, BBN$tip.label))]  # want character(0)
+
+#Which new taxonomic name is the same as the polygon name NEW LM ANALYSIS
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes ambrosii")] <- "Hydromantes ambrosii"
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes italicus")] <- "Hydromantes italicus"
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes strinatii")] <- "Hydromantes strinatii"
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes genei")] <- "Hydromantes genei"
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes flavus")] <- "Hydromantes flavus"
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes supramontis")] <- "Hydromantes supramontis"
+PlethPolys$binomial[which(PlethPolys$binomial == "Speleomantes imperialis")] <- "Hydromantes imperialis"
+
+#what we dont have polygons for new LM analysis
+BBN$tip.label[is.na(match(BBN$tip.label, Caudata$binomial))] #68
+BBN$tip.label[is.na(match(BBN$tip.label, PlethPolys$binomial))] #202
+
+#what species we dont have polygons for new LM analysis
+BBN$tip.label[is.na(match(BBN$tip.label, PlethPolys$binomial))] # 202
+
+#Which polygons don't match the tree names new LM analysis
+PlethPolys$binomial[is.na(match(PlethPolys$binomial, BBN$tip.label))] # 93
+
+# Prune BB tree down to just shape file species newLManalysis
+BBNPruned <- drop.tip(BBN, Species[which(is.na(match(Species, PlethPolys$binomial)))])
+length(unique(BBNPruned$tip.label)) #293
+write.tree(BBNPruned, file="Analysis_Scripts/Chapter3/Data/Pruned/BBPruned.tre", digits = 20)
+
+# Prune shape file down to just BB Species newLManalysis
+PolyNDrops <- which(is.na(match(PlethPolys$binomial, BBNPruned$tip.label)))
+PlethPolyNPruned <- PlethPolys[-PolyNDrops,] # still contains replicates of different shapes for a single species
+PlethPolyNPruned$binomial[which(is.na(match(PlethPolys$binomial, BBNPruned$tip.label)))]
+length(BBNPruned$tip.label) # 293
+length(unique(PlethPolyNPruned$binomial)) #293
+anyNA(match(BBNPruned$tip.label, PlethPolyNPruned$binomial)) # want FALSE
+sort(unique(PlethPolys$binomial)) # All the pleth species we have data for
+writeOGR(obj=PlethPolyNPruned, dsn="Analysis_Scripts/Chapter3/Shapefiles/PlethPolyNPruned", layer="PlethPolyNPruned", driver="ESRI Shapefile", overwrite_layer = T)
+
+#Our BB species that don't have polygon matches newLManalysis
+Species[which(is.na(match(Species, PlethPolys$binomial)))] #202
+
+# Prune occurence data down to just BB Species newLM analysis
+anyNA(match(BBNPruned$tip.label, PlethPolyNPruned$binomial)) # want FALSE
+anyNA(match(PlethPolyNPruned$binomial, BBNPruned$tip.label)) # want FALSE 
+sort(unique(PlethPolys$binomial))
+sort(unique(PlethPolyNPruned$binomial))# All the pleth species we have data for
+
+#assign spatial coordinates newLManalysis
+crs(PlethPolyNPruned) # gives the new shape file coordinates
+#proj4string(PlethPolyNPruned) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+
+######## merge polygons with same name ##### newLManalysis w/out LM
+UniqueNLMPolys <- aggregate(PlethPolyNPruned, by="binomial")
+length(UniqueNLMPolys@polygons)
+sort(table(UniqueNLMPolys$binomial))
+sort(table(PlethPolyNPruned$binomial))
+crs(UniqueNLMPolys)
+#proj4string(UniqueNLMPolys) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+#spTransform(UniqueNLMPolys, CRS('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0'))
+#proj4string(UniqueNLMPolys) <- CRS('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')
+writeOGR(UniqueNLMPolys, "Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys", layer="chull", driver="ESRI Shapefile", overwrite_layer = T)
+UniqueNLMPolys <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/chull.shp") # Gives warning about depreceated function, but still reads in well
+UniqueNLMPolys <- UniqueNLMPolys3
+length(UniqueNLMPolys) # 293
+######## 
+# FILE WITHOUT LM POLYS -> UniqueNLMPolys
+
+################################################################
+### new file with  LM polygons
+# this is where i have to add my polygons to the IUCN ones
+################################################################
+
+# load file with LM polygons
+LMPolyCheck <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllLMPolysBinded/chull.shp") #31
+
+#combine IUCN and LM polygons
+LaurPolys <- c(UniqueNLMPolys@polygons, LMPolyCheck@polygons)
+names(LaurPolys) <- c(UniqueNLMPolys$binomial, LMPolyCheck$binomial)
+crs(UniqueNLMPolys)
+proj4string(UniqueNLMPolys) <- CRS("+proj=longlat +datum=WGS84 +no_defs+ellps=WGS84 +towgs84=0,0,0")
+crs(LMPolyCheck)
+crs(UniqueNLMPolys)
+
+#repeats
+###################################################
+# Plethodon wehrlei
+LMPolyCheck[31, ]
+UniqueNLMPolys[246, ]
+
+Plewehcomb <- spRbind(LMPolyCheck[31, ], UniqueNLMPolys[246, ])
+plot(Plewehcomb)
+plot(LMPolyCheck[31, ])
+plot(UniqueNLMPolys[246, ])
+Plewehall <- buffer(Plewehcomb, width=0.001, dissolve=TRUE)
+plot(Plewehall)
+Plewehall$binomial <- "Plethodon wehrlei"
+
+# Plethodon richmondi
+LMPolyCheck[29, ]
+UniqueNLMPolys[234, ]
+
+Plerichcomb <- spRbind(LMPolyCheck[29, ], UniqueNLMPolys[234, ])
+plot(Plerichcomb)
+plot(LMPolyCheck[29, ])
+plot(UniqueNLMPolys[234, ])
+Plerichall <- buffer(Plerichcomb, width=0.001, dissolve=TRUE)
+plot(Plerichall)
+Plerichall$binomial <- "Plethodon richmondi"
+
+# Plethodon jordani
+LMPolyCheck[26, ]
+UniqueNLMPolys[221, ]
+
+Plejorcomb <- spRbind(LMPolyCheck[26, ], UniqueNLMPolys[221, ])
+plot(Plejorcomb)
+plot(LMPolyCheck[26, ])
+plot(UniqueNLMPolys[221, ])
+Plejorall <- buffer(Plejorcomb, width=0.001, dissolve=TRUE)
+plot(Plejorall)
+Plejorall$binomial <- "Plethodon jordani"
+
+# Plethodon dorsalis
+LMPolyCheck[24, ]
+UniqueNLMPolys[212, ]
+
+Pledorcomb <- spRbind(LMPolyCheck[24, ], UniqueNLMPolys[212, ])
+plot(Pledorcomb)
+plot(LMPolyCheck[24, ])
+plot(UniqueNLMPolys[212, ])
+Pledorall <- buffer(Pledorcomb, width=0.001, dissolve=TRUE)
+plot(Pledorall)
+Pledorall$binomial <- "Plethodon dorsalis"
+
+# Plethodon aureolus
+LMPolyCheck[21, ]
+UniqueNLMPolys[207, ]
+
+Pleaurcomb <- spRbind(LMPolyCheck[21, ], UniqueNLMPolys[207, ])
+plot(Pleaurcomb)
+plot(LMPolyCheck[21, ])
+plot(UniqueNLMPolys[207, ])
+Pleaurall <- buffer(Pleaurcomb, width=0.001, dissolve=TRUE)
+plot(Pleaurall)
+Pleaurall$binomial <- "Plethodon aureolus"
+
+# Eurycea longicauda
+LMPolyCheck[19, ]
+UniqueNLMPolys[141, ]
+
+Eurloncomb <- spRbind(LMPolyCheck[19, ], UniqueNLMPolys[141, ])
+plot(Eurloncomb)
+plot(LMPolyCheck[19, ])
+plot(UniqueNLMPolys[141, ])
+Eurlonall <- buffer(Eurloncomb, width=0.001, dissolve=TRUE)
+plot(Eurlonall)
+Eurlonall$binomial <- "Eurycea longicauda"
+
+# Eurycea bislineata
+LMPolyCheck[18, ]
+UniqueNLMPolys[135, ]
+
+Eurbiscomb <- spRbind(LMPolyCheck[18, ], UniqueNLMPolys[135, ])
+plot(Eurbiscomb)
+plot(LMPolyCheck[18, ])
+plot(UniqueNLMPolys[135, ])
+Eurbisall <- buffer(Eurbiscomb, width=0.001, dissolve=TRUE)
+plot(Eurbisall)
+Eurbisall$binomial <- "Eurycea bislineata"
+
+# Desmognathus fuscus
+LMPolyCheck[12, ]
+UniqueNLMPolys[123, ]
+
+Desfuscomb <- spRbind(LMPolyCheck[12, ], UniqueNLMPolys[123, ])
+plot(Desfuscomb)
+plot(LMPolyCheck[12, ])
+plot(UniqueNLMPolys[123, ])
+Desfusall <- buffer(Desfuscomb, width=0.001, dissolve=TRUE)
+plot(Desfusall)
+Desfusall$binomial <- "Desmognathus fuscus"
+
+# Bradytriton silus
+LMPolyCheck[9, ]
+UniqueNLMPolys[93, ]
+
+Bradsilcomb <- spRbind(LMPolyCheck[9, ], UniqueNLMPolys[93, ])
+plot(Bradsilcomb)
+plot(LMPolyCheck[9, ])
+plot(UniqueNLMPolys[93, ])
+Bradsilall <- buffer(Bradsilcomb, width=0.001, dissolve=TRUE)
+plot(Bradsilall)
+Bradsilall$binomial <- "Bradytriton silus"
+
+# Bolitoglossa odonnelli
+LMPolyCheck[6, ]
+UniqueNLMPolys[72, ]
+
+Bolodocomb <- spRbind(LMPolyCheck[6, ], UniqueNLMPolys[72, ])
+plot(Bolodocomb)
+plot(LMPolyCheck[6, ])
+plot(UniqueNLMPolys[72, ])
+Bolodoall <- buffer(Bolodocomb, width=0.001, dissolve=TRUE)
+plot(Bolodoall)
+Bolodoall$binomial <- "Bolitoglossa odonnelli"
+
+# Bolitoglossa dunni
+LMPolyCheck[5, ]
+UniqueNLMPolys[45, ]
+
+Boldunncomb <- spRbind(LMPolyCheck[5, ], UniqueNLMPolys[45, ])
+plot(Boldunncomb)
+plot(LMPolyCheck[5, ])
+plot(UniqueNLMPolys[45, ])
+Boldunnall <- buffer(Boldunncomb, width=0.001, dissolve=TRUE)
+plot(Boldunnall)
+Boldunnall$binomial <- "Bolitoglossa dunni"
+
+# Batrachoseps relictus
+LMPolyCheck[4, ]
+UniqueNLMPolys[24, ]
+
+Batrelcomb <- spRbind(LMPolyCheck[4, ], UniqueNLMPolys[24, ])
+plot(Batrelcomb)
+plot(LMPolyCheck[4, ])
+plot(UniqueNLMPolys[24, ])
+Batrelall <- buffer(Batrelcomb, width=0.001, dissolve=TRUE)
+plot(Batrelall)
+Batrelall$binomial <- "Batrachoseps relictus"
+
+# Batrachoseps regius
+LMPolyCheck[3, ]
+UniqueNLMPolys[23, ]
+
+Batregcomb <- spRbind(LMPolyCheck[3, ], UniqueNLMPolys[23, ])
+plot(Batregcomb)
+plot(LMPolyCheck[3, ])
+plot(UniqueNLMPolys[23, ])
+Batregall <- buffer(Batregcomb, width=0.001, dissolve=TRUE)
+plot(Batregall)
+Batregall$binomial <- "Batrachoseps regius"
+
+###################################################
+
+########### combine all the additional IUCN shapes into one
+
+AllNewPolys <- c(Batregall, Batrelall, Boldunnall, Bolodoall, Bradsilall,
+                 Desfusall, Eurbisall, Eurlonall, Pleaurall, Pledorall,
+                 Plejorall, Plerichall, Plewehall)
+AllNewPolyBind <- do.call(bind, AllNewPolys)
+crs(AllNewPolyBind)
+writeOGR(obj=AllNewPolyBind, dsn="Analysis_Scripts/Chapter3/Shapefiles/AllNewPolyBind", 
+         layer="chull", driver="ESRI Shapefile", overwrite_layer = T)
+AddPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewPolyBind/chull.shp")
+sort(table(AddPolys$binomial))
+
+
+####### only new LM polys ###########
+LMNewPolyCheck <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
+LMNewPolyCheck$binomial
+
+### dropping add-ons from IUCN file #####
+# drop 246, 234, 221, 212, 207, 141, 135, 123, 93, 72, 45, 24, 23 
+
+drops <- c(UniqueNLMPolys[246, ], UniqueNLMPolys[234, ], UniqueNLMPolys[221, ],
+           UniqueNLMPolys[212, ], UniqueNLMPolys[207, ], UniqueNLMPolys[141, ],
+           UniqueNLMPolys[135, ], UniqueNLMPolys[123, ], UniqueNLMPolys[93, ],
+           UniqueNLMPolys[72, ], UniqueNLMPolys[45, ], UniqueNLMPolys[24, ], UniqueNLMPolys[23, ])
+dropnames <- c("Plethodon wehrlei", "Plethodon richmondi", "Plethodon jordani", "Plethodon dorsalis",
+               "Plethodon aureolus", "Eurycea longicauda", "Eurycea bislineata", "Desmognathus fuscus",
+               "Bradytriton silus", "Bolitoglossa odonnelli", "Bolitoglossa dunni", "Batrachoseps relictus",
+               "Batrachoseps regius")
+
+droptwo <- which(is.na(match(UniqueNLMPolys$binomial, dropnames)) == "FALSE")
+Testty <- UniqueNLMPolys[-droptwo, ]
+length(unique(Testty$binomial)) #280
+crs(Testty)
+writeOGR(obj=Testty, dsn="Analysis_Scripts/Chapter3/Shapefiles/IUCNNNEW", 
+         layer="chull", driver="ESRI Shapefile")
+IUCNNNew <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/IUCNNNEW/chull.shp")
+
+#### overall ####
+# combine LMNewPolyCheck, AddPolys, and IUCNNNew
+# LMNewPolyCheck 18 new spp
+# IUCNNNew only IUCN 280 spp
+# AddPolys the add-ins 13 add ins
+
+AllPolysforuse <- c(LMNewPolyCheck, AddPolys, IUCNNNew)
+AllPolysyay <- do.call(bind, AllPolysforuse)
+AllPolysyay$binomial
+crs(AllPolysyay)
+length(AllPolysyay) #311
+sort(table(AllPolysyay$binomial))
+writeOGR(obj=AllPolysyay, dsn="Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis", 
+         layer="chull", driver="ESRI Shapefile", overwrite_layer = T)
+
+AllPolysforanalysis <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis")
+sort(table(AllPolysforanalysis$binomial))
 
 
