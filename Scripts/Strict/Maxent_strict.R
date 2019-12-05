@@ -68,57 +68,13 @@ SaxDF <- SaxDF[,1:2]
 # out <- which(is.na(outliers))
 # out
 # View(outliers)
-# # arb outliers
-# dropA <- c(34)
 # ArbNew <- ArbDF[-out,]
-# #terr outliers
-# dropT <- c(16,37,71,98,114,135,145,164,165)
-# TerrNew <- TerrDF[-out,]
-# # aqua outliers
-# dropW <- c(20,47,87)
-# AquaNew <- AquaDF[-out,]
-# # cave outliers
-# dropC <- c(1,2,3,4,8,9,17)
-# CaveNew <- CaveDF[-out,]
-# # sax outliers
-# dropS <- c(6)
-# SaxNew <- SaxDF[-out,]
 # # assign occurrence points - dont do this because running 10-fold with the full dataset does this automatically
 # occA <- ArbDF
 # occA <- as.matrix(occA)
 # foldA <- kfold(occA, k=5)
 # occtestA <- occA[foldA == 1, ]
 # occtrainA <- occA[foldA != 1, ]
-# # assign occurrence points
-# occT <- TerrDF
-# occT <- as.matrix(occT)
-# foldT <- kfold(occT, k=5)
-# occtestT <- occT[foldT == 1, ]
-# occtrainT <- occT[foldT != 1, ]
-# # assign occurrence points
-# occW <- AquaDF
-# occW <- as.matrix(occW)
-# foldW <- kfold(occW, k=5)
-# occtestW <- occW[foldW == 1, ]
-# occtrainW <- occW[foldW != 1, ]
-# # assign occurrence points
-# occC <- CaveDF
-# occC <- as.matrix(occC)
-# foldC <- kfold(occC, k=5)
-# occtestC <- occC[foldC == 1, ]
-# occtrainC <- occC[foldC != 1, ]
-# # assign occurrence points
-# occF <- FossDF
-# occF <- as.matrix(occF)
-# foldF <- kfold(occF, k=5)
-# occtestF <- occF[foldF == 1, ]
-# occtrainF <- occF[foldF != 1, ]
-# # assign occurrence points
-# occS <- SaxDF
-# occS <- as.matrix(occS)
-# foldS <- kfold(occS, k=5)
-# occtestS <- occS[foldS == 1, ]
-# occtrainS <- occS[foldS != 1, ]
 #
 #testing
 # cross validation
@@ -127,7 +83,6 @@ ArbModTestCV <- maxent(predictors, occtrainA, args=c("-J","-P",'replicates=2'), 
 ArbModTestBS <- maxent(predictors, ArbDF, args=c("-J","-P","replicates=2","replicatetype=bootstrap"), path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testBS")
 # subsampling
 ArbModTestSS <- maxent(predictors, ArbDF, args=c("-J","-P","replicates=5","replicatetype=subsample","randomtestpoints=20","nooutputgrids"), path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testSS")
-#
 #
 #
 # maxent model try with 10 folds 
@@ -194,9 +149,6 @@ SaxPrediction <- predict(SaxMod, predictors, progress="text",
                          overwrite=T)
 SaxPredictionAverage <- mean(SaxPrediction) 
 writeRaster(SaxPredictionAverage, paste0('./Analysis_Scripts/Chapter3/ENM/Prediction/SaxMod_prediction_strict'), overwrite=T)
-
-
-
 
 
 
