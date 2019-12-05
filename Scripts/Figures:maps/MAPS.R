@@ -34,7 +34,6 @@ DirtPoly <- Polygons[match(Dirt$Species,Polygons$binomial), ]
 DirtPoly <- aggregate(DirtPoly, by = "binomial")
 #plot(DirtPoly)
 DirtPoly$binomial
-
 Veg <- Class1[Class1$ArbVegStrict == "V", ]
 Veg$Species #71
 VegPoly <- Polygons[match(Veg$Species,Polygons$binomial), ]
@@ -43,21 +42,11 @@ VegPoly$binomial
 #plot(VegPoly[3,])
 map.axes()
 
-Rock <- Class1[Class1$ArbVegStrict == "R", ]
-Rock$Species #18
-RockPoly <- Polygons[match(Rock$Species,Polygons$binomial), ]
-RockPoly$binomial
-
-Water <- Class1[Class1$SemiAqStrict == "W", ]
-Water$Species #21
-WaterPoly <- Polygons[match(Water$Species,Polygons$binomial), ]
-WaterPoly$binomial
-
 ### prune arboreal polys - A ##
 Arb <- Class1[Class1$Strict == "A", ]
 Arb$Species #60 is around the right number
 ArbPoly <- Polygons[match(Arb$Species,Polygons$binomial), ]  
-plot(ArbPoly)
+#plot(ArbPoly)
 ArbPoly$binomial #56
 
 ### prune terrestrial polys - T ###
@@ -65,35 +54,7 @@ Terr <- Class1[Class1$Strict == "T", ]
 Terr$Species #207
 TerrPoly <- Polygons[match(Terr$Species, Polygons$binomial), ] 
 TerrPoly$binomial #188
-plot(TerrPoly)
-
-### prune aquatic polys - W##
-Aqua <- Class1[Class1$Strict == "W", ]
-Aqua$Species # 32
-AquaPoly <- Polygons[match(Aqua$Species, Polygons$binomial), ]
-AquaPoly$binomial #28
-plot(AquaPoly)
-
-### prune aquatic polys - C##
-Cave <- Class1[Class1$Strict == "C", ]
-Cave$Species # 11
-CavePoly <- Polygons[match(Cave$Species, Polygons$binomial), ]
-CavePoly$binomial #11
-plot(CavePoly)
-
-### prune aquatic polys - S##
-Sax <- Class1[Class1$Strict == "S", ]
-Sax$Species # 7
-SaxPoly <- Polygons[match(Sax$Species, Polygons$binomial), ]
-SaxPoly$binomial #7
-plot(SaxPoly)
-
-### prune aquatic polys - F##
-Foss <- Class1[Class1$Strict == "F", ]
-Foss$Species  # 3
-FossPoly <- Polygons[match(Foss$Species, Polygons$binomial), ]
-FossPoly$binomial #3
-plot(FossPoly)
+#plot(TerrPoly)
 
 #PROJECTED MAPS
 map(database = "world", fill = TRUE, col = 8, border = F, plot = TRUE, add=F,
@@ -134,7 +95,6 @@ plot(ArbC5, add = T, xlim = c(-200, -40), ylim = c(-10,90),border = F)
 plot(TerrPoly, add = T, xlim = c(-200, -40), ylim = c(-10,90),
      col = alpha("black", 0.6), border = F)
 plot(TerrC5, add = T, xlim = c(-200, -40), ylim = c(-10,90),border = F)
-
 
 
 ### europe
@@ -266,55 +226,6 @@ leaflet:::leaflet() %>%
                           group = "An",
                           popup = AnPoly$binomial
     )
-
-#########################################
-## THIS IS JUST A FUN INTERACTIVE MAP ###
-#########################################
-  
-  library(leaflet)
-  library(tidyr)
-  
-  leaflet:::leaflet() %>% leaflet:::addTiles() %>% leaflet:::setView(lng = c(-10,60), lat = c(-155,-30), zoom = 7)
-  
-  leaflet:::leaflet() %>%
-    leaflet::addTiles() %>%
-    # #leaflet:::addPolygons(data = DirtPoly,
-    #                       color = "black", 
-    #                       weight = 1, 
-    #                       smoothFactor = 0.1,
-    #                       opacity = 1.0, 
-    #                       fillOpacity = 0.5,
-    #                       group = "Dirt",
-    #                       popup = DirtPoly$binomial
-    #                       ) %>%
-    leaflet:::addPolygons(data = VegPoly,
-                          color = "green",
-                          weight = 1,
-                          smoothFactor = 0.1,
-                          opacity = 1.0,
-                          fillOpacity = 0.5,
-                          group = "Veg",
-                          popup = VegPoly$binomial
-    ) #%>%
-  # #leaflet:::addPolygons(data = RockPoly,
-  #                       color = "orange",
-  #                       weight = 1,
-  #                       smoothFactor = 0.1,
-  #                       opacity = 1.0,
-  #                       fillOpacity = 0.5,
-  #                       group = "Rock",
-  #                       popup = RockPoly$binomial
-  #                       ) %>%
-  # #leaflet:::addPolygons(data = WaterPoly,
-  #                       color = "blue",
-  #                       weight = 1,
-  #                       smoothFactor = 0.1,
-  #                       opacity = 1.0,
-  #                       fillOpacity = 0.5,
-  #                       group = "Water" ,
-  #                       popup = WaterPoly$binomial
-  #) 
-  
 
 
 

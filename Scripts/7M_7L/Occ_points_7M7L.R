@@ -126,7 +126,6 @@ eek <- rasterToPoints(dry.gridMAA, spatial=T, progress="text")
 ekek <- raster::intersect(eek, TerrPolyAll)
 coords <- ekek@coords
 maybe <- data.frame(ekek)
-maybe
 TerrPoints7M <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                       proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(TerrPoints7M, "./Analysis_Scripts/Chapter3/Points/Terr_Points_7M", layer= "chull", driver = "ESRI Shapefile",
@@ -302,7 +301,6 @@ eek <- rasterToPoints(dry.gridMAA, spatial=T, progress="text")
 ekek <- raster::intersect(eek, TerrPolyAll)
 coords <- ekek@coords
 maybe <- data.frame(ekek)
-maybe
 TerrPoints7L <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                       proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(TerrPoints7L, "./Analysis_Scripts/Chapter3/Points/Terr_Points_7L", layer= "chull", driver = "ESRI Shapefile",

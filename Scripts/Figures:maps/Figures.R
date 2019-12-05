@@ -1,12 +1,15 @@
 ############################################
-## tables and figures? #####################
+## tables and figures #####################
 ###########################################
-
-# SCRIPT TO MAKE FIGURES FOR POSTERS/PAPER?
+# SCRIPT TO MAKE FIGURES FOR POSTERS/PAPER
 
 library(expss); library(tables); library(grDevices)
 require(graphics); library(ggthemes); library(ggmap)
 library(gridExtra); library(ape); library(stringr)
+library(phytools); library(mapdata); library(ggplot2)
+library(readxl); library(utils); library(leaflet)
+library(tidyr); library(tidyverse); library(rnaturalearth)
+
 
 # phylogeny
 ColsBasic <- c("#D55E00","#56B4E9")
@@ -20,8 +23,6 @@ par(mfrow = c(1,1), mar = c(0,1,1,0))
 plot.phylo(Phylo, tip.color = Cols, cex = 0.3)
 dev.off()
 
-# NOTE I DIDNT GET THESE TO WORK, I JUST MADE A PDF FROM PPT FROM MAPS I MADE
-
 # load the maxent predictions
 ArbC5 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/Final_mapAC5.grd")
 TerrC5 <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/Final_mapTC5.grd")
@@ -32,54 +33,65 @@ TerrModS <- raster("./Analysis_Scripts/Chapter3/ENM/Prediction/TerrMod_predictio
 ArbPoly <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Polygons/ArbPolyAll/chull.shp")
 TerrPoly <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Polygons/TerrPolyAll/chull.shp")
 
-# set margins
-par(mfrow = c(1,1), mar = c(1,1,1,1))
-plot(ArbC5,col=jet.colors)
-
 # get the colors
 jet.colors <-
   colorRampPalette(c("white","#D55E00","#56B4E9","#56B4E9"))( 80 )
 
-#land
-data(land)
+# set margins
+par(mfrow = c(1,1), mar = c(1,1,1,1))
+#plot(ArbC5,col=jet.colors) # testing to see what the colors look like
 
-# project the polygons mahybe
+#land
+#data(land) doesn't work anymore with the new update of ggplot
+land <- rnaturalearth::ne_coastline()
+plot(land)
+
+# project the polygons
 TerrPolySP <- spTransform(TerrPoly, CRSobj = crs(land))
 ArbPolySP <- spTransform(ArbPoly, CRSobj = crs(land))
 
+#plot testing
 plot(land, xlim=c(-150,-10), ylim=c(-20,55), axes=F, col="white",bg='light gray') 
 plot(ArbPolySP, add=T)
 
-crs(land)
-crs(ArbPolySP)
-crs(TerrPolySP)
-crs(TerrModS) 
-crs(ArbModS) 
 
-# 1
-png("1.png", width = 2000, height = 2000)
+
+# Arboreal niche and terrestrial polygon
+png("./Analysis_Scripts/Chapter3/Docs/Figures/ArbNiche_Terrpoly6.png", width = 2000, height = 1500)
 plot(land, xlim=c(-150,-10), ylim=c(-20,55), axes=F, col="white",bg='light gray') 
 plot(ArbModS, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), 
      ylim = c(-20,55), legend=F, add=T)
 plot(TerrPolySP, add=T)
 dev.off()
 
-png("2.png", width = 2000, height = 2000)
+# Terrestrial niche and arboreal polygon
+png("./Analysis_Scripts/Chapter3/Docs/Figures/TerrNiche_Arbpoly6.png", width = 2000, height = 1500)
 plot(land, xlim=c(-150,-10), ylim=c(-20,55), axes=F, col="white",bg='light gray') 
 plot(TerrModS, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), 
      ylim = c(-20,55), legend=F, add=T)
 plot(ArbPolySP, add=T)
 dev.off()
 
+# Arboreal niche and arboreal polygon
+png("./Analysis_Scripts/Chapter3/Docs/Figures/ArbNiche_Arbpoly6.png", width = 2000, height = 1500)
+plot(land, xlim=c(-150,-10), ylim=c(-20,55), axes=F, col="white",bg='light gray') 
+plot(ArbModS, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), 
+     ylim = c(-20,55), legend=F, add=T)
+plot(ArbPolySP, add=T)
+dev.off()
+
+# Terrestrial niche and terrestrial polygon
+png("./Analysis_Scripts/Chapter3/Docs/Figures/TerrNiche_Terrpoly6.png", width = 2000, height = 1500)
 plot(land, xlim=c(-150,-10), ylim=c(-20,55), axes=F, col="white",bg='light gray') 
 plot(TerrModS, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), 
      ylim = c(-20,55), legend=F, add=T)
-
-png("TestPoly.NoBG.png", width = 700, height = 700)
-plot(ArbPolySPP, bg = "transparent", lwd = 2)
+plot(TerrPolySP, add=T)
 dev.off()
 
-# 2
+
+
+
+# playing around with x and y lims
 plot(land, xlim=c(-120,-30), ylim=c(10,20), axes=F, col="white",bg='light gray')
 plot(TerrModS, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-120,-30), 
      ylim = c(-10,30), legend=F, add=T)
@@ -87,7 +99,11 @@ ArbPolySP <- spTransform(ArbPoly, CRSobj = crs(land))
 ArbPolySP <- spTransform(ArbPolySP, CRSobj = crs(TerrModS))
 plot(ArbPolySP, add=T)
 
-#
+
+####################################################################################################
+
+# THIS DOESN'T WORK AND CREATES MANY PDFS FOR EACH? 
+# have not trouble shooted yet
 pdf("Sample4panelplot.pdf", width = 7, height = 5)
 par(mar = c(1,.001,.05,.01), mfrow=c(3,3))
 plot.new()
@@ -132,59 +148,13 @@ text("84.4% Overlap", x=-110, y=0,cex = 1)
 dev.off()
 
 
-# USING LAYOUT
-
-pdf("l.pdf", width=7, height=5)
-mat <- matrix(c(0,1,2,3,4,5,6,7,8), 3,byrow=T)
-layout(mat = mat,c(1,5,5),c(2,5,5))
-#layout(mat = mat, c(2,5,5), c(2,5,5))
-layout.show(n=8)
-
-par(mar=c(1, 1, 1, 1))
-plot.new()
-text(x=.5,y=.5,paste("Arboreal\n", 
-                     "Niche Model"), cex = 1.5, col = "black")
-par(mar=c(1, 1, 1, 1))
-plot.new()
-text(x=.5,y=.5,paste("Terrestrial\n", 
-                      "Niche Model"), cex = 1.5, col = "black")
-par(mar=c(1, 1, 1, 1))
-plot.new()
-text(x=.5,y=.5,paste("Arboreal\n", 
-                     "Distribution"), cex = 1.5, col = "black",srt=90)
-
-par(mar=c(2, .1, 2, .1))
-plot(ArbC5, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), 
-     ylim = c(-20,55), legend=F, add = F, frame.plot = F)
-layout(mat = mat,c(1,5,5),c(2,5,5))
-plot(ArbPoly, add = T)
-text("59.3% Overlap", x=-110, y=0,cex = .5)
-par(mar=c(2, .1, 2, .1))
-plot(TerrC5, col=jet.colors, xaxt = "n", yaxt = "n",xlim = c(-150,-10), 
-     ylim = c(-20,55),legend=F)
-plot(ArbPoly, add = T)
-text("4.2% Overlap", x=-110, y=0,cex =.5)
-par(mar=c(1, 1, 1, 1))
-plot.new()
-text(x=.5,y=.5,paste("Terrestrial\n", 
-                      "Distribution"), cex = 1.5, col = "black",srt=90)
-par(mar=c(2, .1, 2, .1))
-plot(ArbC5, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), ylim = c(-20,55),legend=F)
-plot(TerrPoly, add = T)
-text("35.0% Overlap", x=-110, y=0,cex = .5)
-par(mar=c(2, .1, 2, .1))
-plot(TerrC5, col=jet.colors, xaxt = "n", yaxt = "n", xlim = c(-150,-10), ylim = c(-20,55),legend=F)
-plot(TerrPoly, add = T)
-text("84.4% Overlap", x=-110, y=0,cex = .5)
-dev.off()
 
 #############################################
 ## ERICA FIGURE #############################
 ##############################################
 
 # we want to get a list of species that are overlapping with the 0.5 arboreal suitability cutoff
-# mainly in the tropics
-# but also in texas and florida
+# mainly in the tropics but also in texas and florida
 # terrestrial species only - strict classification
 
 # download arboreal suitability strict map
@@ -193,9 +163,6 @@ ArbModSSS <- ArbModS > 0.5
 ArbModpolS <- rasterToPolygons(ArbModSSS,function(x) x == 1,dissolve=T)
 
 # all of the species distributions
-library(leaflet)
-library(tidyr)
-
 # define terrestrial polygons
 Polygons <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforanalysis/chull.shp") 
 Polygons$binomial <- as.character(Polygons$binomial)
@@ -238,10 +205,6 @@ leaflet:::leaflet() %>%
                         group = "Terr",
                         popup = TerrPolyB$binomial
                         ) 
-  
-
-library(phytools)
-library(mapdata)
 
 leaflet:::leaflet() %>%
   leaflet::addTiles() %>%
@@ -260,10 +223,6 @@ leaflet:::leaflet() %>%
 ## this is a box plot of all the AUC scoring for all the k-fold runs ####
 #########################################################################
 
-library(readxl); library(utils); library(graphics)
-
-getwd()
-
 # read in the data
 AUCscores <- read.csv("./Analysis_Scripts/Chapter3/Docs/AUC_scores.csv", header=T)
 class(AUCscores)
@@ -274,7 +233,6 @@ boxplot <- graphics::boxplot(formula=AUC~Maxent.Run, data=AUCscores,
                              ylab="AUC Score")
 
 ########## with ggplot
-library(ggplot2)
 p <- ggplot(AUCscores, aes(Maxent.Run, AUC))
 p + geom_boxplot() + theme(axis.text.x = element_text(angle = 60, hjust = 1))
 

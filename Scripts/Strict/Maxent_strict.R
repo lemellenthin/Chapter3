@@ -2,8 +2,9 @@
 ### MAXENT SCRIPT DRAFT for strict microhabitats only #######
 ###############################
 # MAXENT MODELS AND EVALUATIONS
-
+rm(list = ls())
 # the maxent models with lots of points/replications need extra help
+
 options(java.parameters = "-Xmx8000m")
 #
 library(dismo); library(rJava); library(maptools)
@@ -33,6 +34,20 @@ CavePointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Cave_Points_st
 FossPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Foss_Points_strict_ressmall/chull.shp")
 SaxPointsS <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Sax_Points_strict_ressmall/chull.shp")
 
+# load files with testing points and testing CV for AUC scores
+ArbPointsTest <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Arb_Points_strict_restesting0.34/chull.shp")
+TerrPointsTest <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Terr_Points_strict_restesting0.34/chull.shp")
+ArbDFT <- data.frame(ArbPointsTest)
+ArbDFT <- ArbDFT[,1:2]
+TerrDFT <- data.frame(TerrPointsTest)
+TerrDFT <- TerrDFT[,1:2]
+# RESOLUTION TESTING WITH 10 FOLD CV
+ArbModTestCV <- maxent(predictors, ArbDFT, args=c("-J","-P","replicates=10"), 
+                       path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testCV_0.34")
+TerrModTestCV <- maxent(predictors, TerrDFT, args=c("-J","-P","replicates=10"), 
+                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_strict_resolution_testCV_0.34")
+
+
 # make into data frame for maxent
 ArbDF <- data.frame(ArbPointsS)
 ArbDF <- ArbDF[,1:2]
@@ -46,12 +61,6 @@ FossDF <- data.frame(FossPointsS)
 FossDF <- FossDF[,1:2]
 SaxDF <- data.frame(SaxPointsS)
 SaxDF <- SaxDF[,1:2]
-
-# RESOLUTION TESTING WITH 10 FOLD CV
-ArbModTestCV <- maxent(predictors, ArbDF, args=c("-J","-P","replicates=10"), 
-                       path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testCV_10")
-TerrModTestCV <- maxent(predictors, TerrDF, args=c("-J","-P","replicates=10"), 
-                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_strict_resolution_testCV_10")
 
 # ## take out points outside of the extent area - maxent will take out point without data automatically so no need
 # # like korea, italy, and water points

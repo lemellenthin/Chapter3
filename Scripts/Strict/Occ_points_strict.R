@@ -97,10 +97,9 @@ FossPolyAll <- aggregate(FossPoly, dissolve=T)
 #
 ##############
 # note that AllPolygon files have to be in SpatialPolygons format and not SpatialPolygonsDataFrame format!!!!
-#
 # make points and point files with all of the PolyAll files
 #
-# #MH with small res -- # FOR MICROHABITAT - ARB - 432
+## FOR MICROHABITAT - ARB - 432
 # #creating the grid to put the polygons in
 gridMA <- raster(extent(ArbPolyAll))
 res(gridMA)
@@ -117,7 +116,7 @@ ArbPointsS <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs =
 writeOGR(ArbPointsS, "./Analysis_Scripts/Chapter3/Points/Arb_Points_strict_ressmall", layer= "chull", driver = "ESRI Shapefile",
          overwrite=T)
 #
-# #MH with small res --# FOR MICROHABITAT - TERR - 3664
+## FOR MICROHABITAT - TERR - 3664
 gridMA <- raster(extent(TerrPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(TerrPolyAll)
@@ -127,14 +126,13 @@ eek <- rasterToPoints(dry.gridMAA, spatial=T, progress="text")
 ekek <- raster::intersect(eek, TerrPolyAll)
 coords <- ekek@coords
 maybe <- data.frame(ekek)
-maybe
 TerrPointsS <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs = numeric(0),
                                      proj4string = CRS(as.character('+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')))
 writeOGR(TerrPointsS, "./Analysis_Scripts/Chapter3/Points/Terr_Points_strict_ressmall", layer= "chull", driver = "ESRI Shapefile",
          overwrite=TRUE)
 
 #
-#MH with small res -- # FOR MICROHABITAT - AQUA 
+## FOR MICROHABITAT - AQUA 
 gridMA <- raster(extent(AquaPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(AquaPolyAll)
@@ -151,7 +149,7 @@ writeOGR(AquaPointsS, "./Analysis_Scripts/Chapter3/Points/Aqua_Points_strict_res
          overwrite=T)
 
 #
-#MH with small res -- # FOR MICROHABITAT - CAVE
+## FOR MICROHABITAT - CAVE
 gridMA <- raster(extent(CavePolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(CavePolyAll)
@@ -167,7 +165,7 @@ writeOGR(CavePointsS, "./Analysis_Scripts/Chapter3/Points/Cave_Points_strict_res
          overwrite=T)
 
 #
-#MH with small res -- # FOR MICROHABITAT - SAX 
+## FOR MICROHABITAT - SAX 
 gridMA <- raster(extent(SaxPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(SaxPolyAll)
@@ -183,7 +181,7 @@ SaxPointsS <- SpatialPointsDataFrame(coords = coords, data = maybe, coords.nrs =
 writeOGR(SaxPointsS, "./Analysis_Scripts/Chapter3/Points/Sax_Points_strict_ressmall", layer= "chull", driver = "ESRI Shapefile",
          overwrite=T)
 #
-#MH with small res -- # FOR MICROHABITAT - FOSS 
+## FOR MICROHABITAT - FOSS 
 gridMA <- raster(extent(FossPolyAll))
 res(gridMA) <- 0.360
 proj4string(gridMA) <- proj4string(FossPolyAll)

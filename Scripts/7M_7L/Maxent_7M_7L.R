@@ -64,13 +64,19 @@ SaxDFL <- data.frame(SaxPoints7L)
 SaxDFL <- SaxDFL[,1:2]
 
 # RESOLUTION TESTING WITH 10 FOLD CV
-# REDO WITH 7M AND 7L
-ArbModTestCV <- maxent(predictors, ArbDF, args=c("-J","-P","replicates=10"), 
-                       path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_strict_resolution_testCV_10")
-TerrModTestCV <- maxent(predictors, TerrDF, args=c("-J","-P","replicates=10"), 
-                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_strict_resolution_testCV_10")
-#
-#
+# load files with testing points and testing CV for AUC scores
+ArbPointsTest <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Arb_Points_7L0.5/chull.shp")
+TerrPointsTest <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Terr_Points_7L0.5/chull.shp")
+ArbDFT <- data.frame(ArbPointsTest)
+ArbDFT <- ArbDFT[,1:2]
+TerrDFT <- data.frame(TerrPointsTest)
+TerrDFT <- TerrDFT[,1:2]
+# RESOLUTION TESTING WITH 10 FOLD CV
+ArbModTestCV <- maxent(predictors, ArbDFT, args=c("-J","-P","replicates=10"), 
+                       path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_7L_test_0.5")
+TerrModTestCV <- maxent(predictors, TerrDFT, args=c("-J","-P","replicates=10"), 
+                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_7L_test_0.5")
+
 
 # 7M
 

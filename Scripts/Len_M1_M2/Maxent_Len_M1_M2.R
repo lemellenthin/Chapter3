@@ -93,6 +93,23 @@ ArbModTestCVM <- maxent(predictors, ArbDFM2, args=c("-J","-P","replicates=10"),
 TerrModTestCVM <- maxent(predictors, TerrDFM2, args=c("-J","-P","replicates=10"), 
                          path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_strict_resolution_testCVM2_2")
 
+
+
+# load files with testing points and testing CV for AUC scores
+ArbPointsTest <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Arb_Points_M20.5/chull.shp")
+TerrPointsTest <- rgdal::readOGR("./Analysis_Scripts/Chapter3/Points/Terr_Points_M20.5/chull.shp")
+ArbDFT <- data.frame(ArbPointsTest)
+ArbDFT <- ArbDFT[,1:2]
+TerrDFT <- data.frame(TerrPointsTest)
+TerrDFT <- TerrDFT[,1:2]
+# RESOLUTION TESTING WITH 10 FOLD CV
+ArbModTestCV <- maxent(predictors, ArbDFT, args=c("-J","-P","replicates=10"), 
+                       path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/ArbMod_M2_test_0.5")
+TerrModTestCV <- maxent(predictors, TerrDFT, args=c("-J","-P","replicates=10"), 
+                        path="./Analysis_Scripts/Chapter3/ENM/Maxent_Files/TerrMod_M2_test_0.5")
+
+
+
 ## take out points outside of the extent area
 # when you run maxent, it automatically takes out points it doesnt have data for so this step isn't necessary unless you want to know
 # exactly which points it is not using

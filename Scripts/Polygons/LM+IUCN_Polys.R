@@ -1,41 +1,69 @@
-#################################################
-##            Recreate iucn polygons        #####
-#################################################
+###############################################################
+##  LM MADE POLYGONS AND COMBINING WITH IUCN POLYGONS 
+###############################################################
 
-# LM MADE POLYGONS AND COMBINING WITH IUCN POLYGONS
+# load packages
+library(alphahull); library(ggplot2); library(ConR)
+library(data.table); library(rgdal)
 
-library(alphahull)
-library(ggplot2)
-library(ConR)
-library(data.table)
-
-# file of polygons without LM makings for comparison
-  #UniqueNLMPolys
+# file of polygons without LM makings for comparison #UniqueNLMPolys
 UniqueNLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/UniqueNLMPolys/chull.shp") # 293
+UniqueNLMPolys$binomial
+sort(UniqueNLMPolys$binomial)
 
-# file of polygons with LM makings
-  #UniqueLMPolys
+which(is.na(match(Polygons$binomial, UniqueNLMPolys$binomial)))
+# 1-18
+# Batrachoseps altasierrae, Batrachoseps bramei, Bolitoglossa nympha            
+# Bolitoglossa robinsoni, Chiropterotriton miquihuanus, Desmognathus conanti           
+# Desmognathus organi, Desmognathus planiceps, Eurycea aquatica               
+# Eurycea chamberlaini, Eurycea longicauda melanopleura, Oedipina nica                  
+# Plethodon chattahoochee, Plethodon chlorobryonis, Plethodon grobmani             
+# Plethodon mississippi, Plethodon ocmulgee, Plethodon variolatus 
+
+# file of polygons with LM makings #UniqueLMPolys
 UniqueLMPolys <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp") # 18
 
 # used polys
 All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.shp") # 311
 
+Polygons <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforanalysis/chull.shp")
+Polygons$binomial
+sort(Polygons$binomial)
+
+poly <- rgeos::gBuffer(Polygons, width = 0, byid=F)
+poly2 <- rgeos::gBuffer(Polygons, width = 0, byid=T)
+idk <- crop(poly, predictors)
+idk2 <- crop(poly2, predictors)
+plot(idk)
+plot(idk2)
+sort(idk2$binomial)
+
+which(is.na(match(Polygons$binomial, idk2$binomial)))
+# [1] 187 189 190 191 192 195 196 200
+Polygons$binomial
+# [187] Hydromantes ambrosii
+# [189] Hydromantes flavus 
+# [190] Hydromantes genei 
+# [191] Hydromantes imperialis 
+# [192] Hydromantes italicus  
+# [195] Hydromantes strinatii  
+# [196] Hydromantes supramontis
+# [200] Karsenia koreana 
+
+
+
+
 
 ###############################################
 # species I was not able to make polygons for #
-# Bolitoglossa mucuyensis - LM made
-# Plethodon savannah
-# Bolitoglossa cataguana
-# Bolitoglossa chinanteca
-# Bolitoglossa kaqchikelorum
-# Nototriton picucha
+# Bolitoglossa mucuyensis, Plethodon savannah, Bolitoglossa cataguana
+# Bolitoglossa chinanteca, Bolitoglossa kaqchikelorum, Nototriton picucha
 
-
-#List of species I have to add polygons to 
+# List of species I have to add polygons to 
 # Batrachoseps regius - polygon made from 163 points, this will replace the old one
 # Batrachoseps relictus - polygon made from 611 points, add to OG
 # Bolitoglossa dunni - polygon made from 26 points, add to OG
-#LM MADE # Bolitoglossa mucuyensis ############### - only one point on vertnet, no new polys
+# LM MADE # Bolitoglossa mucuyensis ## - only one point on vertnet, no new polys
 # Bolitoglossa odonnelli - polygons made from 36 points, this will be an addition to IUCN polygons to add in honduras
 # Bradytriton silus - polygons made from 31 points, this will replace the old one
 # Desmognathus conanti - polygons made from 1,111 points, add to OG
@@ -43,16 +71,24 @@ All <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllPolysforAnalysis/chull.s
 # Eurycea bislineata - polygons made from 5,997 points, this will add to the IUCN polygons
 # Eurycea longicauda - polygons made from 2,578 points, this will add to the IUCN polygons
 # Plethodon aureolus - polygons made from 762 points, this will add to the IUCN polygons
-# LM MADE # Plethodon chlorobryonis ############### - polygons made from 1913 points, this will replace the polygon I made bc it is better
+# LM MADE # Plethodon chlorobryonis ## - polygons made from 1913 points, this will replace the polygon I made
 # Plethodon dorsalis - polygons made from 1,794 points, this will add to IUCN polygons
 # Plethodon jordani - polygons made from 1,998 points, this will add to IUCN polygons
 # Plethodon richmondi - polygons made from 3,043 points, this will add to IUCN polygons
-# LM MADE ### Plethodon savannah ############# - polygon not made, only 2 unique points, costa rica and georgia
+# LM MADE ### Plethodon savannah ## - polygon not made, only 2 unique points, costa rica and georgia
 # Plethodon wehrlei - polygon made from 1,591 points, this will add to the IUCN polygons
 
+## NOTES ##
 # to plot and check EOO results
-#plot(EOO.results.XX[[1]][[2]], col="red")
-#plot(land, add=T)
+# plot(EOO.results.XX[[1]][[2]], col="red")
+# plot(land, add=T)
+
+# the alpha value changes the contour of the polygon. closer to 1 is more contoured and higher is less contoured
+# right now set the alpha value to 1 for all polygons
+
+# this is just getting a polygon by connecting the outside dots
+# EEO.results_BRe <- EOO.computing(Batraregius, file.name = "Batraregius_EOO", export_shp = T)
+# This only adds shorelines when the polygon overlaps with it. if nothing happens, the polygon is not touching any water
 
 
 ########################################
@@ -67,11 +103,6 @@ Batraregius[,1] <- as.numeric(Batraregius[,1]) # when changing a factor directly
 Batraregius[,2] <- as.character(Batraregius[,2])
 Batraregius[,2] <- as.numeric(Batraregius[,2])
 Batraregius[,3] <- as.character(Batraregius[,3])
-# this is just getting a polygon by connecting the outside dots
-EEO.results_BRe <- EOO.computing(Batraregius, file.name = "Batraregius_EOO", export_shp = T)
-plot(EEO.results_BRe[[1]][[2]], col="grey")
-plot(land, add=T)
-# This only adds shorelines when the polygon overlaps with it. if nothing happens, the polygon is not touching any water
 
 EOO.results.BR <- EOO.computing(Batraregius, method.range = "alpha.hull", 
                              export_shp = T, write_shp = F,
@@ -85,19 +116,15 @@ Batraregius.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/
 Batraregius.SHP$binomial <- "Batrachoseps regius"
 proj4string(Batraregius.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-# the alpha value changes the contour of the polygon. closer to 1 is more contoured and higher is less contoured
-# right now set the alpha value to 1 for all polygons
-
-
 #######################################
 # Batrachoseps relictus
-Batrel <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Batrarelictus.txt.tsv", quote="")) # not in Erica's folders yet
+Batrel <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Batrarelictus.txt.tsv", quote="")) 
 # make into the colums needed
 Batrarel <-  cbind(Batrel$decimallatitude, Batrel$decimallongitude, Batrel$scientificname)
 colnames(Batrarel) <- c("ddlat", "ddlon","tax")
 Batrarel <- as.data.frame(Batrarel)
-Batrarel[,1] <- as.character(Batrarel[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Batrarel[,1] <- as.numeric(Batrarel[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Batrarel[,1] <- as.character(Batrarel[,1])
+Batrarel[,1] <- as.numeric(Batrarel[,1]) 
 Batrarel[,2] <- as.character(Batrarel[,2])
 Batrarel[,2] <- as.numeric(Batrarel[,2])
 Batrarel[,3] <- as.character(Batrarel[,3])
@@ -119,8 +146,8 @@ Bolitodunn <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Bolit
 Bolitodunn <-  cbind(Bolitodunn$decimallatitude, Bolitodunn$decimallongitude, Bolitodunn$scientificname)
 colnames(Bolitodunn) <- c("ddlat", "ddlon","tax")
 Bolitodunn <- as.data.frame(Bolitodunn)
-Bolitodunn[,1] <- as.character(Bolitodunn[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Bolitodunn[,1] <- as.numeric(Bolitodunn[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Bolitodunn[,1] <- as.character(Bolitodunn[,1]) 
+Bolitodunn[,1] <- as.numeric(Bolitodunn[,1])
 Bolitodunn[,2] <- as.character(Bolitodunn[,2])
 Bolitodunn[,2] <- as.numeric(Bolitodunn[,2])
 Bolitodunn[,3] <- as.character(Bolitodunn[,3])
@@ -143,8 +170,8 @@ Bolitood <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Bolitog
 Bolitood <-  cbind(Bolitood$decimallatitude, Bolitood$decimallongitude, Bolitood$scientificname)
 colnames(Bolitood) <- c("ddlat", "ddlon","tax")
 Bolitood <- as.data.frame(Bolitood)
-Bolitood[,1] <- as.character(Bolitood[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Bolitood[,1] <- as.numeric(Bolitood[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Bolitood[,1] <- as.character(Bolitood[,1])
+Bolitood[,1] <- as.numeric(Bolitood[,1]) 
 Bolitood[,2] <- as.character(Bolitood[,2])
 Bolitood[,2] <- as.numeric(Bolitood[,2])
 Bolitood[,3] <- as.character(Bolitood[,3])
@@ -167,8 +194,8 @@ Bradysil <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Bradytr
 Bradysil <-  cbind(Bradysil$decimallatitude, Bradysil$decimallongitude, Bradysil$scientificname)
 colnames(Bradysil) <- c("ddlat", "ddlon","tax")
 Bradysil <- as.data.frame(Bradysil)
-Bradysil[,1] <- as.character(Bradysil[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Bradysil[,1] <- as.numeric(Bradysil[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Bradysil[,1] <- as.character(Bradysil[,1]) 
+Bradysil[,1] <- as.numeric(Bradysil[,1]) 
 Bradysil[,2] <- as.character(Bradysil[,2])
 Bradysil[,2] <- as.numeric(Bradysil[,2])
 Bradysil[,3] <- as.character(Bradysil[,3])
@@ -191,8 +218,8 @@ Desmocon <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Desmogn
 Desmocon <-  cbind(Desmocon$decimallatitude, Desmocon$decimallongitude, Desmocon$scientificname)
 colnames(Desmocon) <- c("ddlat", "ddlon","tax")
 Desmocon <- as.data.frame(Desmocon)
-Desmocon[,1] <- as.character(Desmocon[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Desmocon[,1] <- as.numeric(Desmocon[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Desmocon[,1] <- as.character(Desmocon[,1]) 
+Desmocon[,1] <- as.numeric(Desmocon[,1]) 
 Desmocon[,2] <- as.character(Desmocon[,2])
 Desmocon[,2] <- as.numeric(Desmocon[,2])
 Desmocon[,3] <- as.character(Desmocon[,3])
@@ -215,8 +242,8 @@ Desmofus <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons/Polygons_De
 Desmofus <-  cbind(Desmofus$decimallatitude, Desmofus$decimallongitude, Desmofus$scientificname)
 colnames(Desmofus) <- c("ddlat", "ddlon","tax")
 Desmofus <- as.data.frame(Desmofus)
-Desmofus[,1] <- as.character(Desmofus[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Desmofus[,1] <- as.numeric(Desmofus[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Desmofus[,1] <- as.character(Desmofus[,1]) 
+Desmofus[,1] <- as.numeric(Desmofus[,1]) 
 Desmofus[,2] <- as.character(Desmofus[,2])
 Desmofus[,2] <- as.numeric(Desmofus[,2])
 Desmofus[,3] <- as.character(Desmofus[,3])
@@ -239,8 +266,8 @@ Eurbis <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Eurycea_b
 Eurbis <-  cbind(Eurbis$decimallatitude, Eurbis$decimallongitude, Eurbis$scientificname)
 colnames(Eurbis) <- c("ddlat", "ddlon","tax")
 Eurbis <- as.data.frame(Eurbis)
-Eurbis[,1] <- as.character(Eurbis[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Eurbis[,1] <- as.numeric(Eurbis[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Eurbis[,1] <- as.character(Eurbis[,1]) 
+Eurbis[,1] <- as.numeric(Eurbis[,1]) 
 Eurbis[,2] <- as.character(Eurbis[,2])
 Eurbis[,2] <- as.numeric(Eurbis[,2])
 Eurbis[,3] <- as.character(Eurbis[,3])
@@ -263,8 +290,8 @@ Eurlon <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Eurycea_l
 Eurlon <-  cbind(Eurlon$decimallatitude, Eurlon$decimallongitude, Eurlon$scientificname)
 colnames(Eurlon) <- c("ddlat", "ddlon","tax")
 Eurlon <- as.data.frame(Eurlon)
-Eurlon[,1] <- as.character(Eurlon[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Eurlon[,1] <- as.numeric(Eurlon[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Eurlon[,1] <- as.character(Eurlon[,1]) 
+Eurlon[,1] <- as.numeric(Eurlon[,1]) 
 Eurlon[,2] <- as.character(Eurlon[,2])
 Eurlon[,2] <- as.numeric(Eurlon[,2])
 Eurlon[,3] <- as.character(Eurlon[,3])
@@ -288,8 +315,8 @@ Pleaur <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon
 Pleaur <-  cbind(Pleaur$decimallatitude, Pleaur$decimallongitude, Pleaur$scientificname)
 colnames(Pleaur) <- c("ddlat", "ddlon","tax")
 Pleaur <- as.data.frame(Pleaur)
-Pleaur[,1] <- as.character(Pleaur[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Pleaur[,1] <- as.numeric(Pleaur[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Pleaur[,1] <- as.character(Pleaur[,1]) 
+Pleaur[,1] <- as.numeric(Pleaur[,1]) 
 Pleaur[,2] <- as.character(Pleaur[,2])
 Pleaur[,2] <- as.numeric(Pleaur[,2])
 Pleaur[,3] <- as.character(Pleaur[,3])
@@ -313,8 +340,8 @@ Plechl <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon
 Plechl <-  cbind(Plechl$decimallatitude, Plechl$decimallongitude, Plechl$scientificname)
 colnames(Plechl) <- c("ddlat", "ddlon","tax")
 Plechl <- as.data.frame(Plechl)
-Plechl[,1] <- as.character(Plechl[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Plechl[,1] <- as.numeric(Plechl[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Plechl[,1] <- as.character(Plechl[,1]) 
+Plechl[,1] <- as.numeric(Plechl[,1]) 
 Plechl[,2] <- as.character(Plechl[,2])
 Plechl[,2] <- as.numeric(Plechl[,2])
 Plechl[,3] <- as.character(Plechl[,3])
@@ -338,8 +365,8 @@ Pledor <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon
 Pledor <-  cbind(Pledor$decimallatitude, Pledor$decimallongitude, Pledor$scientificname)
 colnames(Pledor) <- c("ddlat", "ddlon","tax")
 Pledor <- as.data.frame(Pledor)
-Pledor[,1] <- as.character(Pledor[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Pledor[,1] <- as.numeric(Pledor[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Pledor[,1] <- as.character(Pledor[,1]) 
+Pledor[,1] <- as.numeric(Pledor[,1])
 Pledor[,2] <- as.character(Pledor[,2])
 Pledor[,2] <- as.numeric(Pledor[,2])
 Pledor[,3] <- as.character(Pledor[,3])
@@ -363,8 +390,8 @@ Plejor <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon
 Plejor <-  cbind(Plejor$decimallatitude, Plejor$decimallongitude, Plejor$scientificname)
 colnames(Plejor) <- c("ddlat", "ddlon","tax")
 Plejor <- as.data.frame(Plejor)
-Plejor[,1] <- as.character(Plejor[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Plejor[,1] <- as.numeric(Plejor[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Plejor[,1] <- as.character(Plejor[,1]) 
+Plejor[,1] <- as.numeric(Plejor[,1]) 
 Plejor[,2] <- as.character(Plejor[,2])
 Plejor[,2] <- as.numeric(Plejor[,2])
 Plejor[,3] <- as.character(Plejor[,3])
@@ -388,8 +415,8 @@ Pleric <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon
 Pleric <-  cbind(Pleric$decimallatitude, Pleric$decimallongitude, Pleric$scientificname)
 colnames(Pleric) <- c("ddlat", "ddlon","tax")
 Pleric <- as.data.frame(Pleric)
-Pleric[,1] <- as.character(Pleric[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Pleric[,1] <- as.numeric(Pleric[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Pleric[,1] <- as.character(Pleric[,1]) 
+Pleric[,1] <- as.numeric(Pleric[,1]) 
 Pleric[,2] <- as.character(Pleric[,2])
 Pleric[,2] <- as.numeric(Pleric[,2])
 Pleric[,3] <- as.character(Pleric[,3])
@@ -413,8 +440,8 @@ Pleweh <-as.data.frame(fread("./Analysis_Scripts/Chapter3/Polygons_Dec/Plethodon
 Pleweh <-  cbind(Pleweh$decimallatitude, Pleweh$decimallongitude, Pleweh$scientificname)
 colnames(Pleweh) <- c("ddlat", "ddlon","tax")
 Pleweh <- as.data.frame(Pleweh)
-Pleweh[,1] <- as.character(Pleweh[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Pleweh[,1] <- as.numeric(Pleweh[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Pleweh[,1] <- as.character(Pleweh[,1]) 
+Pleweh[,1] <- as.numeric(Pleweh[,1])
 Pleweh[,2] <- as.character(Pleweh[,2])
 Pleweh[,2] <- as.numeric(Pleweh[,2])
 Pleweh[,3] <- as.character(Pleweh[,3])
@@ -431,51 +458,34 @@ Pleweh.SHP$binomial <- "Plethodon wehrlei"
 proj4string(Pleweh.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
 #########################################
-## LM POLYGONS OH BOY ##########
+## LM POLYGONS  ##########
 ########################################
 
 # SPECIES I MADE - 18
 
-# Batrachoseps altasierrae
-  # polygon redone from 120 points
-# Batrachoseps bramei
-  # polygon redone from 145 points
+# Batrachoseps altasierrae - polygon redone from 120 points
+# Batrachoseps bramei - polygon redone from 145 points
 # Bolitoglossa cataguana # its a line #
 # Bolitoglossa chinanteca # its a line #
 # Bolitoglossa kaqchikelorum # its a line #
 # Bolitoglossa mucuyensis # only one point no #
-# Bolitoglossa nympha
-  # polygon redone from 23 points
-# Bolitoglossa robinsoni
-  # polygon redone from 23 points
-# Chiropterotriton miquihuanus
-  # polygon redone from 18 points
-# Desmognathus organi
-  # polygon redone from 188 points
-# Desmognathus planiceps
-  # polygon redone from 70 points
-# Eurycea aquatica
-  # polygon redone from 16 points
-# Eurycea chamberlaini
-  # polygon redone from 60 points
-# Eurycea longicauda melanopleura
-  # polygon redone from 64 points
+# Bolitoglossa nympha - polygon redone from 23 points
+# Bolitoglossa robinsoni - polygon redone from 23 points
+# Chiropterotriton miquihuanus - polygon redone from 18 points
+# Desmognathus organi - polygon redone from 188 points
+# Desmognathus planiceps - polygon redone from 70 points
+# Eurycea aquatica - polygon redone from 16 points
+# Eurycea chamberlaini - polygon redone from 60 points
+# Eurycea longicauda melanopleura - polygon redone from 64 points
 # Nototriton picucha # only 2 points #
-# Oedipina nica
-  # polygon redone from 15 points
-# Plethodon chattahoochee
-  # polygon redone from 482 points
-# Plethodon chlorobryonis
-  # polygon redone from 1,913 points
-# Plethodon grobmani
-  # polygon redone from 1,929 points
-# Plethodon mississippi
-  # polygon redone from 1,646 points
-# Plethodon ocmulgee
-  # polygon redone from 257 points
+# Oedipina nica - polygon redone from 15 points
+# Plethodon chattahoochee - polygon redone from 482 points
+# Plethodon chlorobryonis - polygon redone from 1,913 points
+# Plethodon grobmani - polygon redone from 1,929 points
+# Plethodon mississippi - polygon redone from 1,646 points
+# Plethodon ocmulgee - polygon redone from 257 points
 # Plethodon savannah # only two points #
-# Plethodon variolatus
-  # polygon redone from 1,009 points
+# Plethodon variolatus - polygon redone from 1,009 points
 
 #######################################
 # Batrachoseps altasierrae
@@ -486,8 +496,8 @@ A <- Batalta
 A <-  cbind(A$decimallatitude, A$decimallongitude, A$scientificname)
 colnames(A) <- c("ddlat", "ddlon","tax")
 A <- as.data.frame(A)
-A[,1] <- as.character(A[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-A[,1] <- as.numeric(A[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+A[,1] <- as.character(A[,1]) 
+A[,1] <- as.numeric(A[,1]) 
 A[,2] <- as.character(A[,2])
 A[,2] <- as.numeric(A[,2])
 A[,3] <- as.character(A[,3])
@@ -512,8 +522,8 @@ B <- Batbram
 B <-  cbind(B$decimallatitude, B$decimallongitude, B$scientificname)
 colnames(B) <- c("ddlat", "ddlon","tax")
 B <- as.data.frame(B)
-B[,1] <- as.character(B[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-B[,1] <- as.numeric(B[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+B[,1] <- as.character(B[,1]) 
+B[,1] <- as.numeric(B[,1]) 
 B[,2] <- as.character(B[,2])
 B[,2] <- as.numeric(B[,2])
 B[,3] <- as.character(B[,3])
@@ -538,8 +548,8 @@ C <- Bolnym
 C <-  cbind(C$decimallatitude, C$decimallongitude, C$scientificname)
 colnames(C) <- c("ddlat", "ddlon","tax")
 C <- as.data.frame(C)
-C[,1] <- as.character(C[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-C[,1] <- as.numeric(C[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+C[,1] <- as.character(C[,1])
+C[,1] <- as.numeric(C[,1])
 C[,2] <- as.character(C[,2])
 C[,2] <- as.numeric(C[,2])
 C[,3] <- as.character(C[,3])
@@ -564,8 +574,8 @@ D <- Bolrob
 D <-  cbind(D$decimallatitude, D$decimallongitude, D$scientificname)
 colnames(D) <- c("ddlat", "ddlon","tax")
 D <- as.data.frame(D)
-D[,1] <- as.character(D[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-D[,1] <- as.numeric(D[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+D[,1] <- as.character(D[,1]) 
+D[,1] <- as.numeric(D[,1]) 
 D[,2] <- as.character(D[,2])
 D[,2] <- as.numeric(D[,2])
 D[,3] <- as.character(D[,3])
@@ -590,8 +600,8 @@ E <- Chimiq
 E <-  cbind(E$decimallatitude, E$decimallongitude, E$scientificname)
 colnames(E) <- c("ddlat", "ddlon","tax")
 E <- as.data.frame(E)
-E[,1] <- as.character(E[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-E[,1] <- as.numeric(E[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+E[,1] <- as.character(E[,1]) 
+E[,1] <- as.numeric(E[,1]) 
 E[,2] <- as.character(E[,2])
 E[,2] <- as.numeric(E[,2])
 E[,3] <- as.character(E[,3])
@@ -616,8 +626,8 @@ G <- Desor
 G <-  cbind(G$decimallatitude, G$decimallongitude, G$scientificname)
 colnames(G) <- c("ddlat", "ddlon","tax")
 G <- as.data.frame(G)
-G[,1] <- as.character(G[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-G[,1] <- as.numeric(G[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+G[,1] <- as.character(G[,1]) 
+G[,1] <- as.numeric(G[,1]) 
 G[,2] <- as.character(G[,2])
 G[,2] <- as.numeric(G[,2])
 G[,3] <- as.character(G[,3])
@@ -642,8 +652,8 @@ H <- Despla
 H <-  cbind(H$decimallatitude, H$decimallongitude, H$scientificname)
 colnames(H) <- c("ddlat", "ddlon","tax")
 H <- as.data.frame(H)
-H[,1] <- as.character(H[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-H[,1] <- as.numeric(H[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+H[,1] <- as.character(H[,1])
+H[,1] <- as.numeric(H[,1]) 
 H[,2] <- as.character(H[,2])
 H[,2] <- as.numeric(H[,2])
 H[,3] <- as.character(H[,3])
@@ -668,8 +678,8 @@ I <- Eaqua
 I <-  cbind(I$decimallatitude, I$decimallongitude, I$scientificname)
 colnames(I) <- c("ddlat", "ddlon","tax")
 I <- as.data.frame(I)
-I[,1] <- as.character(I[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-I[,1] <- as.numeric(I[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+I[,1] <- as.character(I[,1]) 
+I[,1] <- as.numeric(I[,1]) 
 I[,2] <- as.character(I[,2])
 I[,2] <- as.numeric(I[,2])
 I[,3] <- as.character(I[,3])
@@ -685,7 +695,6 @@ Eaqua.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Eaqua/
 Eaqua.SHP$binomial <- "Eurycea aquatica"
 proj4string(Eaqua.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Eurycea chamberlaini
 
@@ -695,8 +704,8 @@ J <- Echam
 J <-  cbind(J$decimallatitude, J$decimallongitude, J$scientificname)
 colnames(J) <- c("ddlat", "ddlon","tax")
 J <- as.data.frame(J)
-J[,1] <- as.character(J[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-J[,1] <- as.numeric(J[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+J[,1] <- as.character(J[,1]) 
+J[,1] <- as.numeric(J[,1]) 
 J[,2] <- as.character(J[,2])
 J[,2] <- as.numeric(J[,2])
 J[,3] <- as.character(J[,3])
@@ -712,7 +721,6 @@ Echam.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Echam/
 Echam.SHP$binomial <- "Eurycea chamberlaini"
 proj4string(Echam.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Eurycea longicauda melanopleura
 
@@ -722,8 +730,8 @@ K <- Elome
 K <-  cbind(K$decimallatitude, K$decimallongitude, K$scientificname)
 colnames(K) <- c("ddlat", "ddlon","tax")
 K <- as.data.frame(K)
-K[,1] <- as.character(K[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-K[,1] <- as.numeric(K[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+K[,1] <- as.character(K[,1]) 
+K[,1] <- as.numeric(K[,1]) 
 K[,2] <- as.character(K[,2])
 K[,2] <- as.numeric(K[,2])
 K[,3] <- as.character(K[,3])
@@ -739,8 +747,6 @@ Elome.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Elome/
 Elome.SHP$binomial <- "Eurycea longicauda melanopleura"
 proj4string(Elome.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
-
 #######################################
 # Oedipina nica
 
@@ -750,8 +756,8 @@ L <- Onica
 L <-  cbind(L$decimallatitude, L$decimallongitude, L$scientificname)
 colnames(L) <- c("ddlat", "ddlon","tax")
 L <- as.data.frame(L)
-L[,1] <- as.character(L[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-L[,1] <- as.numeric(L[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+L[,1] <- as.character(L[,1]) 
+L[,1] <- as.numeric(L[,1]) 
 L[,2] <- as.character(L[,2])
 L[,2] <- as.numeric(L[,2])
 L[,3] <- as.character(L[,3])
@@ -767,7 +773,6 @@ Onica.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Onica/
 Onica.SHP$binomial <- "Oedipina nica"
 proj4string(Onica.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Plethodon chattahoochee
 
@@ -777,8 +782,8 @@ M <- Plechat
 M <-  cbind(M$decimallatitude, M$decimallongitude, M$scientificname)
 colnames(M) <- c("ddlat", "ddlon","tax")
 M <- as.data.frame(M)
-M[,1] <- as.character(M[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-M[,1] <- as.numeric(M[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+M[,1] <- as.character(M[,1]) 
+M[,1] <- as.numeric(M[,1]) 
 M[,2] <- as.character(M[,2])
 M[,2] <- as.numeric(M[,2])
 M[,3] <- as.character(M[,3])
@@ -794,7 +799,6 @@ Plechat.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plec
 Plechat.SHP$binomial <- "Plethodon chattahoochee"
 proj4string(Plechat.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Plethodon chlorobryonis
 
@@ -804,8 +808,8 @@ N <- Plechlo
 N <-  cbind(N$decimallatitude, N$decimallongitude, N$scientificname)
 colnames(N) <- c("ddlat", "ddlon","tax")
 N <- as.data.frame(N)
-N[,1] <- as.character(N[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-N[,1] <- as.numeric(N[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+N[,1] <- as.character(N[,1])
+N[,1] <- as.numeric(N[,1]) 
 N[,2] <- as.character(N[,2])
 N[,2] <- as.numeric(N[,2])
 N[,3] <- as.character(N[,3])
@@ -820,7 +824,6 @@ Plechlo.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plec
 Plechlo.SHP$binomial <- "Plethodon chlorobryonis"
 proj4string(Plechlo.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Plethodon grobmani
 
@@ -830,8 +833,8 @@ O <- Plegrob
 O <-  cbind(O$decimallatitude, O$decimallongitude, O$scientificname)
 colnames(O) <- c("ddlat", "ddlon","tax")
 O <- as.data.frame(O)
-O[,1] <- as.character(O[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-O[,1] <- as.numeric(O[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+O[,1] <- as.character(O[,1]) 
+O[,1] <- as.numeric(O[,1]) 
 O[,2] <- as.character(O[,2])
 O[,2] <- as.numeric(O[,2])
 O[,3] <- as.character(O[,3])
@@ -847,7 +850,6 @@ Plegrob.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleg
 Plegrob.SHP$binomial <- "Plethodon grobmani"
 proj4string(Plegrob.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Plethodon mississippi
 
@@ -857,8 +859,8 @@ P <- Plemiss
 P <-  cbind(P$decimallatitude, P$decimallongitude, P$scientificname)
 colnames(P) <- c("ddlat", "ddlon","tax")
 P <- as.data.frame(P)
-P[,1] <- as.character(P[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-P[,1] <- as.numeric(P[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+P[,1] <- as.character(P[,1]) 
+P[,1] <- as.numeric(P[,1]) 
 P[,2] <- as.character(P[,2])
 P[,2] <- as.numeric(P[,2])
 P[,3] <- as.character(P[,3])
@@ -874,7 +876,6 @@ Plemiss.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Plem
 Plemiss.SHP$binomial <- "Plethodon mississippi"
 proj4string(Plemiss.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Plethodon ocmulgee
 
@@ -884,8 +885,8 @@ Q <- Pleocm
 Q <-  cbind(Q$decimallatitude, Q$decimallongitude, Q$scientificname)
 colnames(Q) <- c("ddlat", "ddlon","tax")
 Q <- as.data.frame(Q)
-Q[,1] <- as.character(Q[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-Q[,1] <- as.numeric(Q[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+Q[,1] <- as.character(Q[,1]) 
+Q[,1] <- as.numeric(Q[,1]) 
 Q[,2] <- as.character(Q[,2])
 Q[,2] <- as.numeric(Q[,2])
 Q[,3] <- as.character(Q[,3])
@@ -901,7 +902,6 @@ Pleocm.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleoc
 Pleocm.SHP$binomial <- "Plethodon ocmulgee"
 proj4string(Pleocm.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
 #######################################
 # Plethodon variolatus
 
@@ -911,8 +911,8 @@ R <- Plevar
 R <-  cbind(R$decimallatitude, R$decimallongitude, R$scientificname)
 colnames(R) <- c("ddlat", "ddlon","tax")
 R <- as.data.frame(R)
-R[,1] <- as.character(R[,1]) # Hi lauren, I changed these lines of code so that you wouldn't lose the actual number part of the lat long
-R[,1] <- as.numeric(R[,1]) # when changing a factor directly into a numeric, it reassigns each unique factor a number, starting with 1 and going up to the number of levels.
+R[,1] <- as.character(R[,1]) 
+R[,1] <- as.numeric(R[,1]) 
 R[,2] <- as.character(R[,2])
 R[,2] <- as.numeric(R[,2])
 R[,3] <- as.character(R[,3])
@@ -928,8 +928,6 @@ Plevar.SHP <- readShapePoly("Analysis_Scripts/Chapter3/Shapefiles/LM_Polys/Pleva
 Plevar.SHP$binomial <- "Plethodon variolatus"
 proj4string(Plevar.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 
-
-
 ###########################################################
 ##### combo all of the polygons I made into one object ####
 ###########################################################
@@ -937,10 +935,10 @@ proj4string(Plevar.SHP) <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
 # combine all
 AllLMPolys <- c(Batalta.SHP, Batbram.SHP, Batraregius.SHP,
   Batrarel.SHP, Bolitodunn.SHP, Bolitood.SHP, Bolnym.SHP, 
-  Bolrob.SHP, Bradysil.SHP,Chimiq.SHP, Desmocon.SHP, Desmofus.SHP,
+  Bolrob.SHP, Bradysil.SHP, Chimiq.SHP, Desmocon.SHP, Desmofus.SHP,
   Desor.SHP, Despla.SHP, Eaqua.SHP, Echam.SHP, Elome.SHP, Eurbis.SHP,
   Eurlon.SHP, Onica.SHP, Pleaur.SHP, Plechat.SHP, Plechl.SHP,
-  Pledor.SHP, Plegrob.SHP, Plejor.SHP, Plemiss.SHP,  Pleocm.SHP, Pleric.SHP,
+  Pledor.SHP, Plegrob.SHP, Plejor.SHP, Plemiss.SHP, Pleocm.SHP, Pleric.SHP,
   Plevar.SHP, Pleweh.SHP)
 
 # bind all and check names
@@ -955,21 +953,16 @@ writeOGR(obj=AllLMPolysBinded, dsn="Analysis_Scripts/Chapter3/Shapefiles/AllLMPo
 
 #checks
 LMPolyCheck <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllLMPolysBinded/chull.shp")
-LMPolyCheck$binomial
 plot(LMPolyCheck)
 plot(LMPolyCheck[31, ])
 
 ###################################
-### combine all NEW ################
-####################################
+### combine all NEW ###############
+###################################
 
-AllNewLMPolys <- c(Batalta.SHP, Batbram.SHP,
-                Bolnym.SHP, 
-                Bolrob.SHP,Chimiq.SHP, Desmocon.SHP,
-                Desor.SHP, Despla.SHP, Eaqua.SHP, Echam.SHP, Elome.SHP,
-                Onica.SHP, Plechat.SHP, Plechl.SHP,
-                Plegrob.SHP, Plemiss.SHP,  Pleocm.SHP,
-                Plevar.SHP)
+AllNewLMPolys <- c(Batalta.SHP, Batbram.SHP, Bolnym.SHP, Bolrob.SHP, Chimiq.SHP, Desmocon.SHP,
+                Desor.SHP, Despla.SHP, Eaqua.SHP, Echam.SHP, Elome.SHP, Onica.SHP, Plechat.SHP, Plechl.SHP,
+                Plegrob.SHP, Plemiss.SHP,  Pleocm.SHP,Plevar.SHP)
 
 # bind all and check names
 AllNewLMPolysBinded <- do.call(bind, AllNewLMPolys)
@@ -983,7 +976,6 @@ writeOGR(obj=AllNewLMPolysBinded, dsn="Analysis_Scripts/Chapter3/Shapefiles/AllN
 
 #checks
 LMNewPolyCheck <- readOGR("Analysis_Scripts/Chapter3/Shapefiles/AllNewLMPolysBinded/chull.shp")
-LMNewPolyCheck$binomial
 plot(LMNewPolyCheck)
 plot(LMPolyCheck[31, ])
 
